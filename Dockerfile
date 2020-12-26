@@ -26,4 +26,6 @@ RUN mkdir /app
 WORKDIR /app
 COPY . /app
 
+RUN npm install -g @ionic/cli
+
 EXPOSE 3001
