@@ -28,4 +28,7 @@ COPY . /app
 
 RUN npm install -g @ionic/cli
 
+# ref: https://qiita.com/soarflat/items/06377f3b96964964a65d
+ENV PATH $PATH:./node_modules/.bin
+
 EXPOSE 3001
