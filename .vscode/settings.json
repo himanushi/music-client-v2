@@ -1,0 +1,18 @@
+{
+  "eslint.nodePath": "app/node_modules",
+  "eslint.workingDirectories": ["./app"],
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "files.autoSave": "onFocusChange",
+  "cSpell.words": [
+    "browserslist",
+    "ionicons"
+  ],
+  "cSpell.allowCompoundWords": true,
+  "cSpell.ignoreRegExpList": ["[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"],
+}
