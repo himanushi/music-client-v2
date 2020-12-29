@@ -1,6 +1,23 @@
 import React from "react";
-import { IonApp } from "@ionic/react";
+import {
+  IonApp,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonMenu,
+  IonMenuToggle,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
 import Tabs from "./pages/Tabs";
+import { menu } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -23,7 +40,43 @@ import "./theme/variables.css";
 
 const App: React.FC = () => (
   <IonApp>
-    <Tabs />
+    <IonMenu content-id="main-content">
+      <IonHeader>
+        <IonToolbar color="primary">
+          <IonTitle>Menu</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent>
+        <IonList>
+          <IonListHeader>Navigate</IonListHeader>
+          <IonMenuToggle auto-hide="false">
+            <IonItem button>
+              <IonIcon slot="start" name="home"></IonIcon>
+              <IonLabel>Home</IonLabel>
+            </IonItem>
+          </IonMenuToggle>
+        </IonList>
+      </IonContent>
+    </IonMenu>
+
+    <IonPage className="ion-page" id="main-content">
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonMenuToggle>
+              <IonButton>
+                <IonIcon slot="icon-only" icon={menu}></IonIcon>
+              </IonButton>
+            </IonMenuToggle>
+          </IonButtons>
+          <IonTitle>Header</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <Tabs />
+      </IonContent>
+    </IonPage>
   </IonApp>
 );
 

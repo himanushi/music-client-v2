@@ -11,11 +11,6 @@ import { RouteComponentProps } from "react-router";
 const Home: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Home</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
         <h1>Home</h1>
       </IonContent>
