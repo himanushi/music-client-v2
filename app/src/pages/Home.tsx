@@ -2,15 +2,20 @@ import {
   IonBadge,
   IonCheckbox,
   IonContent,
+  IonFab,
+  IonFabButton,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonNote,
   IonPage,
 } from "@ionic/react";
+import { add } from "ionicons/icons";
 import React from "react";
+import { RouteComponentProps } from "react-router";
 
-const Home: React.FC = () => {
+const Home: React.FC<RouteComponentProps> = (props) => {
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -26,6 +31,11 @@ const Home: React.FC = () => {
             </IonBadge>
           </IonItem>
         </IonList>
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={() => props.history.push("/new")}>
+            <IonIcon icon={add} />
+          </IonFabButton>
+        </IonFab>
       </IonContent>
     </IonPage>
   );
