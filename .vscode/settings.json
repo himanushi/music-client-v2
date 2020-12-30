@@ -1,6 +1,8 @@
 {
+  "eslint.alwaysShowStatus": true,
   "eslint.nodePath": "app/node_modules",
   "eslint.workingDirectories": ["./app"],
+
   "[javascript]": {
     "editor.formatOnSave": false
   },
@@ -9,11 +11,10 @@
     "source.fixAll.eslint": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+
   "files.autoSave": "onFocusChange",
-  "cSpell.words": [
-    "browserslist",
-    "ionicons"
-  ],
+
+  "cSpell.words": ["browserslist", "ionicons"],
   "cSpell.allowCompoundWords": true,
-  "cSpell.ignoreRegExpList": ["[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"],
+  "cSpell.ignoreRegExpList": ["[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"]
 }
