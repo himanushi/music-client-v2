@@ -36,10 +36,13 @@ import {
 import { menu } from "ionicons/icons";
 import React from "react";
 
+import ThemeSwitch from "./components/ThemeSwitch";
+import Initializer from "./initializers/Initializer";
 import Tabs from "./pages/Tabs";
 
 const App: React.FC = () => (
   <IonApp>
+    <Initializer />
     <IonMenu content-id="main-content">
       <IonHeader>
         <IonToolbar color="primary">
@@ -71,6 +74,9 @@ const App: React.FC = () => (
             </IonMenuToggle>
           </IonButtons>
           <IonTitle>Header</IonTitle>
+          <IonButtons slot="end">
+            <ThemeSwitch />
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
