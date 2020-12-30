@@ -1,0 +1,18 @@
+/* ref: https://ionicframework.com/jp/docs/theming/colors#new-color-creator */
+:root {
+  --ion-color-main: #4ac6d2;
+  --ion-color-main-rgb: 74, 198, 210;
+  --ion-color-main-contrast: #000000;
+  --ion-color-main-contrast-rgb: 0, 0, 0;
+  --ion-color-main-shade: #41aeb9;
+  --ion-color-main-tint: #5cccd7;
+}
+
+.ion-color-main {
+  --ion-color-base: var(--ion-color-main);
+  --ion-color-base-rgb: var(--ion-color-main-rgb);
+  --ion-color-contrast: var(--ion-color-main-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-main-contrast-rgb);
+  --ion-color-shade: var(--ion-color-main-shade);
+  --ion-color-tint: var(--ion-color-main-tint);
+}
