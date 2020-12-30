@@ -36,7 +36,7 @@ import {
 import { menu } from "ionicons/icons";
 import React from "react";
 
-import ThemeSwitch from "./components/ThemeSwitch";
+import DarkModeSwitch from "./components/DarkModeSwitch";
 import Initializer from "./initializers/Initializer";
 import Tabs from "./pages/Tabs";
 
@@ -75,7 +75,7 @@ const App: React.FC = () => (
           </IonButtons>
           <IonTitle>Header</IonTitle>
           <IonButtons slot="end">
-            <ThemeSwitch />
+            <DarkModeSwitch />
           </IonButtons>
         </IonToolbar>
       </IonHeader>

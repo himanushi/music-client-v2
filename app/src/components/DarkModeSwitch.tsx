@@ -1,13 +1,11 @@
 import { IonButton, IonIcon } from "@ionic/react";
 import { moonSharp, sunnyOutline } from "ionicons/icons";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 
-const ThemeSwitch = () => {
+const DarkModeSwitch = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
-
-  // 初回表示
 
   const onClick = useCallback(() => {
     document.body.classList.toggle("dark", !darkMode);
@@ -28,4 +26,4 @@ const ThemeSwitch = () => {
   );
 };
 
-export default ThemeSwitch;
+export default DarkModeSwitch;
