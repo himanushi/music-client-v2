@@ -1,11 +1,5 @@
+import { IonContent, IonPage } from "@ionic/react";
 import React from "react";
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-} from "@ionic/react";
 
 const SettingsPage: React.FC = () => {
   return (

@@ -28,6 +28,12 @@
     "build": "react-scripts build",
     "lint": "prettier --write . && eslint --fix 'src/**/*.{ts,tsx}'"
   },
+  "importSort": {
+    ".ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -47,7 +53,9 @@
     "@capacitor/cli": "2.4.5",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
-    "prettier": "^2.2.1"
+    "import-sort-style-module": "^6.0.0",
+    "prettier": "^2.2.1",
+    "prettier-plugin-import-sort": "0.0.6"
   },
   "description": "An Ionic project"
 }

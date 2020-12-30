@@ -1,18 +1,18 @@
-import React from "react";
 import {
-  IonTabs,
-  IonTabBar,
-  IonTabButton,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
 } from "@ionic/react";
-import { home, settings } from "ionicons/icons";
-import { Redirect, Route } from "react-router-dom";
 import { IonReactRouter } from "@ionic/react-router";
+import { home, settings } from "ionicons/icons";
+import React from "react";
+import { Redirect, Route } from "react-router-dom";
 
-import SettingsPage from "./SettingsPage";
 import HomePage from "./HomePage";
+import SettingsPage from "./SettingsPage";
 
 const Tabs: React.FC = () => (
   <IonReactRouter>
