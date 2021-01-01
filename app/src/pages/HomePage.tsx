@@ -10,10 +10,20 @@ import {
   IonCol,
   IonContent,
   IonGrid,
+  IonIcon,
+  IonItem,
+  IonLabel,
   IonPage,
   IonRow,
 } from "@ionic/react";
-import { caretForwardCircle, close, heart, share, trash } from "ionicons/icons";
+import {
+  caretForwardCircle,
+  close,
+  heart,
+  pin,
+  share,
+  trash,
+} from "ionicons/icons";
 import React, { useState } from "react";
 
 const Home: React.FC = () => {
@@ -25,15 +35,8 @@ const Home: React.FC = () => {
           <IonRow>
             <IonCol>
               <IonCard>
-                <IonCardHeader>
-                  <IonCardSubtitle>Card Subtitle</IonCardSubtitle>
-                  <IonCardTitle>Card Title</IonCardTitle>
-                </IonCardHeader>
-
                 <IonCardContent>
-                  Keep close to Nature's heart... and break clear away, once in
-                  awhile, and climb a mountain or spend a week in the woods.
-                  Wash your spirit clean.
+                  ion-item in a card, icon left, button right
                 </IonCardContent>
               </IonCard>
             </IonCol>

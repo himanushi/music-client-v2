@@ -5,22 +5,19 @@ import {
   IonIcon,
   IonToolbar,
 } from "@ionic/react";
-import { playSkipBackSharp } from "ionicons/icons";
+import { play, playForward } from "ionicons/icons";
 import React from "react";
 
 const FooterPlayer = () => {
   return (
     <IonFooter>
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonButton>
-            <IonIcon slot="icon-only" icon={playSkipBackSharp} />
-          </IonButton>
-        </IonButtons>
-
+      <IonToolbar color="main">
         <IonButtons slot="end">
           <IonButton>
-            <IonIcon slot="icon-only" icon={playSkipBackSharp} />
+            <IonIcon slot="icon-only" icon={play} />
+          </IonButton>
+          <IonButton>
+            <IonIcon slot="icon-only" icon={playForward} />
           </IonButton>
         </IonButtons>
       </IonToolbar>

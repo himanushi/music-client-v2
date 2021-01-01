@@ -27,10 +27,10 @@ const App: React.FC = () => (
   <IonApp>
     <Initializer />
     <IonPage>
+      <FooterPlayer />
       <MenuList />
       <MenuBar />
       <Routing />
-      <FooterPlayer />
     </IonPage>
   </IonApp>
 );

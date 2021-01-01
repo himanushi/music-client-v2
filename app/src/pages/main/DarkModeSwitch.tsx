@@ -1,5 +1,5 @@
 import { IonButton, IonIcon } from "@ionic/react";
-import { moonSharp, sunnyOutline } from "ionicons/icons";
+import { moon, sunny } from "ionicons/icons";
 import React, { useCallback, useEffect, useState } from "react";
 import { cookie } from "utilities/cookie";
 
@@ -23,9 +23,9 @@ const DarkModeSwitch = () => {
 
   let icon;
   if (darkMode) {
-    icon = sunnyOutline;
+    icon = sunny;
   } else {
-    icon = moonSharp;
+    icon = moon;
   }
 
   return (
