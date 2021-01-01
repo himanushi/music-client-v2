@@ -1,6 +1,5 @@
+import InitDarkMode from "initializers/InitDarkMode";
 import React from "react";
-
-import InitDarkMode from "./InitDarkMode";
 
 const Initializer = () => {
   return (
