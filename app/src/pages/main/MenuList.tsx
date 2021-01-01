@@ -17,7 +17,7 @@ import React from "react";
 const MenuList: React.FC = () => (
   <IonMenu content-id="main-content">
     <IonHeader>
-      <IonToolbar color="primary">
+      <IonToolbar color="main">
         <IonTitle>Menu</IonTitle>
       </IonToolbar>
     </IonHeader>
