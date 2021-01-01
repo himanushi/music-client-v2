@@ -4,7 +4,7 @@ import HomePage from "pages/HomePage";
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 
-const InitRouter: React.FC = () => (
+const Routing: React.FC = () => (
   <IonContent scrollX={false} scrollY={false}>
     <IonReactRouter>
       <IonRouterOutlet>
@@ -15,4 +15,4 @@ const InitRouter: React.FC = () => (
   </IonContent>
 );
 
-export default InitRouter;
+export default Routing;
