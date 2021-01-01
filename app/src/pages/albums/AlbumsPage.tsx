@@ -1,25 +1,6 @@
-import {
-  IonActionSheet,
-  IonBadge,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCol,
-  IonContent,
-  IonGrid,
-  IonImg,
-  IonItem,
-  IonPage,
-  IonRow,
-  IonText,
-  IonTitle,
-} from "@ionic/react";
-import { caretForwardCircle, close, heart, share, trash } from "ionicons/icons";
+import { IonContent, IonPage } from "@ionic/react";
 import Album from "pages/albums/Album";
-import React, { useState } from "react";
+import React from "react";
 
 const AlbumsPage: React.FC = () => {
   return (
