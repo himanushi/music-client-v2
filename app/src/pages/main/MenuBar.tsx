@@ -9,10 +9,9 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { isPlatform } from "@ionic/react";
+import DarkModeSwitch from "components/DarkModeSwitch";
 import { menu } from "ionicons/icons";
 import React from "react";
-
-import DarkModeSwitch from "./DarkModeSwitch";
 
 const MenuBar: React.FC = () => {
   const PositionRef = isPlatform("mobile") ? IonFooter : IonHeader;
