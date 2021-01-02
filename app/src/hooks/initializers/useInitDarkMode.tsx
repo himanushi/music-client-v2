@@ -1,4 +1,4 @@
-import useDarkMode from "hooks/useDarkMode";
+import useDarkMode from "hooks/util/useDarkMode";
 import { cookie } from "lib/cookie";
 import { useEffect } from "react";
 
