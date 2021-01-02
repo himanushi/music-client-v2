@@ -1,5 +1,5 @@
+import { cookie } from "lib/cookie";
 import React, { useEffect } from "react";
-import { cookie } from "utilities/cookie";
 
 const InitDarkMode = () => {
   useEffect(() => {

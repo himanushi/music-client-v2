@@ -1,7 +1,7 @@
 import { IonButton, IonIcon } from "@ionic/react";
 import { moon, sunny } from "ionicons/icons";
+import { cookie } from "lib/cookie";
 import React, { useCallback, useEffect, useState } from "react";
-import { cookie } from "utilities/cookie";
 
 const DarkModeSwitch = () => {
   const [darkMode, setDarkMode] = useState(() => {

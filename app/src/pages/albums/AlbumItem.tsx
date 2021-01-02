@@ -1,7 +1,7 @@
 import { IonCard, IonCardContent, IonImg, IonText } from "@ionic/react";
 import React from "react";
 
-const Album: React.FC = () => {
+const AlbumItem: React.FC = () => {
   return (
     <IonCard style={{ width: "150px" }}>
       <IonImg
@@ -17,4 +17,4 @@ const Album: React.FC = () => {
   );
 };
 
-export default Album;
+export default AlbumItem;
