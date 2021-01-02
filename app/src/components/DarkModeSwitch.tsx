@@ -1,25 +1,10 @@
 import { IonButton, IonIcon } from "@ionic/react";
+import useDarkMode from "hooks/useDarkMode";
 import { moon, sunny } from "ionicons/icons";
-import { cookie } from "lib/cookie";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 
 const DarkModeSwitch = () => {
-  const [darkMode, setDarkMode] = useState(() => {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-
-  useEffect(() => {
-    // cookie を優先する
-    if (cookie.get("dark-mode") !== undefined) {
-      setDarkMode(cookie.get("dark-mode") === "true");
-    }
-  }, []);
-
-  const onClick = useCallback(() => {
-    document.body.classList.toggle("dark", !darkMode);
-    cookie.set("dark-mode", (!darkMode).toString());
-    setDarkMode(!darkMode);
-  }, [darkMode]);
+  const { darkMode, onClick } = useDarkMode();
 
   let icon;
   if (darkMode) {
