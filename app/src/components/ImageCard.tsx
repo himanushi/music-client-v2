@@ -1,17 +1,35 @@
 import { IonCard, IonCardContent, IonImg, IonText } from "@ionic/react";
 import { Maybe } from "graphql/types";
-import React from "react";
+import React, { useMemo } from "react";
 
-const ImageCard = ({ name, url }: { name: string; url: Maybe<string> }) => {
-  return (
-    <IonCard style={{ width: "150px" }}>
-      <IonImg style={{ width: "150px", height: "150px" }} src={url || ""} />
-      <IonCardContent>
-        <IonText>
-          <p>{name}</p>
-        </IonText>
-      </IonCardContent>
-    </IonCard>
+const ImageCard = ({
+  name,
+  url,
+  width,
+}: {
+  name: string;
+  url: Maybe<string>;
+  width: number;
+}) => {
+  return useMemo(
+    () => (
+      <IonCard className="ion-no-margin" style={{ width }}>
+        <IonImg style={{ width, height: width }} src={url || ""} />
+        <IonCardContent>
+          <IonText
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              width,
+            }}
+          >
+            {name}
+          </IonText>
+        </IonCardContent>
+      </IonCard>
+    ),
+    [name, url, width]
   );
 };
 
