@@ -1,12 +1,10 @@
-import { IonCol, IonGrid, IonRow } from "@ionic/react";
+import { IonGrid, IonRow } from "@ionic/react";
 import { useWindowWidth } from "@react-hook/window-size";
-import React, { useMemo } from "react";
+import React from "react";
 
 export const AutoGrid = ({ items, width }: { items: any[]; width: number }) => {
   const windowWidth = useWindowWidth();
-  const columnsLength = useMemo(() => {
-    return Math.floor(windowWidth / width);
-  }, [width, windowWidth]);
+  const columnsLength = Math.floor(windowWidth / width);
 
   let rows: JSX.Element[] = [];
   for (var i = 0, l = items.length; i < l; i += columnsLength) {
@@ -15,12 +13,12 @@ export const AutoGrid = ({ items, width }: { items: any[]; width: number }) => {
     const row = (
       <IonRow key={i} className="ion-justify-content-center ion-no-padding">
         {columnItems.map((item, index) => (
-          <IonCol
+          <IonRow
             key={index}
             className="ion-justify-content-center ion-no-padding"
           >
             {item}
-          </IonCol>
+          </IonRow>
         ))}
       </IonRow>
     );
@@ -28,5 +26,5 @@ export const AutoGrid = ({ items, width }: { items: any[]; width: number }) => {
     rows.push(row);
   }
 
-  return <IonGrid>{rows}</IonGrid>;
+  return <IonGrid className="ion-justify-content-center">{rows}</IonGrid>;
 };
