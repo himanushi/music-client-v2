@@ -21,7 +21,7 @@ const ImageCardItem = ({
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
-              fontSize: 12,
+              fontSize: 13,
             }}
           >
             {name}
