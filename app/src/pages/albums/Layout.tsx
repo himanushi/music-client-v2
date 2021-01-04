@@ -1,20 +1,28 @@
 import { IonContent } from "@ionic/react";
-import { AutoGrid } from "components/AutoGrid";
-import ImageCard from "components/ImageCard";
+import ImageCardItem from "components/ImageCardItem";
+import InfiniteList from "components/InfiniteList";
 import { Album } from "graphql/types";
-import useCardWidth from "hooks/util/useCardWidth";
+import useCardSize from "hooks/util/useCardSize";
 import React from "react";
 
 export const Layout = ({ albums }: { albums: Album[] }) => {
-  const { cardWidth, parentWidth } = useCardWidth();
+  const { cardWidth, cardHeight, parentWidth } = useCardSize();
 
   const items = albums.map((album) => (
-    <ImageCard name={album.name} url={album.artworkM.url} width={cardWidth} />
+    <ImageCardItem
+      name={album.name}
+      url={album.artworkM.url}
+      width={cardWidth}
+    />
   ));
 
   return (
     <IonContent className="ion-no-padding">
-      <AutoGrid items={items} width={parentWidth} />
+      <InfiniteList
+        items={items}
+        itemWidth={parentWidth}
+        itemHeight={cardHeight}
+      />
     </IonContent>
   );
 };

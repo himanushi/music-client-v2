@@ -1,10 +1,16 @@
-import { IonGrid, IonRow } from "@ionic/react";
+import { IonRow } from "@ionic/react";
 import { useWindowWidth } from "@react-hook/window-size";
 import React from "react";
 
-export const AutoGrid = ({ items, width }: { items: any[]; width: number }) => {
+const useAutoFixedRows = ({
+  items,
+  itemWidth,
+}: {
+  items: any[];
+  itemWidth: number;
+}) => {
   const windowWidth = useWindowWidth();
-  const columnsLength = Math.floor(windowWidth / width);
+  const columnsLength = Math.floor(windowWidth / itemWidth);
 
   let rows: JSX.Element[] = [];
   for (var i = 0, l = items.length; i < l; i += columnsLength) {
@@ -26,5 +32,7 @@ export const AutoGrid = ({ items, width }: { items: any[]; width: number }) => {
     rows.push(row);
   }
 
-  return <IonGrid className="ion-justify-content-center">{rows}</IonGrid>;
+  return rows;
 };
+
+export default useAutoFixedRows;
