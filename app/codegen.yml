@@ -9,7 +9,6 @@ generates:
       - typed-document-node
     config:
       # typescript
-      avoidOptionals: true
       enumsAsTypes: true
       immutableTypes: true
       addUnderscoreToArgsType: true
