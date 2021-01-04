@@ -5,7 +5,13 @@ import { Album } from "graphql/types";
 import useCardItemSize from "hooks/layouts/useCardItemSize";
 import React from "react";
 
-export const Layout = ({ albums }: { albums: Album[] }) => {
+export const Layout = ({
+  albums,
+  loadMore,
+}: {
+  albums: Album[];
+  loadMore: (startIndex: number, stopIndex: number) => Promise<any>;
+}) => {
   const { cardWidth, cardHeight, parentWidth } = useCardItemSize();
 
   const items = albums.map((album) => (
@@ -22,6 +28,7 @@ export const Layout = ({ albums }: { albums: Album[] }) => {
         items={items}
         itemWidth={parentWidth}
         itemHeight={cardHeight}
+        loadMore={loadMore}
       />
     </IonContent>
   );

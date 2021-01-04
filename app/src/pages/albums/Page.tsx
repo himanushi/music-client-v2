@@ -5,7 +5,7 @@ import { Error, Loading } from "pages/DefaultPage";
 import React from "react";
 
 const Page = () => {
-  const { albums, loading, error } = useController();
+  const { albums, loading, error, loadMore } = useController();
 
   let content: JSX.Element;
   if (loading) {
@@ -13,7 +13,7 @@ const Page = () => {
   } else if (error) {
     content = <Error message={error.message} />;
   } else {
-    content = <Layout albums={albums} />;
+    content = <Layout albums={albums} loadMore={loadMore} />;
   }
 
   return <IonPage>{content}</IonPage>;

@@ -5,7 +5,9 @@ interface Data {
   items: Album[];
 }
 
-const useAlbums = (variables?: AlbumsQueryVariables) =>
-  useModels<Data, AlbumsQueryVariables>(AlbumsDocument, variables);
+type TVariables = { variables: AlbumsQueryVariables };
+
+const useAlbums = (variables?: TVariables) =>
+  useModels<Data, TVariables>(AlbumsDocument, variables);
 
 export default useAlbums;

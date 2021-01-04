@@ -4,7 +4,7 @@ const useModels = <TData, TVariables>(
   doc: DocumentNode,
   variables?: TVariables
 ) => {
-  const result = useLazyQuery<TData>(doc, { variables });
+  const result = useLazyQuery<TData, TVariables>(doc, variables);
   return result;
 };
 
