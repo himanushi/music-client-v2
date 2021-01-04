@@ -1,8 +1,7 @@
+import useAutoFixedRows from "hooks/layouts/useAutoFixedRows";
 import React from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
-
-import useAutoFixedRows from "./useAutoFixedRows";
 
 const InfiniteList = ({
   items,

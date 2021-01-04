@@ -2,11 +2,11 @@ import { IonContent } from "@ionic/react";
 import ImageCardItem from "components/ImageCardItem";
 import InfiniteList from "components/InfiniteList";
 import { Album } from "graphql/types";
-import useCardSize from "hooks/util/useCardSize";
+import useCardItemSize from "hooks/layouts/useCardItemSize";
 import React from "react";
 
 export const Layout = ({ albums }: { albums: Album[] }) => {
-  const { cardWidth, cardHeight, parentWidth } = useCardSize();
+  const { cardWidth, cardHeight, parentWidth } = useCardItemSize();
 
   const items = albums.map((album) => (
     <ImageCardItem
