@@ -14,8 +14,19 @@ const ImageCard = ({
   return (
     <IonCard style={{ width }}>
       <IonImg style={{ width, height: width }} src={url || ""} />
-      <IonCardContent>
-        <IonText style={{ width }}>{name}</IonText>
+      <IonCardContent style={{ padding: "5px 9px" }} className="ion-no-padding">
+        <IonText>
+          <p
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              fontSize: 12,
+            }}
+          >
+            {name}
+          </p>
+        </IonText>
       </IonCardContent>
     </IonCard>
   );
