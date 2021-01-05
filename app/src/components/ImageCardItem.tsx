@@ -1,4 +1,4 @@
-import { IonCard, IonCardContent, IonImg, IonText } from "@ionic/react";
+import { IonCard, IonCardContent, IonText } from "@ionic/react";
 import { Maybe } from "graphql/types";
 import React from "react";
 
