@@ -13,7 +13,7 @@ const ImageCardItem = ({
 }) => {
   return (
     <IonCard style={{ width }}>
-      <IonImg alt={name} style={{ width, height: width }} src={url || ""} />
+      <img alt={name} style={{ width, height: width }} src={url || ""} />
       <IonCardContent style={{ padding: "5px 9px" }} className="ion-no-padding">
         <IonText>
           <p
