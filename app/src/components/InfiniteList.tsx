@@ -20,30 +20,30 @@ const InfiniteList = ({
   return (
     <AutoSizer>
       {({ height, width }) => (
-        <InfiniteLoader
-          isItemLoaded={(index: number) => false}
-          itemCount={rows.length + 1}
-          loadMoreItems={loadMore}
-          threshold={40}
-          minimumBatchSize={50}
+        // <InfiniteLoader
+        //   isItemLoaded={(index: number) => false}
+        //   itemCount={rows.length + 1}
+        //   loadMoreItems={loadMore}
+        //   threshold={40}
+        //   minimumBatchSize={50}
+        // >
+        //   {({ onItemsRendered, ref }) => (
+        <List
+          // onItemsRendered={onItemsRendered}
+          // ref={ref}
+          height={height}
+          itemCount={rows.length}
+          itemSize={itemHeight}
+          width={width}
         >
-          {({ onItemsRendered, ref }) => (
-            <List
-              onItemsRendered={onItemsRendered}
-              ref={ref}
-              height={height}
-              itemCount={rows.length + 1}
-              itemSize={itemHeight}
-              width={width}
-            >
-              {({ index, style }) => (
-                <div key={index} style={style}>
-                  {rows[index]}
-                </div>
-              )}
-            </List>
+          {({ index, style }) => (
+            <div key={index} style={style}>
+              {rows[index]}
+            </div>
           )}
-        </InfiniteLoader>
+        </List>
+        //   )}
+        // </InfiniteLoader>
       )}
     </AutoSizer>
   );
