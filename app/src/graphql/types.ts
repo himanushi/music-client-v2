@@ -1065,6 +1065,21 @@ export type AlbumsQuery = {
   >;
 };
 
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  readonly me: Pick<
+    CurrentUser,
+    "id" | "name" | "username" | "registered" | "version"
+  > & {
+    readonly publicInformations: ReadonlyArray<
+      Pick<PublicInformation, "id" | "publicType">
+    >;
+    readonly role: Pick<Role, "id" | "name" | "description" | "allowedActions">;
+    readonly favorite: Pick<Favorite, "albumIds" | "artistIds" | "trackIds">;
+  };
+};
+
 export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
   kind: "Document",
   definitions: [
@@ -1185,6 +1200,89 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
+export const MeDocument: DocumentNode<MeQuery, MeQueryVariables> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Me" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "me" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "username" } },
+                { kind: "Field", name: { kind: "Name", value: "registered" } },
+                { kind: "Field", name: { kind: "Name", value: "version" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "publicInformations" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "publicType" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "role" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "allowedActions" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "favorite" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "albumIds" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "artistIds" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "trackIds" },
+                      },
                     ],
                   },
                 },

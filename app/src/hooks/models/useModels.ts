@@ -1,10 +1,10 @@
-import { DocumentNode, useLazyQuery } from "@apollo/client";
+import { DocumentNode, useQuery } from "@apollo/client";
 
 const useModels = <TData, TVariables>(
   doc: DocumentNode,
   variables?: TVariables
 ) => {
-  const result = useLazyQuery<TData, TVariables>(doc, variables);
+  const result = useQuery<TData, TVariables>(doc, variables);
   return result;
 };
 
