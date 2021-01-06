@@ -7,16 +7,16 @@ import React from "react";
 const Page: React.FC = () => {
   const { albums, loading, error, loadMore } = useController();
 
-  let content: JSX.Element;
+  let page: JSX.Element = <></>;
   if (loading) {
-    content = <Loading />;
+    page = <Loading />;
   } else if (error) {
-    content = <Error message={error.message} />;
-  } else {
-    content = <Layout albums={albums} loadMore={loadMore} />;
+    page = <Error message={error.message} />;
+  } else if (albums) {
+    page = <Layout albums={albums} loadMore={loadMore} />;
   }
 
-  return <Main>{content}</Main>;
+  return <Main>{page}</Main>;
 };
 
 export default Page;
