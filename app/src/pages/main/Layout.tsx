@@ -16,8 +16,8 @@ import {
   IonToolbar,
   isPlatform,
 } from "@ionic/react";
+import UserIcon from "components/userIcon/Component";
 import { home, menu, play, playForward } from "ionicons/icons";
-import UserIcon from "pages/parts/UserIcon";
 import React from "react";
 
 type Props = {

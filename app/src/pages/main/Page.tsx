@@ -18,20 +18,28 @@ import "theme/custom.css";
 import { ApolloProvider } from "@apollo/client";
 import { IonApp } from "@ionic/react";
 import client from "graphql/client";
-import useInitializer from "hooks/initializers/useInitializer";
 import Routing from "pages/main/Routing";
+import useController from "pages/main/useController";
 import React from "react";
 
 const Page: React.FC = () => {
-  useInitializer();
-
   return (
     <ApolloProvider client={client}>
-      <IonApp>
-        <Routing />
-      </IonApp>
+      <InitPage />
     </ApolloProvider>
   );
 };
 
 export default Page;
+
+const InitPage: React.FC = () => {
+  const { initialized } = useController();
+
+  if (!initialized) return <></>;
+
+  return (
+    <IonApp>
+      <Routing />
+    </IonApp>
+  );
+};
