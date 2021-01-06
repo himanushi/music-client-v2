@@ -1,17 +1,14 @@
-import { Album } from "graphql/types";
 import useAlbums from "hooks/models/useAlbums";
-import { useEffect, useState } from "react";
 
 const useController = () => {
-  const [load, { called, data, loading, error, fetchMore }] = useAlbums();
-  const [albums, setAlbums] = useState<Album[]>([]);
+  const { data, loading, error, fetchMore } = useAlbums();
 
-  useEffect(() => {
-    if (!called) load();
-    if (data) setAlbums(data.items);
-  }, [called, data, load]);
-
-  return { albums, loading, error, loadMore: buildLoadMore(fetchMore) };
+  return {
+    albums: data?.items,
+    loading,
+    error,
+    loadMore: buildLoadMore(fetchMore),
+  };
 };
 
 export default useController;
