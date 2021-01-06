@@ -16,7 +16,7 @@ import "theme/variables.css";
 import "theme/custom.css";
 
 import { ApolloProvider } from "@apollo/client";
-import { IonApp } from "@ionic/react";
+import { IonApp, IonLoading } from "@ionic/react";
 import client from "graphql/client";
 import Routing from "pages/main/Routing";
 import useController from "pages/main/useController";
@@ -35,7 +35,9 @@ export default Page;
 const InitPage: React.FC = () => {
   const { initialized } = useController();
 
-  if (!initialized) return <></>;
+  if (!initialized) {
+    return <IonLoading isOpen={!initialized} message={"Loading..."} />;
+  }
 
   return (
     <IonApp>

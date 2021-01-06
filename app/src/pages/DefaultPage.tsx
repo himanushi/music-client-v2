@@ -2,7 +2,7 @@ import { IonToast } from "@ionic/react";
 import React, { useMemo, useState } from "react";
 
 export const Loading = () => {
-  return useMemo(() => <>loading...</>, []);
+  return <>loading...</>;
 };
 
 export const Error = ({ message }: { message: string }) => {
