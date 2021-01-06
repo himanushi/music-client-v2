@@ -1,4 +1,3 @@
-import { CurrentUser } from "graphql/types";
 import useMe from "hooks/models/useMe";
 
 const useController = () => {
