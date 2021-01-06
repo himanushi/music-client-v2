@@ -7,11 +7,16 @@ import {
   IonPopover,
 } from "@ionic/react";
 import DarkModeSwitch from "components/DarkModeSwitch";
+import { CurrentUser } from "graphql/types";
 import { personCircle } from "ionicons/icons";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 
-const UserIcon = () => {
+type Props = {
+  me: CurrentUser;
+};
+
+export const Layout: React.FC<Props> = ({ me }) => {
   const [popoverState, setShowPopover] = useState({
     showPopover: false,
     event: undefined,
@@ -28,7 +33,7 @@ const UserIcon = () => {
         }
       >
         <IonList>
-          <IonItem button onClick={() => console.dir(history)}>
+          <IonItem button onClick={() => history.push("/login")}>
             <IonLabel>ログイン</IonLabel>
           </IonItem>
           <IonItem lines="none">
@@ -47,4 +52,3 @@ const UserIcon = () => {
     </>
   );
 };
-export default UserIcon;
