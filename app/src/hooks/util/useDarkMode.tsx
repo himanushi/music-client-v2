@@ -8,14 +8,14 @@ const useDarkMode = () => {
 
   useEffect(() => {
     // cookie を優先する
-    if (cookie.get("dark-mode") !== undefined) {
-      setDarkMode(cookie.get("dark-mode") === "true");
+    if (cookie.get("DarkMode") !== undefined) {
+      setDarkMode(cookie.get("DarkMode") === "true");
     }
   }, []);
 
   const onClick = useCallback(() => {
     document.body.classList.toggle("dark", !darkMode);
-    cookie.set("dark-mode", (!darkMode).toString());
+    cookie.set("DarkMode", (!darkMode).toString());
     setDarkMode(!darkMode);
   }, [darkMode]);
 

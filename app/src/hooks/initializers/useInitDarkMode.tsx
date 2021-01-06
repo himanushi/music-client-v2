@@ -8,7 +8,7 @@ const useInitDarkMode = () => {
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
-    cookie.set("dark-mode", darkMode.toString());
+    cookie.set("DarkMode", darkMode.toString());
     setInitialized(true);
   }, [darkMode]);
 
