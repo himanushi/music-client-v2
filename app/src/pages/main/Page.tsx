@@ -16,29 +16,22 @@ import "theme/variables.css";
 import "theme/custom.css";
 
 import { ApolloProvider } from "@apollo/client";
-import { IonApp, IonPage } from "@ionic/react";
+import { IonApp } from "@ionic/react";
 import client from "graphql/client";
 import useInitializer from "hooks/initializers/useInitializer";
-import FooterPlayer from "pages/main/FooterPlayer";
-import MenuBar from "pages/main/MenuBar";
-import MenuList from "pages/main/MenuList";
 import Routing from "pages/main/Routing";
 import React from "react";
 
-const App: React.FC = () => {
+const Page: React.FC = () => {
   useInitializer();
 
   return (
     <ApolloProvider client={client}>
       <IonApp>
-        <IonPage>
-          <FooterPlayer />
-          <MenuList />
-          <MenuBar />
-          <Routing />
-        </IonPage>
+        <Routing />
       </IonApp>
     </ApolloProvider>
   );
 };
-export default App;
+
+export default Page;

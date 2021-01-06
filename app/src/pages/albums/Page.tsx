@@ -1,10 +1,10 @@
-import { IonPage } from "@ionic/react";
 import { Layout } from "pages/albums/Layout";
 import useController from "pages/albums/useController";
 import { Error, Loading } from "pages/DefaultPage";
+import { Layout as Main } from "pages/main/Layout";
 import React from "react";
 
-const Page = () => {
+const Page: React.FC = () => {
   const { albums, loading, error, loadMore } = useController();
 
   let content: JSX.Element;
@@ -16,7 +16,7 @@ const Page = () => {
     content = <Layout albums={albums} loadMore={loadMore} />;
   }
 
-  return <IonPage>{content}</IonPage>;
+  return <Main>{content}</Main>;
 };
 
 export default Page;

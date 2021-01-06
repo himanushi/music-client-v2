@@ -5,22 +5,15 @@ import { Album } from "graphql/types";
 import useCardItemSize from "hooks/layouts/useCardItemSize";
 import React from "react";
 
-export const Layout = ({
-  albums,
-  loadMore,
-}: {
+type Props = {
   albums: Album[];
   loadMore: (startIndex: number, stopIndex: number) => Promise<any>;
-}) => {
+};
+
+export const Layout: React.FC<Props> = ({ albums, loadMore }) => {
   const { cardWidth, cardHeight, parentWidth } = useCardItemSize();
 
-  const items = albums.map((album) => (
-    <ImageCardItem
-      name={album.name}
-      url={album.artworkM.url}
-      width={cardWidth}
-    />
-  ));
+  const items = albums.map((album) => <Item album={album} width={cardWidth} />);
 
   return (
     <IonContent className="ion-no-padding">
@@ -33,3 +26,18 @@ export const Layout = ({
     </IonContent>
   );
 };
+
+type ItemProps = {
+  album: Album;
+  width: number;
+};
+
+const Item = React.memo((props: ItemProps) => {
+  return (
+    <ImageCardItem
+      name={props.album.name}
+      url={props.album.artworkM.url}
+      width={props.width}
+    />
+  );
+});

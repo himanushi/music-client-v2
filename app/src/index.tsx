@@ -1,4 +1,4 @@
-import App from "pages/main/App";
+import App from "pages/main/Page";
 import React from "react";
 import ReactDOM from "react-dom";
 
