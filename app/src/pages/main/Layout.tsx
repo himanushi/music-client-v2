@@ -25,35 +25,38 @@ type Props = {
 };
 
 export const Layout: React.FC<Props> = (props) => {
+  const headers = isPlatform("mobile") ? [] : [<MenuBar key={0} />];
+  const footers = isPlatform("mobile")
+    ? [<Player key={0} />, <MenuBar key={1} />]
+    : [<Player key={0} />];
+
   return (
     <IonPage>
-      <FooterPlayer />
-      <MenuBar />
+      <IonHeader>{headers}</IonHeader>
+      <IonContent scrollX={false} scrollY={false} className="ion-no-padding">
+        {props.children}
+      </IonContent>
       <MenuList />
-      {props.children}
+      <IonFooter>{footers}</IonFooter>
     </IonPage>
   );
 };
 
 const MenuBar: React.FC = () => {
-  const PositionRef = isPlatform("mobile") ? IonFooter : IonHeader;
-
   return (
-    <PositionRef id="main-content">
-      <IonToolbar>
-        <IonButtons slot="start">
-          <IonMenuToggle>
-            <IonButton>
-              <IonIcon slot="icon-only" icon={menu}></IonIcon>
-            </IonButton>
-          </IonMenuToggle>
-        </IonButtons>
-        <IonTitle>ゲーム音楽</IonTitle>
-        <IonButtons slot="end">
-          <UserIcon />
-        </IonButtons>
-      </IonToolbar>
-    </PositionRef>
+    <IonToolbar id="main-content">
+      <IonButtons slot="start">
+        <IonMenuToggle>
+          <IonButton>
+            <IonIcon slot="icon-only" icon={menu}></IonIcon>
+          </IonButton>
+        </IonMenuToggle>
+      </IonButtons>
+      <IonTitle>ゲーム音楽</IonTitle>
+      <IonButtons slot="end">
+        <UserIcon />
+      </IonButtons>
+    </IonToolbar>
   );
 };
 
@@ -79,19 +82,17 @@ const MenuList = React.memo(() => (
   </IonMenu>
 ));
 
-const FooterPlayer: React.FC = () => {
+const Player: React.FC = () => {
   return (
-    <IonFooter>
-      <IonToolbar color="main">
-        <IonButtons slot="end">
-          <IonButton>
-            <IonIcon slot="icon-only" icon={play} />
-          </IonButton>
-          <IonButton>
-            <IonIcon slot="icon-only" icon={playForward} />
-          </IonButton>
-        </IonButtons>
-      </IonToolbar>
-    </IonFooter>
+    <IonToolbar color="main">
+      <IonButtons slot="end">
+        <IonButton>
+          <IonIcon slot="icon-only" icon={play} />
+        </IonButton>
+        <IonButton>
+          <IonIcon slot="icon-only" icon={playForward} />
+        </IonButton>
+      </IonButtons>
+    </IonToolbar>
   );
 };
