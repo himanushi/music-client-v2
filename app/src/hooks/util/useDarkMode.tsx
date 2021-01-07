@@ -16,7 +16,7 @@ const useDarkMode = () => {
   const onClick = useCallback(() => {
     document.body.classList.toggle("dark", !darkMode);
     cookie.set("DarkMode", (!darkMode).toString());
-    setDarkMode(!darkMode);
+    setDarkMode((prevDarkMode) => !prevDarkMode);
   }, [darkMode]);
 
   return { darkMode, onClick };
