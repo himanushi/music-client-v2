@@ -10,7 +10,6 @@ import DarkModeSwitch from "components/DarkModeSwitch";
 import { CurrentUser } from "graphql/types";
 import { personCircle } from "ionicons/icons";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 
 type Props = {
   me: CurrentUser;
@@ -21,7 +20,6 @@ export const Layout: React.FC<Props> = ({ me }) => {
     showPopover: false,
     event: undefined,
   });
-  const history = useHistory();
 
   return (
     <>
@@ -33,7 +31,13 @@ export const Layout: React.FC<Props> = ({ me }) => {
         }
       >
         <IonList>
-          <IonItem button onClick={() => history.push("/login")}>
+          <IonItem
+            button
+            routerLink="/login"
+            onClick={() => {
+              setShowPopover({ showPopover: false, event: undefined });
+            }}
+          >
             <IonLabel>ログイン</IonLabel>
           </IonItem>
           <IonItem lines="none">
