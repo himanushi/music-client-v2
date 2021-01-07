@@ -1,13 +1,15 @@
 import { Album, AlbumsDocument, AlbumsQueryVariables } from "graphql/types";
 import useModels from "hooks/models/useModels";
 
-interface Data {
+export type TData = {
   items: Album[];
-}
+};
 
-type TVariables = { variables: AlbumsQueryVariables };
+export type TVariables = {
+  variables: AlbumsQueryVariables;
+};
 
 const useAlbums = (variables?: TVariables) =>
-  useModels<Data, TVariables>(AlbumsDocument, variables);
+  useModels<TData, TVariables>(AlbumsDocument, variables);
 
 export default useAlbums;

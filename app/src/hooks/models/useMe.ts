@@ -1,12 +1,14 @@
 import { CurrentUser, MeDocument, MeQueryVariables } from "graphql/types";
 import useModels from "hooks/models/useModels";
 
-interface Data {
+export type TData = {
   me: CurrentUser;
-}
+};
 
-type TVariables = { variables: MeQueryVariables };
+export type TVariables = {
+  variables: MeQueryVariables;
+};
 
-const useMe = () => useModels<Data, TVariables>(MeDocument);
+const useMe = () => useModels<TData, TVariables>(MeDocument);
 
 export default useMe;
