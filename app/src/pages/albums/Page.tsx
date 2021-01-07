@@ -4,7 +4,7 @@ import { Error } from "pages/DefaultPage";
 import { Layout as Main } from "pages/main/Layout";
 import React from "react";
 
-const Page: React.FC = () => {
+const Page: React.FC = React.memo(() => {
   const { albums, error, loadMore } = useController();
 
   let page: JSX.Element = <></>;
@@ -15,6 +15,6 @@ const Page: React.FC = () => {
   }
 
   return <Main>{page}</Main>;
-};
+});
 
 export default Page;

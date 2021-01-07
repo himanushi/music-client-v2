@@ -36,13 +36,12 @@ export const Layout: React.FC<Props> = (props) => {
       <IonContent scrollX={false} scrollY={false} className="ion-no-padding">
         {props.children}
       </IonContent>
-      <MenuList />
       <IonFooter>{footers}</IonFooter>
     </IonPage>
   );
 };
 
-const MenuBar: React.FC = () => {
+const MenuBar: React.FC = React.memo(() => {
   return (
     <IonToolbar id="main-content">
       <IonButtons slot="start">
@@ -58,9 +57,9 @@ const MenuBar: React.FC = () => {
       </IonButtons>
     </IonToolbar>
   );
-};
+});
 
-const MenuList = React.memo(() => (
+export const MenuList = React.memo(() => (
   <IonMenu content-id="main-content">
     <IonHeader>
       <IonToolbar color="main">
@@ -70,11 +69,20 @@ const MenuList = React.memo(() => (
 
     <IonContent scrollX={false} scrollY={false}>
       <IonList>
-        <IonListHeader>Navigate</IonListHeader>
+        <IonListHeader>検索</IonListHeader>
         <IonMenuToggle auto-hide="false">
-          <IonItem button>
+          <IonItem button routerLink="/albums">
             <IonIcon slot="start" icon={home}></IonIcon>
-            <IonLabel>Home</IonLabel>
+            <IonLabel>アルバム</IonLabel>
+          </IonItem>
+        </IonMenuToggle>
+      </IonList>
+      <IonList>
+        <IonListHeader>ユーザー</IonListHeader>
+        <IonMenuToggle auto-hide="false">
+          <IonItem button routerLink="/login">
+            <IonIcon slot="start" icon={home}></IonIcon>
+            <IonLabel>ログイン</IonLabel>
           </IonItem>
         </IonMenuToggle>
       </IonList>
@@ -82,7 +90,7 @@ const MenuList = React.memo(() => (
   </IonMenu>
 ));
 
-const Player: React.FC = () => {
+const Player: React.FC = React.memo(() => {
   return (
     <IonToolbar color="main">
       <IonButtons slot="end">
@@ -95,4 +103,4 @@ const Player: React.FC = () => {
       </IonButtons>
     </IonToolbar>
   );
-};
+});
