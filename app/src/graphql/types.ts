@@ -1048,6 +1048,35 @@ export type User = {
   readonly username: Scalars["String"];
 };
 
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+export type LoginMutation = {
+  readonly login?: Maybe<
+    Pick<LoginPayload, "error"> & {
+      readonly currentUser?: Maybe<
+        Pick<
+          CurrentUser,
+          "id" | "name" | "username" | "registered" | "version"
+        > & {
+          readonly publicInformations: ReadonlyArray<
+            Pick<PublicInformation, "id" | "publicType">
+          >;
+          readonly role: Pick<
+            Role,
+            "id" | "name" | "description" | "allowedActions"
+          >;
+          readonly favorite: Pick<
+            Favorite,
+            "albumIds" | "artistIds" | "trackIds"
+          >;
+        }
+      >;
+    }
+  >;
+};
+
 export type AlbumsQueryVariables = Exact<{
   cursor?: Maybe<CursorInputObject>;
   sort?: Maybe<AlbumsSortInputObject>;
@@ -1080,6 +1109,146 @@ export type MeQuery = {
   };
 };
 
+export const LoginDocument: DocumentNode<
+  LoginMutation,
+  LoginMutationVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "Login" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "LoginInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "login" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "currentUser" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "registered" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "version" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "publicInformations" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "publicType" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "role" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "allowedActions" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "favorite" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "albumIds" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "artistIds" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "trackIds" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "error" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+};
 export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
   kind: "Document",
   definitions: [
