@@ -18,30 +18,51 @@ import {
 } from "@ionic/react";
 import UserIcon from "components/userIcon/Component";
 import { home, menu, play, playForward } from "ionicons/icons";
-import React from "react";
+import React, { memo, useMemo } from "react";
 
 type Props = {
   children?: React.ReactNode;
 };
 
 export const Layout: React.FC<Props> = (props) => {
-  const headers = isPlatform("mobile") ? [] : [<MenuBar key={0} />];
-  const footers = isPlatform("mobile")
-    ? [<Player key={0} />, <MenuBar key={1} />]
-    : [<Player key={0} />];
+  const menuBar = useMemo(function menuBar() {
+    return <MenuBar key="menuBar" />;
+  }, []);
+  const player = useMemo(function player() {
+    return <Player key="player" />;
+  }, []);
+  const headers = isPlatform("mobile") ? <></> : menuBar;
+  const footers = isPlatform("mobile") ? (
+    <>
+      {player}
+      {menuBar}
+    </>
+  ) : (
+    player
+  );
 
   return (
     <IonPage>
-      <IonHeader>{headers}</IonHeader>
+      <MemoizedHeader>{headers}</MemoizedHeader>
       <IonContent scrollX={false} scrollY={false} className="ion-no-padding">
         {props.children}
       </IonContent>
-      <IonFooter>{footers}</IonFooter>
+      <MemoizedFooter>{footers}</MemoizedFooter>
     </IonPage>
   );
 };
 
-const MenuBar: React.FC = React.memo(() => {
+const Header: React.FC<{ children: JSX.Element }> = ({ children }) => (
+  <IonHeader>{children}</IonHeader>
+);
+const MemoizedHeader = memo(Header);
+
+const Footer: React.FC<{ children: JSX.Element }> = ({ children }) => (
+  <IonFooter>{children}</IonFooter>
+);
+const MemoizedFooter = memo(Footer);
+
+const MenuBar: React.FC = () => {
   return (
     <IonToolbar id="main-content">
       <IonButtons slot="start">
@@ -57,9 +78,9 @@ const MenuBar: React.FC = React.memo(() => {
       </IonButtons>
     </IonToolbar>
   );
-});
+};
 
-export const MenuList = React.memo(() => (
+export const MenuList = () => (
   <IonMenu content-id="main-content">
     <IonHeader>
       <IonToolbar color="main">
@@ -88,9 +109,10 @@ export const MenuList = React.memo(() => (
       </IonList>
     </IonContent>
   </IonMenu>
-));
+);
+export const MemorizedMenuList = memo(MenuList);
 
-const Player: React.FC = React.memo(() => {
+const Player: React.FC = () => {
   return (
     <IonToolbar color="main">
       <IonButtons slot="end">
@@ -103,4 +125,4 @@ const Player: React.FC = React.memo(() => {
       </IonButtons>
     </IonToolbar>
   );
-});
+};

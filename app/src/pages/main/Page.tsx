@@ -20,7 +20,7 @@ import { IonApp, IonLoading, createAnimation, setupConfig } from "@ionic/react";
 import client from "graphql/client";
 import Routing from "pages/main/Routing";
 import useController from "pages/main/useController";
-import React from "react";
+import React, { memo } from "react";
 
 setupConfig({
   // ページ遷移時にヘッダーフッターもアニメーションが実行されるため無効にする
@@ -43,7 +43,7 @@ const InitPage: React.FC = () => {
   const { initialized } = useController();
 
   if (!initialized) {
-    return <IonLoading isOpen={!initialized} message={"Loading..."} />;
+    return <MemorizedLoading initialized={initialized} />;
   }
 
   return (
@@ -52,3 +52,9 @@ const InitPage: React.FC = () => {
     </IonApp>
   );
 };
+
+const Loading: React.FC<{ initialized: boolean }> = ({ initialized }) => (
+  <IonLoading isOpen={!initialized} message={"Loading..."} />
+);
+
+const MemorizedLoading = memo(Loading);
