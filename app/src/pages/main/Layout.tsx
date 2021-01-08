@@ -25,10 +25,10 @@ type Props = {
 };
 
 export const Layout: React.FC<Props> = (props) => {
-  const menuBar = useMemo(function menuBar() {
+  const menuBar = useMemo(() => {
     return <MenuBar key="menuBar" />;
   }, []);
-  const player = useMemo(function player() {
+  const player = useMemo(() => {
     return <Player key="player" />;
   }, []);
   const headers = isPlatform("mobile") ? <></> : menuBar;

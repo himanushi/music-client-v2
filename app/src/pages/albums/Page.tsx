@@ -1,7 +1,7 @@
 import { Layout } from "pages/albums/Layout";
 import useController from "pages/albums/useController";
 import { Error } from "pages/DefaultPage";
-import { Layout as Main } from "pages/main/Layout";
+import { Layout as MainLayout } from "pages/main/Layout";
 import React from "react";
 
 const Page: React.FC = React.memo(() => {
@@ -14,7 +14,7 @@ const Page: React.FC = React.memo(() => {
     page = <Layout albums={albums} loadMore={loadMore} />;
   }
 
-  return <Main>{page}</Main>;
+  return <MainLayout>{page}</MainLayout>;
 });
 
 export default Page;
