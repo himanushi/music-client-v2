@@ -1,12 +1,12 @@
 import useDarkMode from "hooks/util/useDarkMode";
 import { cookie } from "lib/cookie";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const useInitDarkMode = () => {
   const [initialized, setInitialized] = useState(false);
   const { darkMode } = useDarkMode();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.body.classList.toggle("dark", darkMode);
     cookie.set("DarkMode", darkMode.toString());
     setInitialized(true);

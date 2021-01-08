@@ -1,11 +1,11 @@
 import useMe from "hooks/models/useMe";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const useInitMe = () => {
   const [initialized, setInitialized] = useState(false);
   const { data } = useMe();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (data && data.me) {
       setInitialized(true);
     }
