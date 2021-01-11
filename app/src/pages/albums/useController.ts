@@ -1,10 +1,14 @@
 import useAlbums from "hooks/models/useAlbums";
 
+const limit = 50;
+
 const useController = () => {
-  const { data, loading, error, fetchMore } = useAlbums();
+  const { data, loading, error, fetchMore } = useAlbums({
+    variables: { cursor: { limit } },
+  });
 
   return {
-    albums: data?.items,
+    albums: data?.albums,
     loading,
     error,
     loadMore: buildLoadMore(fetchMore),
@@ -14,24 +18,18 @@ const useController = () => {
 export default useController;
 
 const buildLoadMore = (fetchMore: any) => {
-  return (startIndex: number, stopIndex: number) => {
-    return fetchMore({
-      variables: {
-        cursor: {
-          limit: stopIndex,
-          offset: startIndex + stopIndex,
+  return (rowIndex: number, rowCount: number, itemCount: number) => {
+    if (rowIndex === rowCount) {
+      return fetchMore({
+        variables: {
+          cursor: {
+            offset: itemCount,
+            limit,
+          },
         },
-      },
-      updateQuery: (
-        prev: { items: any[] },
-        { fetchMoreResult }: { fetchMoreResult: { items: any[] } }
-      ) => {
-        if (!fetchMoreResult) return prev;
-        return {
-          ...prev,
-          ...{ items: [...prev.items, ...fetchMoreResult.items] },
-        };
-      },
-    });
+      });
+    }
+
+    return new Promise(() => {});
   };
 };

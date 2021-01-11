@@ -7,7 +7,11 @@ import React from "react";
 
 type Props = {
   albums: Album[];
-  loadMore: (startIndex: number, stopIndex: number) => Promise<any>;
+  loadMore: (
+    rowIndex: number,
+    rowCount: number,
+    itemCount: number
+  ) => Promise<any>;
 };
 
 export const Layout: React.FC<Props> = ({ albums, loadMore }) => {

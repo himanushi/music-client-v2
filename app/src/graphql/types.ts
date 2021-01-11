@@ -1084,7 +1084,7 @@ export type AlbumsQueryVariables = Exact<{
 }>;
 
 export type AlbumsQuery = {
-  readonly items: ReadonlyArray<
+  readonly albums: ReadonlyArray<
     Pick<Album, "id" | "name" | "status"> & {
       readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
       readonly appleMusicAlbum?: Maybe<Pick<AppleMusicAlbum, "id">>;
@@ -1293,7 +1293,6 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "items" },
             name: { kind: "Name", value: "albums" },
             arguments: [
               {

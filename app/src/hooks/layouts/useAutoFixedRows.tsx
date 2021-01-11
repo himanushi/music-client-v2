@@ -15,24 +15,28 @@ const useAutoFixedRows = ({
   let rows: JSX.Element[] = [];
   for (var i = 0, l = items.length; i < l; i += columnsLength) {
     const columnItems = items.slice(i, i + columnsLength);
-
-    const row = (
-      <IonRow key={i} className="ion-justify-content-center ion-no-padding">
-        {columnItems.map((item, index) => (
-          <IonRow
-            key={index}
-            className="ion-justify-content-center ion-no-padding"
-          >
-            {item}
-          </IonRow>
-        ))}
-      </IonRow>
-    );
-
-    rows.push(row);
+    rows.push(<Row columnItems={columnItems} />);
   }
 
   return rows;
 };
 
 export default useAutoFixedRows;
+
+const Row: React.FC<{ columnItems: JSX.Element[] }> = ({ columnItems }) => {
+  return (
+    <IonRow className="ion-justify-content-center ion-no-padding">
+      {columnItems.map((item, index) => (
+        <InnerRow key={index} item={item} />
+      ))}
+    </IonRow>
+  );
+};
+
+const InnerRow: React.FC<{ item: JSX.Element }> = ({ item }) => {
+  return (
+    <IonRow className="ion-justify-content-center ion-no-padding">
+      {item}
+    </IonRow>
+  );
+};

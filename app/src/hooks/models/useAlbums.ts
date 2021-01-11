@@ -2,7 +2,7 @@ import { Album, AlbumsDocument, AlbumsQueryVariables } from "graphql/types";
 import useModels from "hooks/models/useModels";
 
 export type TData = {
-  items: Album[];
+  albums: Album[];
 };
 
 export type TVariables = {

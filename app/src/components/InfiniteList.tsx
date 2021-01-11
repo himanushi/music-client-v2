@@ -2,7 +2,13 @@ import useAutoFixedRows from "hooks/layouts/useAutoFixedRows";
 import React from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
-// import InfiniteLoader from "react-window-infinite-loader";
+import InfiniteLoader from "react-window-infinite-loader";
+
+type LoadMore = (
+  rowIndex: number,
+  rowCount: number,
+  itemCount: number
+) => Promise<any>;
 
 const InfiniteList = ({
   items,
@@ -13,37 +19,43 @@ const InfiniteList = ({
   items: any[];
   itemWidth: number;
   itemHeight: number;
-  loadMore: (startIndex: number, stopIndex: number) => Promise<any>;
+  loadMore: LoadMore;
 }) => {
   const rows = useAutoFixedRows({ items, itemWidth });
 
   return (
     <AutoSizer>
       {({ height, width }) => (
-        // <InfiniteLoader
-        //   isItemLoaded={(index: number) => false}
-        //   itemCount={rows.length + 1}
-        //   loadMoreItems={loadMore}
-        //   threshold={40}
-        //   minimumBatchSize={50}
-        // >
-        //   {({ onItemsRendered, ref }) => (
-        <List
-          // onItemsRendered={onItemsRendered}
-          // ref={ref}
-          height={height}
-          itemCount={rows.length}
-          itemSize={itemHeight}
-          width={width}
+        <InfiniteLoader
+          isItemLoaded={(index) => false}
+          itemCount={rows.length + 1}
+          loadMoreItems={(_startIndex: number, stopIndex: number) =>
+            loadMore(stopIndex, rows.length, items.length)
+          }
+          threshold={1}
+          minimumBatchSize={10}
         >
-          {({ index, style }) => (
-            <div key={index} style={style}>
-              {rows[index]}
-            </div>
-          )}
-        </List>
-        //   )}
-        // </InfiniteLoader>
+          {({ ref, onItemsRendered }) => {
+            return (
+              <List
+                ref={ref}
+                onItemsRendered={onItemsRendered}
+                height={height}
+                width={width}
+                itemCount={rows.length}
+                itemSize={itemHeight}
+              >
+                {({ index, style }) => {
+                  return (
+                    <div key={index} style={style}>
+                      {rows[index]}
+                    </div>
+                  );
+                }}
+              </List>
+            );
+          }}
+        </InfiniteLoader>
       )}
     </AutoSizer>
   );
