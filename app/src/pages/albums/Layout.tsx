@@ -1,5 +1,5 @@
 import { IonContent } from "@ionic/react";
-import ImageCardItem from "components/ImageCardItem";
+import ImageCardLink from "components/cards/ImageCardLink";
 import InfiniteList, { isLoaded, loadMore } from "components/InfiniteList";
 import { Album } from "graphql/types";
 import useCardItemSize from "hooks/layouts/useCardItemSize";
@@ -36,10 +36,11 @@ type ItemProps = {
 
 const Item = React.memo((props: ItemProps) => {
   return (
-    <ImageCardItem
+    <ImageCardLink
       name={props.album.name}
-      url={props.album.artworkM.url}
+      src={props.album.artworkM.url}
       width={props.width}
+      link={`/albums/${props.album.id}`}
     />
   );
 });
