@@ -1,20 +1,17 @@
 import { IonContent } from "@ionic/react";
 import ImageCardItem from "components/ImageCardItem";
-import InfiniteList from "components/InfiniteList";
+import InfiniteList, { isLoaded, loadMore } from "components/InfiniteList";
 import { Album } from "graphql/types";
 import useCardItemSize from "hooks/layouts/useCardItemSize";
 import React from "react";
 
 type Props = {
   albums: Album[];
-  loadMore: (
-    rowIndex: number,
-    rowCount: number,
-    itemCount: number
-  ) => Promise<any>;
+  loadMore: loadMore;
+  isLoaded: isLoaded;
 };
 
-export const Layout: React.FC<Props> = ({ albums, loadMore }) => {
+export const Layout: React.FC<Props> = ({ albums, loadMore, isLoaded }) => {
   const { cardWidth, cardHeight, parentWidth } = useCardItemSize();
 
   const items = albums.map((album) => <Item album={album} width={cardWidth} />);
@@ -26,6 +23,7 @@ export const Layout: React.FC<Props> = ({ albums, loadMore }) => {
         itemWidth={parentWidth}
         itemHeight={cardHeight}
         loadMore={loadMore}
+        isLoaded={isLoaded}
       />
     </IonContent>
   );

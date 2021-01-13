@@ -4,22 +4,26 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 
-type LoadMore = (
+export type loadMore = (
   rowIndex: number,
   rowCount: number,
   itemCount: number
 ) => Promise<any>;
+
+export type isLoaded = () => boolean;
 
 const InfiniteList = ({
   items,
   itemWidth,
   itemHeight,
   loadMore,
+  isLoaded,
 }: {
   items: any[];
   itemWidth: number;
   itemHeight: number;
-  loadMore: LoadMore;
+  loadMore: loadMore;
+  isLoaded: isLoaded;
 }) => {
   const rows = useAutoFixedRows({ items, itemWidth });
 
@@ -27,7 +31,7 @@ const InfiniteList = ({
     <AutoSizer>
       {({ height, width }) => (
         <InfiniteLoader
-          isItemLoaded={(index) => false}
+          isItemLoaded={() => isLoaded()}
           itemCount={rows.length + 1}
           loadMoreItems={(_startIndex: number, stopIndex: number) =>
             loadMore(stopIndex, rows.length, items.length)
@@ -44,11 +48,12 @@ const InfiniteList = ({
                 width={width}
                 itemCount={rows.length}
                 itemSize={itemHeight}
+                itemData={rows}
               >
-                {({ index, style }) => {
+                {({ data, index, style }) => {
                   return (
                     <div key={index} style={style}>
-                      {rows[index]}
+                      {data[index]}
                     </div>
                   );
                 }}

@@ -5,13 +5,13 @@ import { Layout as MainLayout } from "pages/main/Layout";
 import React from "react";
 
 const Page: React.FC = React.memo(() => {
-  const { albums, error, loadMore } = useController();
+  const { albums, error, loadMore, isLoaded } = useController();
 
   let page: JSX.Element = <></>;
   if (error) {
     page = <Error message={error.message} />;
   } else if (albums) {
-    page = <Layout albums={albums} loadMore={loadMore} />;
+    page = <Layout albums={albums} loadMore={loadMore} isLoaded={isLoaded} />;
   }
 
   return <MainLayout>{page}</MainLayout>;
