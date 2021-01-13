@@ -14,10 +14,9 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  isPlatform,
 } from "@ionic/react";
-import UserIcon from "components/userIcon/Component";
-import { home, menu, play, playForward } from "ionicons/icons";
+import { home, play, playForward } from "ionicons/icons";
+import Header from "pages/header/Page";
 import React, { memo, useMemo } from "react";
 
 type Props = {
@@ -25,25 +24,14 @@ type Props = {
 };
 
 export const Layout: React.FC<Props> = (props) => {
-  const menuBar = useMemo(() => {
-    return <MenuBar key="menuBar" />;
-  }, []);
   const player = useMemo(() => {
     return <Player key="player" />;
   }, []);
-  const headers = isPlatform("mobile") ? <></> : menuBar;
-  const footers = isPlatform("mobile") ? (
-    <>
-      {player}
-      {menuBar}
-    </>
-  ) : (
-    player
-  );
+  const footers = player;
 
   return (
     <IonPage>
-      <MemoizedHeader>{headers}</MemoizedHeader>
+      <Header />
       <IonContent scrollX={false} scrollY={false} className="ion-no-padding">
         {props.children}
       </IonContent>
@@ -52,33 +40,10 @@ export const Layout: React.FC<Props> = (props) => {
   );
 };
 
-const Header: React.FC<{ children: JSX.Element }> = ({ children }) => (
-  <IonHeader>{children}</IonHeader>
-);
-const MemoizedHeader = memo(Header);
-
 const Footer: React.FC<{ children: JSX.Element }> = ({ children }) => (
   <IonFooter>{children}</IonFooter>
 );
 const MemoizedFooter = memo(Footer);
-
-const MenuBar: React.FC = () => {
-  return (
-    <IonToolbar id="main-content">
-      <IonButtons slot="start">
-        <IonMenuToggle>
-          <IonButton>
-            <IonIcon slot="icon-only" icon={menu}></IonIcon>
-          </IonButton>
-        </IonMenuToggle>
-      </IonButtons>
-      <IonTitle>ゲーム音楽</IonTitle>
-      <IonButtons slot="end">
-        <UserIcon />
-      </IonButtons>
-    </IonToolbar>
-  );
-};
 
 export const MenuList = () => (
   <IonMenu content-id="main-content">
