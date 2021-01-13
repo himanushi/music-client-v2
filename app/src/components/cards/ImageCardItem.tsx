@@ -1,19 +1,19 @@
-import { IonCard, IonCardContent, IonText } from "@ionic/react";
+import { IonCardContent, IonText } from "@ionic/react";
 import { Maybe } from "graphql/types";
 import React from "react";
 
 const ImageCardItem = ({
   name,
-  url,
+  src,
   width,
 }: {
   name: string;
-  url?: Maybe<string>;
+  src?: Maybe<string>;
   width: number;
 }) => {
   return (
-    <IonCard style={{ width }}>
-      <img alt={name} style={{ width, height: width }} src={url || ""} />
+    <>
+      <img alt={name} style={{ width, height: width }} src={src || ""} />
       <IonCardContent style={{ padding: "5px 9px" }} className="ion-no-padding">
         <IonText>
           <p
@@ -28,7 +28,7 @@ const ImageCardItem = ({
           </p>
         </IonText>
       </IonCardContent>
-    </IonCard>
+    </>
   );
 };
 
