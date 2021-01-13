@@ -1,6 +1,6 @@
 import { BaseQueryOptions, DocumentNode, useQuery } from "@apollo/client";
 
-const useModels = <TData, TVariables>(
+const useModelsQuery = <TData, TVariables>(
   doc: DocumentNode,
   variables?: TVariables
 ) => {
@@ -8,4 +8,4 @@ const useModels = <TData, TVariables>(
   return result;
 };
 
-export default useModels;
+export default useModelsQuery;

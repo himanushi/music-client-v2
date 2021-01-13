@@ -1,5 +1,5 @@
 import { AlbumsQueryVariables } from "graphql/types";
-import useAlbums from "hooks/models/useAlbums";
+import useAlbumsQuery from "hooks/models/useAlbumsQuery";
 import useParameters from "hooks/util/useParameters";
 
 const limit = 50;
@@ -7,7 +7,7 @@ const limit = 50;
 const useController = () => {
   const params = useParameters<AlbumsQueryVariables>("album");
 
-  const { data, loading, error, fetchMore } = useAlbums({
+  const { data, loading, error, fetchMore } = useAlbumsQuery({
     variables: params,
     fetchPolicy: "cache-and-network",
   });

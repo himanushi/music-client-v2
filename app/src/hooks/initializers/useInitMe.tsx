@@ -1,9 +1,9 @@
-import useMe from "hooks/models/useMe";
+import useMeQuery from "hooks/models/useMeQuery";
 import { useLayoutEffect, useState } from "react";
 
 const useInitMe = () => {
   const [initialized, setInitialized] = useState(false);
-  const { data } = useMe();
+  const { data } = useMeQuery();
 
   useLayoutEffect(() => {
     if (data && data.me) {

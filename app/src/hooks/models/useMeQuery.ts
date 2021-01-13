@@ -1,6 +1,6 @@
 import { BaseQueryOptions } from "@apollo/client";
 import { CurrentUser, MeDocument, MeQueryVariables } from "graphql/types";
-import useModels from "hooks/models/useModels";
+import useModelsQuery from "hooks/models/useModelsQuery";
 
 export type TData = {
   me: CurrentUser;
@@ -8,6 +8,6 @@ export type TData = {
 
 export type TVariables = BaseQueryOptions<MeQueryVariables>;
 
-const useMe = () => useModels<TData, TVariables>(MeDocument);
+const useMeQuery = () => useModelsQuery<TData, TVariables>(MeDocument);
 
-export default useMe;
+export default useMeQuery;

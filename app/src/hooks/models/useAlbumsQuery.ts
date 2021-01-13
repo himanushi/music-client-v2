@@ -1,6 +1,6 @@
 import { BaseQueryOptions } from "@apollo/client";
 import { Album, AlbumsDocument, AlbumsQueryVariables } from "graphql/types";
-import useModels from "hooks/models/useModels";
+import useModelsQuery from "hooks/models/useModelsQuery";
 
 export type TData = {
   albums: Album[];
@@ -8,7 +8,7 @@ export type TData = {
 
 export type TVariables = BaseQueryOptions<AlbumsQueryVariables>;
 
-const useAlbums = (variables?: TVariables) =>
-  useModels<TData, TVariables>(AlbumsDocument, variables);
+const useAlbumsQuery = (variables?: TVariables) =>
+  useModelsQuery<TData, TVariables>(AlbumsDocument, variables);
 
-export default useAlbums;
+export default useAlbumsQuery;

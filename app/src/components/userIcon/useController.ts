@@ -1,7 +1,7 @@
-import useMe from "hooks/models/useMe";
+import useMeQuery from "hooks/models/useMeQuery";
 
 const useController = () => {
-  const { data, loading, error } = useMe();
+  const { data, loading, error } = useMeQuery();
 
   return { me: data?.me, loading, error };
 };
