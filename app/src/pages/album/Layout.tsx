@@ -21,7 +21,7 @@ const Item = React.memo((props: ItemProps) => {
   return (
     <ImageCard
       name={props.album.name}
-      src={props.album.artworkM.url}
+      src={props.album.artworkM.url as string | undefined}
       width={props.width}
     />
   );

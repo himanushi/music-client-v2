@@ -1,6 +1,5 @@
 import { IonCard } from "@ionic/react";
 import ImageCardItem from "components/cards/ImageCardItem";
-import { Maybe } from "graphql/types";
 import React from "react";
 
 const ImageCardLink = ({
@@ -10,7 +9,7 @@ const ImageCardLink = ({
   width,
 }: {
   name: string;
-  src?: Maybe<string>;
+  src?: string;
   link: string;
   width: number;
 }) => {

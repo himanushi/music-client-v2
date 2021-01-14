@@ -38,7 +38,7 @@ const Item = React.memo((props: ItemProps) => {
   return (
     <ImageCardLink
       name={props.album.name}
-      src={props.album.artworkM.url}
+      src={props.album.artworkM.url as string | undefined}
       width={props.width}
       link={`/albums/${props.album.id}`}
     />
