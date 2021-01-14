@@ -1,9 +1,9 @@
 import SearchBar from "components/searchBar/Component";
 import { MemoizedHeader, MenuBar, Title } from "pages/header/Layout";
 import useController from "pages/header/useController";
-import React from "react";
+import React, { memo } from "react";
 
-const Page: React.FC = () => {
+export const Header: React.FC = memo(() => {
   const { enableSearchBar } = useController();
 
   let searchBar = <></>;
@@ -19,6 +19,4 @@ const Page: React.FC = () => {
       {searchBar}
     </MemoizedHeader>
   );
-};
-
-export default Page;
+});

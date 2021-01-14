@@ -29,15 +29,13 @@ setupConfig({
   },
 });
 
-const Page: React.FC = () => {
+export const MainPage: React.FC = () => {
   return (
     <ApolloProvider client={client}>
       <InitPage />
     </ApolloProvider>
   );
 };
-
-export default Page;
 
 const InitPage: React.FC = () => {
   const { initialized } = useController();

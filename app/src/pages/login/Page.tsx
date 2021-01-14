@@ -4,7 +4,7 @@ import React from "react";
 
 import { Layout } from "./Layout";
 
-const Page: React.FC = React.memo(() => {
+export const LoginPage: React.FC = React.memo(() => {
   const { login, me, error } = useController();
   console.log({ me, error });
 
@@ -14,5 +14,3 @@ const Page: React.FC = React.memo(() => {
     </Main>
   );
 });
-
-export default Page;
