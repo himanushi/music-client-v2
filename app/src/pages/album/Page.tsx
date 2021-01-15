@@ -1,3 +1,4 @@
+import Component from "components/starButton/Component";
 import { Layout } from "pages/album/Layout";
 import useController from "pages/album/useController";
 import { Error } from "pages/DefaultPage";
@@ -17,6 +18,8 @@ export const AlbumPage: React.FC<
   } else if (album) {
     page = <Layout album={album} />;
   }
+
+  page = <Component id={""} active={true} />;
 
   return <MainLayout>{page}</MainLayout>;
 });
