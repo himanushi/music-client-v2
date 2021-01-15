@@ -1,5 +1,5 @@
 import { IonCard } from "@ionic/react";
-import ImageCardItem from "components/cards/ImageCardItem";
+import SquareImage from "components/SquareImage";
 import React from "react";
 
 const ImageCard = ({
@@ -12,8 +12,8 @@ const ImageCard = ({
   width: number;
 }) => {
   return (
-    <IonCard style={{ width }}>
-      <ImageCardItem name={name} src={src} width={width} />
+    <IonCard style={{ width, height: width }}>
+      <SquareImage name={name} src={src} width={width} />
     </IonCard>
   );
 };
