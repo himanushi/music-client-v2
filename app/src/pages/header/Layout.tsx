@@ -7,6 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import UserIcon from "components/userIcon/Component";
 import { menu } from "ionicons/icons";
 import React, { memo } from "react";
 
@@ -29,7 +30,10 @@ export const MenuBar: React.FC<Props> = (props) => {
           </IonButton>
         </IonMenuToggle>
       </IonButtons>
-      {props.children}
+      <Title />
+      <IonButtons slot="end">
+        <UserIcon />
+      </IonButtons>
     </IonToolbar>
   );
 };
