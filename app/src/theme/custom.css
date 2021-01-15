@@ -16,3 +16,8 @@
   --ion-color-shade: var(--ion-color-main-shade);
   --ion-color-tint: var(--ion-color-main-tint);
 }
+
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+}

@@ -1,6 +1,7 @@
-import { IonCard } from "@ionic/react";
+import { IonCard, IonRippleEffect } from "@ionic/react";
 import ImageCardItem from "components/cards/ImageCardItem";
 import React from "react";
+import { useHistory } from "react-router";
 
 const ImageCardLink = ({
   name,
@@ -13,9 +14,16 @@ const ImageCardLink = ({
   link: string;
   width: number;
 }) => {
+  const history = useHistory();
+
   return (
-    <IonCard button routerLink={link} style={{ width }}>
+    <IonCard
+      className="ion-activatable ripple-parent"
+      onClick={() => history.push(link)}
+      style={{ width }}
+    >
       <ImageCardItem name={name} src={src} width={width} />
+      <IonRippleEffect></IonRippleEffect>
     </IonCard>
   );
 };
