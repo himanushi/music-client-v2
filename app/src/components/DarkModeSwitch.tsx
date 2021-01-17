@@ -5,7 +5,7 @@ import React from "react";
 
 const MemoDarkModeSwitch = React.memo(
   (props: { onClick: () => void; icon: string }) => (
-    <IonButton onClick={props.onClick}>
+    <IonButton fill="clear" onClick={props.onClick}>
       <IonIcon slot="icon-only" icon={props.icon}></IonIcon>
     </IonButton>
   )
