@@ -1,9 +1,9 @@
-import useAlbumsQuery from "hooks/models/useAlbumsQuery";
+import useArtistsQuery from "hooks/models/useArtistsQuery";
 
 const limit = 50;
 
 const useController = () => {
-  const { data, loading, error, fetchMore } = useAlbumsQuery({
+  const { data, loading, error, fetchMore } = useArtistsQuery({
     variables: { cursor: { limit } },
     fetchPolicy: "cache-and-network",
   });
@@ -11,7 +11,7 @@ const useController = () => {
   const isLoaded = () => false;
 
   return {
-    albums: data?.albums,
+    artists: data?.artists,
     loading,
     error,
     loadMore: buildLoadMore(fetchMore),

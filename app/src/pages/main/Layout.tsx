@@ -57,6 +57,10 @@ export const MenuList = () => (
       <IonList>
         <IonListHeader>検索</IonListHeader>
         <IonMenuToggle auto-hide="false">
+          <IonItem button routerLink="/artists">
+            <IonIcon slot="start" icon={home}></IonIcon>
+            <IonLabel>アーティスト</IonLabel>
+          </IonItem>
           <IonItem button routerLink="/albums">
             <IonIcon slot="start" icon={home}></IonIcon>
             <IonLabel>アルバム</IonLabel>
