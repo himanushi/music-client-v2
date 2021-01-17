@@ -20,17 +20,15 @@ type Props = {
 export const Layout: React.FC<Props> = ({ album }) => {
   const windowWidth = useWindowWidth();
   const maxWidth = windowWidth > 700 ? 700 : windowWidth;
-  const image = <Image album={album} width={300} />;
-  const tracks = album.tracks.map((track, i) => (
-    <TrackItem key={i} track={track} />
-  ));
 
   return (
     <IonGrid>
+      {/* album image */}
       <IonRow className="ion-justify-content-center ion-no-padding">
-        {image}
+        <Image album={album} width={300} />
       </IonRow>
 
+      {/* album info */}
       <IonRow className="ion-align-items-end ion-justify-content-center">
         <IonLabel>{album.name}</IonLabel>
       </IonRow>
@@ -41,8 +39,13 @@ export const Layout: React.FC<Props> = ({ album }) => {
         </IonLabel>
       </IonRow>
 
+      {/* tracks */}
       <IonRow className="ion-justify-content-center ion-no-padding">
-        <IonList style={{ width: maxWidth }}>{tracks}</IonList>
+        <IonList style={{ width: maxWidth }}>
+          {album.tracks.map((track, i) => (
+            <TrackItem key={i} track={track} />
+          ))}
+        </IonList>
       </IonRow>
     </IonGrid>
   );
