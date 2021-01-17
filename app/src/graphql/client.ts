@@ -25,6 +25,7 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         albums: offsetLimitPagination,
+        artists: offsetLimitPagination,
       },
     },
   },
