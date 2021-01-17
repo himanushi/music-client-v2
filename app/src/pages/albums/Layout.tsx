@@ -1,4 +1,3 @@
-import { IonContent } from "@ionic/react";
 import ImageCardLink from "components/cards/ImageCardLink";
 import InfiniteList, { isLoaded, loadMore } from "components/InfiniteList";
 import { Album } from "graphql/types";
@@ -17,15 +16,13 @@ export const Layout: React.FC<Props> = ({ albums, loadMore, isLoaded }) => {
   const items = albums.map((album) => <Item album={album} width={cardWidth} />);
 
   return (
-    <IonContent className="ion-no-padding">
-      <InfiniteList
-        items={items}
-        itemWidth={parentWidth}
-        itemHeight={cardHeight}
-        loadMore={loadMore}
-        isLoaded={isLoaded}
-      />
-    </IonContent>
+    <InfiniteList
+      items={items}
+      itemWidth={parentWidth}
+      itemHeight={cardHeight}
+      loadMore={loadMore}
+      isLoaded={isLoaded}
+    />
   );
 };
 
