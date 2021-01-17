@@ -1,4 +1,4 @@
-import Component from "components/starButton/Component";
+import { IonContent } from "@ionic/react";
 import { Layout } from "pages/album/Layout";
 import useController from "pages/album/useController";
 import { Error } from "pages/DefaultPage";
@@ -19,7 +19,9 @@ export const AlbumPage: React.FC<
     page = <Layout album={album} />;
   }
 
-  page = <Component id={""} active={true} />;
-
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      <IonContent className="ion-no-padding">{page}</IonContent>
+    </MainLayout>
+  );
 });
