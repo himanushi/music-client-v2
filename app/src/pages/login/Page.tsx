@@ -5,8 +5,7 @@ import React from "react";
 import { Layout } from "./Layout";
 
 export const LoginPage: React.FC = React.memo(() => {
-  const { login, me, error } = useController();
-  console.log({ me, error });
+  const { login, error } = useController();
 
   return (
     <Main>

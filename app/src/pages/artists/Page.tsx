@@ -7,8 +7,6 @@ import React from "react";
 export const ArtistsPage: React.FC = () => {
   const { artists, error, loadMore, isLoaded } = useController();
 
-  console.log({ artists });
-
   let page: JSX.Element = <></>;
   if (error) {
     page = <Error message={error.message} />;
