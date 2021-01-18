@@ -1,4 +1,4 @@
-import { Layout } from "pages/albums/Layout";
+import { Layout, SearchBar } from "pages/albums/Layout";
 import useController from "pages/albums/useController";
 import { Error } from "pages/DefaultPage";
 import { Layout as MainLayout } from "pages/main/Layout";
@@ -14,5 +14,5 @@ export const AlbumsPage: React.FC = () => {
     page = <Layout albums={albums} loadMore={loadMore} hasNext={hasNext} />;
   }
 
-  return <MainLayout>{page}</MainLayout>;
+  return <MainLayout header={<SearchBar />}>{page}</MainLayout>;
 };

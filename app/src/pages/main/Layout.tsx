@@ -20,6 +20,7 @@ import { Header } from "pages/header/Page";
 import React, { memo, useMemo } from "react";
 
 type Props = {
+  header?: JSX.Element;
   children?: React.ReactNode;
 };
 
@@ -31,7 +32,7 @@ export const Layout: React.FC<Props> = (props) => {
 
   return (
     <IonPage>
-      <Header />
+      <Header>{props.header}</Header>
       <IonContent scrollX={false} scrollY={false} className="ion-no-padding">
         {props.children}
       </IonContent>

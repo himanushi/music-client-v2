@@ -1,8 +1,9 @@
+import { IonContent, IonSearchbar, IonToolbar } from "@ionic/react";
 import ImageCardLink from "components/cards/ImageCardLink";
 import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
 import { Album } from "graphql/types";
 import useCardImageItemSize from "hooks/layouts/useCardImageItemSize";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {
   albums: Album[];
@@ -23,6 +24,20 @@ export const Layout: React.FC<Props> = ({ albums, loadMore, hasNext }) => {
       loadMore={loadMore}
       hasNext={hasNext}
     />
+  );
+};
+
+export const SearchBar = () => {
+  const [searchText, setSearchText] = useState("");
+  return (
+    <IonToolbar>
+      <IonSearchbar
+        value={searchText}
+        onIonChange={(e) => setSearchText(e.detail.value!)}
+        cancelButtonText="キャンセル"
+        placeholder="アルバム検索"
+      ></IonSearchbar>
+    </IonToolbar>
   );
 };
 
