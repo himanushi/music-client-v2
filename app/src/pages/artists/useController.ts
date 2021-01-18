@@ -8,14 +8,14 @@ const useController = () => {
     fetchPolicy: "cache-and-network",
   });
 
-  const isLoaded = () => false;
+  const hasNext = () => true;
 
   return {
     artists: data?.artists,
     loading,
     error,
     loadMore: buildLoadMore(fetchMore),
-    isLoaded,
+    hasNext,
   };
 };
 

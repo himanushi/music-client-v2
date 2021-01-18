@@ -1,5 +1,5 @@
 import ImageCardLink from "components/cards/ImageCardLink";
-import InfiniteList, { isLoaded, loadMore } from "components/InfiniteList";
+import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
 import { Artist } from "graphql/types";
 import useCardItemSize from "hooks/layouts/useCardItemSize";
 import React from "react";
@@ -7,10 +7,10 @@ import React from "react";
 type Props = {
   artists: Artist[];
   loadMore: loadMore;
-  isLoaded: isLoaded;
+  hasNext: hasNext;
 };
 
-export const Layout: React.FC<Props> = ({ artists, loadMore, isLoaded }) => {
+export const Layout: React.FC<Props> = ({ artists, loadMore, hasNext }) => {
   const { cardWidth, cardHeight, parentWidth } = useCardItemSize();
 
   const items = artists.map((artist) => (
@@ -23,7 +23,7 @@ export const Layout: React.FC<Props> = ({ artists, loadMore, isLoaded }) => {
       itemWidth={parentWidth}
       itemHeight={cardHeight}
       loadMore={loadMore}
-      isLoaded={isLoaded}
+      hasNext={hasNext}
     />
   );
 };

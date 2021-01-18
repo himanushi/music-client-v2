@@ -10,20 +10,20 @@ export type loadMore = (
   itemCount: number
 ) => Promise<any>;
 
-export type isLoaded = () => boolean;
+export type hasNext = () => boolean;
 
 const InfiniteList = ({
   items,
   itemWidth,
   itemHeight,
   loadMore,
-  isLoaded,
+  hasNext,
 }: {
   items: any[];
   itemWidth: number;
   itemHeight: number;
   loadMore: loadMore;
-  isLoaded: isLoaded;
+  hasNext: hasNext;
 }) => {
   const rows = useAutoFixedRows({ items, itemWidth });
 
@@ -31,7 +31,7 @@ const InfiniteList = ({
     <AutoSizer>
       {({ height, width }) => (
         <InfiniteLoader
-          isItemLoaded={() => isLoaded()}
+          isItemLoaded={() => !hasNext()}
           itemCount={rows.length + 1}
           loadMoreItems={(_startIndex: number, stopIndex: number) =>
             loadMore(stopIndex, rows.length, items.length)
