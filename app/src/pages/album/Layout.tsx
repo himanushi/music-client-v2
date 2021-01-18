@@ -1,5 +1,6 @@
 import {
   IonButton,
+  IonCard,
   IonGrid,
   IonIcon,
   IonItem,
@@ -58,10 +59,12 @@ export const Loading: React.FC = () => {
     <IonGrid>
       {/* album image */}
       <IonRow className="ion-justify-content-center ion-no-padding">
-        <IonSkeletonText
-          animated={true}
-          style={{ width: imageCardWidth, height: imageCardWidth }}
-        />
+        <IonCard>
+          <IonSkeletonText
+            animated={true}
+            style={{ width: imageCardWidth, height: imageCardWidth }}
+          />
+        </IonCard>
       </IonRow>
 
       {/* album info */}
