@@ -14,7 +14,7 @@
 
   "files.autoSave": "onFocusChange",
 
-  "cSpell.words": ["browserslist", "ionicons"],
+  "cSpell.words": ["browserslist", "ionicons", "xstate"],
   "cSpell.allowCompoundWords": true,
   "cSpell.ignoreRegExpList": ["[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"]
 }
