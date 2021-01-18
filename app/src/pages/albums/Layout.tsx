@@ -1,9 +1,11 @@
-import { IonSearchbar, IonToolbar } from "@ionic/react";
+import { IonButton, IonIcon, IonSearchbar, IonToolbar } from "@ionic/react";
 import ImageCardLink from "components/cards/ImageCardLink";
 import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
 import { Album } from "graphql/types";
 import useCardImageItemSize from "hooks/layouts/useCardImageItemSize";
+import { ellipsisVertical } from "ionicons/icons";
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 
 type Props = {
   albums: Album[];
@@ -28,15 +30,28 @@ export const Layout: React.FC<Props> = ({ albums, loadMore, hasNext }) => {
 };
 
 export const SearchBar = () => {
+  const history = useHistory();
   const [searchText, setSearchText] = useState("");
+
+  const onKeyUp = (event: React.KeyboardEvent<HTMLIonSearchbarElement>) => {
+    if (event.key === "Enter") {
+      history.push(`/albums?bq=${searchText}`);
+    }
+  };
+
   return (
     <IonToolbar>
       <IonSearchbar
         value={searchText}
         onIonChange={(e) => setSearchText(e.detail.value!)}
-        cancelButtonText="キャンセル"
+        onKeyUp={onKeyUp}
         placeholder="アルバム検索"
-      ></IonSearchbar>
+        enterkeyhint="enter"
+        slot="start"
+      />
+      <IonButton fill="clear" slot="end">
+        <IonIcon icon={ellipsisVertical} />
+      </IonButton>
     </IonToolbar>
   );
 };
