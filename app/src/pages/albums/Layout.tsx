@@ -1,4 +1,4 @@
-import { IonContent, IonSearchbar, IonToolbar } from "@ionic/react";
+import { IonSearchbar, IonToolbar } from "@ionic/react";
 import ImageCardLink from "components/cards/ImageCardLink";
 import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
 import { Album } from "graphql/types";
