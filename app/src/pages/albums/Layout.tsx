@@ -1,7 +1,7 @@
 import ImageCardLink from "components/cards/ImageCardLink";
 import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
 import { Album } from "graphql/types";
-import useCardItemSize from "hooks/layouts/useCardItemSize";
+import useCardImageItemSize from "hooks/layouts/useCardImageItemSize";
 import React from "react";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const Layout: React.FC<Props> = ({ albums, loadMore, hasNext }) => {
-  const { cardWidth, cardHeight, parentWidth } = useCardItemSize();
+  const { cardWidth, cardHeight, parentWidth } = useCardImageItemSize();
 
   const items = albums.map((album) => <Item album={album} width={cardWidth} />);
 

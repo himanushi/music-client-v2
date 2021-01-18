@@ -6,10 +6,11 @@ import {
   IonLabel,
   IonList,
   IonRow,
+  IonSkeletonText,
 } from "@ionic/react";
-import { useWindowWidth } from "@react-hook/window-size";
 import ImageCard from "components/cards/ImageCard";
 import { Album, Track } from "graphql/types";
+import useDetailPageSize from "hooks/layouts/useDetailPageSize";
 import { ellipsisVertical, play } from "ionicons/icons";
 import React from "react";
 
@@ -18,14 +19,13 @@ type Props = {
 };
 
 export const Layout: React.FC<Props> = ({ album }) => {
-  const windowWidth = useWindowWidth();
-  const maxWidth = windowWidth > 700 ? 700 : windowWidth;
+  const { contentMaxWidth, imageCardWidth } = useDetailPageSize();
 
   return (
     <IonGrid>
       {/* album image */}
       <IonRow className="ion-justify-content-center ion-no-padding">
-        <Image album={album} width={300} />
+        <Image album={album} width={imageCardWidth} />
       </IonRow>
 
       {/* album info */}
@@ -41,9 +41,45 @@ export const Layout: React.FC<Props> = ({ album }) => {
 
       {/* tracks */}
       <IonRow className="ion-justify-content-center ion-no-padding">
-        <IonList style={{ width: maxWidth }}>
+        <IonList style={{ width: contentMaxWidth }}>
           {album.tracks.map((track, i) => (
             <TrackItem key={i} track={track} />
+          ))}
+        </IonList>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
+export const Loading: React.FC = () => {
+  const { contentMaxWidth, imageCardWidth } = useDetailPageSize();
+
+  return (
+    <IonGrid>
+      {/* album image */}
+      <IonRow className="ion-justify-content-center ion-no-padding">
+        <IonSkeletonText
+          animated={true}
+          style={{ width: imageCardWidth, height: imageCardWidth }}
+        />
+      </IonRow>
+
+      {/* album info */}
+      <IonRow className="ion-align-items-end ion-justify-content-center">
+        <IonSkeletonText animated={true} style={{ width: imageCardWidth }} />
+      </IonRow>
+
+      <IonRow className="ion-justify-content-center">
+        <IonSkeletonText animated={true} style={{ width: imageCardWidth }} />
+      </IonRow>
+
+      {/* tracks */}
+      <IonRow className="ion-justify-content-center ion-no-padding">
+        <IonList style={{ width: contentMaxWidth }}>
+          {[...Array(10)].map((_, i) => (
+            <IonItem key={i}>
+              <IonSkeletonText animated={true} />
+            </IonItem>
           ))}
         </IonList>
       </IonRow>
