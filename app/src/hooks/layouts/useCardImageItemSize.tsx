@@ -1,6 +1,6 @@
 import { useWindowWidth } from "@react-hook/window-size";
 
-const useCardItemSize = () => {
+const useCardImageItemSize = () => {
   const windowWidth = useWindowWidth();
   const cardWidth = windowWidth > 360 ? 150 : 120;
   const parentWidth = cardWidth + 23;
@@ -9,4 +9,4 @@ const useCardItemSize = () => {
   return { cardWidth, parentWidth, cardHeight };
 };
 
-export default useCardItemSize;
+export default useCardImageItemSize;
