@@ -15,11 +15,22 @@ const headersLink = new ApolloLink((operation, forward) => forward(operation));
 const link = ApolloLink.from([headersLink, httpLink]);
 
 const offsetLimitPagination = {
-  keyArgs: ["id"],
-  merge(existing = [], incoming = []) {
+  keyArgs: [],
+  merge(existing = [], incoming = [], _args: any) {
+    // const args = _args as {
+    //   variables: { cursor?: { offset?: number } };
+    // };
+
+    // console.log(_args);
+
+    // if (args.variables.cursor?.offset === 0) {
+    //   return incoming;
+    // } else {
     return [...existing, ...incoming];
+    // }
   },
 };
+
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
