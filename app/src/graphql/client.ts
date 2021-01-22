@@ -17,17 +17,14 @@ const link = ApolloLink.from([headersLink, httpLink]);
 const offsetLimitPagination = {
   keyArgs: [],
   merge(existing = [], incoming = [], _args: any) {
-    // const args = _args as {
-    //   variables: { cursor?: { offset?: number } };
-    // };
-
-    // console.log(_args);
-
-    // if (args.variables.cursor?.offset === 0) {
-    //   return incoming;
-    // } else {
-    return [...existing, ...incoming];
-    // }
+    const args = _args as {
+      variables: { cursor?: { limit?: number; offset?: number } };
+    };
+    if (args.variables.cursor?.offset === 0) {
+      return incoming;
+    } else {
+      return [...existing, ...incoming];
+    }
   },
 };
 
