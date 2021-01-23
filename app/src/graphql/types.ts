@@ -88,6 +88,21 @@ export type AlbumsConditionsInputObject = {
   readonly favorite?: Maybe<Scalars["Boolean"]>;
 };
 
+export type AlbumsCountConditionsInputObject = {
+  /** ユーザー名 */
+  readonly usernames?: Maybe<ReadonlyArray<Scalars["String"]>>;
+  /** アーティストID */
+  readonly artists?: Maybe<IdInputObject>;
+  /** トラックID */
+  readonly tracks?: Maybe<IdInputObject>;
+  /** アルバム名(あいまい検索) */
+  readonly name?: Maybe<Scalars["String"]>;
+  /** 表示ステータス */
+  readonly status?: Maybe<ReadonlyArray<StatusEnum>>;
+  /** お気に入り */
+  readonly favorite?: Maybe<Scalars["Boolean"]>;
+};
+
 export type AlbumsQueryOrderEnum =
   /** 追加順 */
   | "NEW"
@@ -677,6 +692,8 @@ export type Query = {
   readonly album?: Maybe<Album>;
   /** アルバム一覧取得 */
   readonly albums: ReadonlyArray<Album>;
+  /** アルバム件数取得 */
+  readonly albumsCount: Scalars["Int"];
   /** Apple Music Token */
   readonly appleMusicToken: Scalars["String"];
   /** アーティスト取得 */
@@ -707,6 +724,10 @@ export type Query_AlbumsArgs = {
   cursor?: Maybe<CursorInputObject>;
   sort?: Maybe<AlbumsSortInputObject>;
   conditions?: Maybe<AlbumsConditionsInputObject>;
+};
+
+export type Query_AlbumsCountArgs = {
+  conditions?: Maybe<AlbumsCountConditionsInputObject>;
 };
 
 export type Query_ArtistArgs = {
@@ -1142,6 +1163,12 @@ export type AlbumsQuery = {
     }
   >;
 };
+
+export type AlbumsCountQueryVariables = Exact<{
+  conditions?: Maybe<AlbumsCountConditionsInputObject>;
+}>;
+
+export type AlbumsCountQuery = Pick<Query, "albumsCount">;
 
 export type ArtistQueryVariables = Exact<{
   id: Scalars["TTID"];
@@ -1665,6 +1692,51 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
                 },
               ],
             },
+          },
+        ],
+      },
+    },
+  ],
+};
+export const AlbumsCountDocument: DocumentNode<
+  AlbumsCountQuery,
+  AlbumsCountQueryVariables
+> = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AlbumsCount" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "conditions" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "AlbumsCountConditionsInputObject" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "albumsCount" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "conditions" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "conditions" },
+                },
+              },
+            ],
           },
         ],
       },

@@ -15,16 +15,9 @@ const headersLink = new ApolloLink((operation, forward) => forward(operation));
 const link = ApolloLink.from([headersLink, httpLink]);
 
 const offsetLimitPagination = {
-  keyArgs: [],
+  keyArgs: ["conditions"],
   merge(existing = [], incoming = [], _args: any) {
-    const args = _args as {
-      variables: { cursor?: { limit?: number; offset?: number } };
-    };
-    if (args.variables.cursor?.offset === 0) {
-      return incoming;
-    } else {
-      return [...existing, ...incoming];
-    }
+    return [...existing, ...incoming];
   },
 };
 
