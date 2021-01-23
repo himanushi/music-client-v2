@@ -29,13 +29,19 @@ export const Layout: React.FC<Props> = ({ albums, loadMore, hasNext }) => {
   );
 };
 
-export const SearchBar = () => {
+export const SearchBar = ({
+  setName,
+}: {
+  setName: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   const history = useHistory();
   const [searchText, setSearchText] = useState("");
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLIonSearchbarElement>) => {
     if (event.key === "Enter") {
-      history.push(`/albums?bq=${searchText}`);
+      const link = searchText === "" ? "/albums" : `/albums?bq=${searchText}`;
+      history.push(link);
+      setName(searchText);
     }
   };
 
