@@ -54,6 +54,7 @@ export const Layout: React.FC<Props> = ({ album }) => {
 
 export const Loading: React.FC = () => {
   const { contentMaxWidth, imageCardWidth } = useDetailPageSize();
+  const animated = false;
 
   return (
     <IonGrid>
@@ -61,7 +62,7 @@ export const Loading: React.FC = () => {
       <IonRow className="ion-justify-content-center ion-no-padding">
         <IonCard>
           <IonSkeletonText
-            animated={true}
+            animated={animated}
             style={{ width: imageCardWidth, height: imageCardWidth }}
           />
         </IonCard>
@@ -69,11 +70,17 @@ export const Loading: React.FC = () => {
 
       {/* album info */}
       <IonRow className="ion-align-items-end ion-justify-content-center">
-        <IonSkeletonText animated={true} style={{ width: imageCardWidth }} />
+        <IonSkeletonText
+          animated={animated}
+          style={{ width: imageCardWidth }}
+        />
       </IonRow>
 
       <IonRow className="ion-justify-content-center">
-        <IonSkeletonText animated={true} style={{ width: imageCardWidth }} />
+        <IonSkeletonText
+          animated={animated}
+          style={{ width: imageCardWidth }}
+        />
       </IonRow>
 
       {/* tracks */}
@@ -81,7 +88,7 @@ export const Loading: React.FC = () => {
         <IonList style={{ width: contentMaxWidth }}>
           {[...Array(10)].map((_, i) => (
             <IonItem key={i}>
-              <IonSkeletonText animated={true} />
+              <IonSkeletonText animated={animated} />
             </IonItem>
           ))}
         </IonList>
