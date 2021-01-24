@@ -7,7 +7,7 @@ type Props = {
 const useController = ({ id }: Props) => {
   const { data, loading, error } = useAlbumQuery({
     variables: { id },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
 
   return {
