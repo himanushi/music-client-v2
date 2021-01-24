@@ -1,16 +1,10 @@
 import { AlbumsQueryVariables } from "graphql/types";
 import useAlbumsCountQuery from "hooks/models/useAlbumsCountQuery";
 import useAlbumsQuery from "hooks/models/useAlbumsQuery";
-import useParameters from "hooks/util/useParameters";
 
 const limit = 50;
 
-const useController = () => {
-  const params = {
-    ...useParameters<AlbumsQueryVariables>("album"),
-    cursor: { limit, offset: 0 },
-  };
-
+const useController = (params: AlbumsQueryVariables) => {
   const albumQuery = useAlbumsQuery({
     variables: params,
     fetchPolicy: "cache-first",

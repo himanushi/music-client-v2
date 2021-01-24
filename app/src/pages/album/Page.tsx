@@ -6,9 +6,9 @@ import { Layout as MainLayout } from "pages/main/Layout";
 import React from "react";
 import { RouteComponentProps } from "react-router";
 
-export const AlbumPage: React.FC<
-  RouteComponentProps<{ id?: string }>
-> = React.memo((props) => {
+export const AlbumPage: React.FC<RouteComponentProps<{ id?: string }>> = (
+  props
+) => {
   const id = props.match.params.id as string;
   const { album, error } = useController({ id });
 
@@ -24,4 +24,4 @@ export const AlbumPage: React.FC<
       <IonContent className="ion-no-padding">{page}</IonContent>
     </MainLayout>
   );
-});
+};

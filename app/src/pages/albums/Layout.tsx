@@ -2,11 +2,10 @@ import { IonButton, IonIcon, IonSearchbar, IonToolbar } from "@ionic/react";
 import ImageCardLink from "components/cards/ImageCardLink";
 import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
 import { Album, AlbumsQueryVariables } from "graphql/types";
+import * as H from "history";
 import useCardImageItemSize from "hooks/layouts/useCardImageItemSize";
-import useParameters from "hooks/util/useParameters";
 import { ellipsisVertical } from "ionicons/icons";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 
 type Props = {
   albums: Album[];
@@ -30,9 +29,13 @@ export const Layout: React.FC<Props> = ({ albums, loadMore, hasNext }) => {
   );
 };
 
-export const SearchBar = () => {
-  const params = useParameters<AlbumsQueryVariables>("album");
-  const history = useHistory();
+export const SearchBar = ({
+  history,
+  params,
+}: {
+  history: H.History;
+  params: AlbumsQueryVariables;
+}) => {
   const [searchText, setSearchText] = useState(params.conditions?.name ?? "");
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLIonSearchbarElement>) => {

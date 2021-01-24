@@ -1,6 +1,5 @@
-import { isArray, isEqual, merge, mergeWith } from "lodash";
-import { useState } from "react";
-import { useLocation } from "react-router";
+import * as H from "history";
+import { isArray, merge, mergeWith } from "lodash";
 
 export const ParameterPrefixKeys = {
   artist: "a",
@@ -21,13 +20,15 @@ export const ParameterKeys = {
 
 export type ParameterPrefix = keyof typeof ParameterPrefixKeys;
 
-const initializeObject = {};
+const initialObject = {};
 
-export default function useParameters<T>(prefix: ParameterPrefix) {
-  const location = useLocation();
+export default function buildParameters<T>(
+  prefix: ParameterPrefix,
+  location: H.Location,
+  initialState: T | typeof initialObject = initialObject
+) {
   const params = new URLSearchParams(location.search);
   const prefixKey = ParameterPrefixKeys[prefix];
-  const [memoParams, setMemoParams] = useState<T | {}>(initializeObject);
 
   const getUniqueValues = (key: string): string[] => {
     const value = params.get(key);
@@ -50,7 +51,7 @@ export default function useParameters<T>(prefix: ParameterPrefix) {
     }
   };
 
-  let parameters = {};
+  let parameters = initialState;
   let conditions = {};
 
   // 並び順対象
@@ -115,10 +116,5 @@ export default function useParameters<T>(prefix: ParameterPrefix) {
     parameters = merge(parameters, { sort: { type: value } });
   });
 
-  if (memoParams === initializeObject || !isEqual(memoParams, parameters)) {
-    setMemoParams(parameters);
-    return parameters as T;
-  } else {
-    return memoParams as T;
-  }
+  return parameters as T;
 }
