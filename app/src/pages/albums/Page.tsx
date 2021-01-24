@@ -5,7 +5,7 @@ import { Layout as MainLayout } from "pages/main/Layout";
 import React from "react";
 
 export const AlbumsPage: React.FC = () => {
-  const { albums, error, loadMore, hasNext, setName } = useController();
+  const { albums, error, loadMore, hasNext } = useController();
 
   let page: JSX.Element = <></>;
   if (error) {
@@ -14,7 +14,5 @@ export const AlbumsPage: React.FC = () => {
     page = <Layout albums={albums} loadMore={loadMore} hasNext={hasNext} />;
   }
 
-  return (
-    <MainLayout header={<SearchBar setName={setName} />}>{page}</MainLayout>
-  );
+  return <MainLayout header={<SearchBar />}>{page}</MainLayout>;
 };

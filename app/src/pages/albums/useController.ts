@@ -1,23 +1,19 @@
-import { AlbumQueryVariables, AlbumsQueryVariables } from "graphql/types";
+import { AlbumsQueryVariables } from "graphql/types";
 import useAlbumsCountQuery from "hooks/models/useAlbumsCountQuery";
 import useAlbumsQuery from "hooks/models/useAlbumsQuery";
 import useParameters from "hooks/util/useParameters";
-import { useState } from "react";
 
 const limit = 50;
 
 const useController = () => {
-  // const params = useParameters<AlbumsQueryVariables>("album");
-  const [name, setName] = useState("");
-
   const params = {
-    conditions: { name },
-    cursor: { limit: 50, offset: 0 },
+    ...useParameters<AlbumsQueryVariables>("album"),
+    cursor: { limit, offset: 0 },
   };
 
   const albumQuery = useAlbumsQuery({
     variables: params,
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
 
   const albumCountQuery = useAlbumsCountQuery({
@@ -39,7 +35,6 @@ const useController = () => {
     error: albumQuery.error,
     loadMore: buildLoadMore(albumQuery.fetchMore),
     hasNext,
-    setName,
   };
 };
 
