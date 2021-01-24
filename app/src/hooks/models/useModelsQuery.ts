@@ -1,10 +1,13 @@
-import { BaseQueryOptions, DocumentNode, useQuery } from "@apollo/client";
+import { DocumentNode, QueryFunctionOptions, useQuery } from "@apollo/client";
 
 const useModelsQuery = <TData, TVariables>(
   doc: DocumentNode,
   variables?: TVariables
 ) => {
-  const result = useQuery<TData, BaseQueryOptions<TVariables>>(doc, variables);
+  const result = useQuery<TData, QueryFunctionOptions<TVariables>>(
+    doc,
+    variables
+  );
   return result;
 };
 
