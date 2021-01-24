@@ -24,7 +24,7 @@ const useController = (params: AlbumsQueryVariables) => {
   const hasNext = () => _hasNext;
 
   return {
-    albums: albumQuery.data?.albums,
+    albums: albumQuery.data?.albums || [],
     loading: albumQuery.loading || albumCountQuery.loading,
     error: albumQuery.error,
     loadMore: buildLoadMore(albumQuery.fetchMore),

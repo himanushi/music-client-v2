@@ -5,18 +5,18 @@ import useController from "pages/albums/useController";
 import { Error } from "pages/DefaultPage";
 import { Layout as MainLayout } from "pages/main/Layout";
 import React from "react";
-import { RouteComponentProps } from "react-router";
+import { useHistory, useLocation } from "react-router";
 
-export const AlbumsPage: React.FC<RouteComponentProps> = (props) => {
-  const params = buildParameters<AlbumsQueryVariables>(
-    "album",
-    props.location,
-    { conditions: {}, cursor: { limit: 50, offset: 0 } }
-  );
+export const AlbumsPage: React.FC = () => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const params = buildParameters<AlbumsQueryVariables>("album", location, {
+    conditions: {},
+    cursor: { limit: 50, offset: 0 },
+  });
 
   const { albums, error, loadMore, hasNext } = useController(params);
-
-  console.log({ props });
 
   let page: JSX.Element = <></>;
   if (error) {
@@ -26,8 +26,10 @@ export const AlbumsPage: React.FC<RouteComponentProps> = (props) => {
   }
 
   return (
-    <MainLayout header={<SearchBar history={props.history} params={params} />}>
+    <MainLayout header={<SearchBar history={history} params={params} />}>
       {page}
     </MainLayout>
   );
 };
+
+export const MemorizedAlbumsPage = React.memo(AlbumsPage);
