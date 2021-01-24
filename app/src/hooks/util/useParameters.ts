@@ -1,4 +1,5 @@
-import { isArray, merge, mergeWith } from "lodash";
+import { isArray, isEqual, merge, mergeWith } from "lodash";
+import { useState } from "react";
 import { useLocation } from "react-router";
 
 export const ParameterPrefixKeys = {
@@ -20,10 +21,13 @@ export const ParameterKeys = {
 
 export type ParameterPrefix = keyof typeof ParameterPrefixKeys;
 
+const initializeObject = {};
+
 export default function useParameters<T>(prefix: ParameterPrefix) {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const prefixKey = ParameterPrefixKeys[prefix];
+  const [memoParams, setMemoParams] = useState<T | {}>(initializeObject);
 
   const getUniqueValues = (key: string): string[] => {
     const value = params.get(key);
@@ -111,5 +115,10 @@ export default function useParameters<T>(prefix: ParameterPrefix) {
     parameters = merge(parameters, { sort: { type: value } });
   });
 
-  return parameters as T;
+  if (memoParams === initializeObject || !isEqual(memoParams, parameters)) {
+    setMemoParams(parameters);
+    return parameters as T;
+  } else {
+    return memoParams as T;
+  }
 }
