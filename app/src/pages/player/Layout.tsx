@@ -4,12 +4,9 @@ import {
   IonContent,
   IonFooter,
   IonGrid,
-  IonHeader,
   IonIcon,
   IonModal,
   IonRow,
-  IonTextarea,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import ImageCard from "components/cards/ImageCard";
