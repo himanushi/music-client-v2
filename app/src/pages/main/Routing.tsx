@@ -15,9 +15,9 @@ const Routing: React.FC = () => {
     <IonReactRouter>
       <MenuList />
       <IonRouterOutlet>
-        <Route path="/artists/:id" component={ArtistPage} />
+        <Route exact path="/artists/:id" component={ArtistPage} />
         <Route exact path="/artists" component={ArtistsPage} />
-        <Route path="/albums/:id" component={AlbumPage} />
+        <Route exact path="/albums/:id" component={AlbumPage} />
         <Route exact path="/albums" render={() => <MemorizedAlbumsPage />} />
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/" render={() => <Redirect to="/albums" />} />

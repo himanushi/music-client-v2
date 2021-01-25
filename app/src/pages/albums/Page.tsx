@@ -16,7 +16,10 @@ export const AlbumsPage: React.FC = () => {
     cursor: { limit: 50, offset: 0 },
   });
 
-  const { albums, error, loadMore, hasNext } = useController(params);
+  // 不要な render が実行された場合は query を実行しない
+  // https://github.com/ionic-team/ionic-framework/issues/21635
+  const skip = location.pathname !== "/albums";
+  const { albums, error, loadMore, hasNext } = useController(params, skip);
 
   let page: JSX.Element = <></>;
   if (error) {
