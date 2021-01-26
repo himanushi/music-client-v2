@@ -1,9 +1,5 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  InMemoryCache,
-} from "@apollo/client/core";
+import { ApolloClient, ApolloLink, HttpLink } from "@apollo/client/core";
+import { cache } from "graphql/cache";
 
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URI,
@@ -13,23 +9,5 @@ const httpLink = new HttpLink({
 const headersLink = new ApolloLink((operation, forward) => forward(operation));
 
 const link = ApolloLink.from([headersLink, httpLink]);
-
-const offsetLimitPagination = {
-  keyArgs: ["conditions"],
-  merge(existing = [], incoming = [], _args: any) {
-    return [...existing, ...incoming];
-  },
-};
-
-const cache = new InMemoryCache({
-  typePolicies: {
-    Query: {
-      fields: {
-        albums: offsetLimitPagination,
-        artists: offsetLimitPagination,
-      },
-    },
-  },
-});
 
 export default new ApolloClient({ link, cache });
