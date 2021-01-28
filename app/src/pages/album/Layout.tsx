@@ -13,11 +13,16 @@ import ImageCard from "components/cards/ImageCard";
 import { Album, Track } from "graphql/types";
 import useDetailPageSize from "hooks/layouts/useDetailPageSize";
 import { ellipsisVertical, play } from "ionicons/icons";
+import { PlayerMachine } from "machines/PlayerMachine";
 import React from "react";
+import { interpret } from "xstate";
 
 type Props = {
   album: Album;
 };
+
+const service = interpret(PlayerMachine, { devTools: true });
+service.start();
 
 export const Layout: React.FC<Props> = ({ album }) => {
   const { contentMaxWidth, imageCardWidth } = useDetailPageSize();
@@ -44,7 +49,15 @@ export const Layout: React.FC<Props> = ({ album }) => {
       <IonRow className="ion-justify-content-center ion-no-padding">
         <IonList style={{ width: contentMaxWidth }}>
           {album.tracks.map((track, i) => (
-            <TrackItem key={i} track={track} />
+            <TrackItem
+              key={i}
+              track={track}
+              onClick={() => {
+                service.send([
+                  { type: "REPLACE", tracks: album.tracks as Track[] },
+                ]);
+              }}
+            />
           ))}
         </IonList>
       </IonRow>
@@ -107,10 +120,10 @@ const Image = (props: { album: Album; width: number }) => {
   );
 };
 
-const TrackItem = (props: { track: Track }) => {
+const TrackItem = (props: { track: Track; onClick: any }) => {
   return (
     <IonItem>
-      <IonButton fill="clear">
+      <IonButton fill="clear" onClick={props.onClick}>
         <IonIcon slot="icon-only" size="small" icon={play} />
       </IonButton>
 

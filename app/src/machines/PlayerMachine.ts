@@ -1,44 +1,78 @@
+import { inspect } from "@xstate/inspect";
 import { Track } from "graphql/types";
-import { Machine } from "xstate";
+import { Machine, assign } from "xstate";
 
 type PlayerContext = {
-  track?: Track;
+  currentPlaybackNo: number;
+  tracks: Track[];
+  repeat: boolean;
 };
 
 type PlayerStateSchema = {
   states: {
-    none: {};
+    loading: {};
     playing: {};
     paused: {};
     stopped: {};
+    finished: {};
   };
 };
 
 export type PlayerStateEvent =
+  // Queue
+  | { type: "REPLACE"; tracks: Track[] }
+  | { type: "SHUFFLE" }
+  // Player
   | { type: "PLAY" }
+  | { type: "NEXT" }
+  | { type: "PREVIOUS" }
   | { type: "PAUSE" }
-  | { type: "STOP" };
+  | { type: "STOP" }
+  | { type: "SEEK" }
+  | { type: "REPEAT" };
 
 export const PlayerMachine = Machine<
   PlayerContext,
   PlayerStateSchema,
   PlayerStateEvent
->({
-  id: "player",
-  initial: "none",
-  states: {
-    none: {
-      on: { PLAY: "playing" },
+>(
+  {
+    id: "player",
+    initial: "stopped",
+    context: {
+      currentPlaybackNo: 0,
+      tracks: [],
+      repeat: false,
     },
-    playing: {
-      on: { PAUSE: "paused", STOP: "stopped" },
+    states: {
+      loading: {
+        entry: () => console.log("entry loading"),
+      },
+      playing: {
+        on: { PAUSE: "paused", STOP: "stopped" },
+      },
+      paused: {
+        on: { PLAY: "playing" },
+      },
+      stopped: {
+        on: { PLAY: { target: "loading", actions: ["play"] } },
+      },
+      finished: {
+        type: "final",
+      },
     },
-    paused: {
-      on: { PLAY: "playing" },
-    },
-    stopped: {
-      type: "final",
-      on: { PLAY: "playing" },
+    on: {
+      REPLACE: { actions: ["stop", "replace"], target: "playing" },
     },
   },
-});
+  {
+    actions: {
+      replace: assign({
+        tracks: (_, event) => (event.type === "REPLACE" ? event.tracks : []),
+      }),
+      stop: () => console.log("stop"),
+    },
+  }
+);
+
+inspect({ iframe: false });
