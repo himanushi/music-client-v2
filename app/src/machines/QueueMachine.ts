@@ -1,24 +1,24 @@
 import { Track } from "graphql/types";
 import { Machine } from "xstate";
 
-type PlayerQueueContext = {
+type QueueContext = {
   items: Track[];
 };
 
-type PlayerQueueStateSchema = {
+type QueueStateSchema = {
   states: {
     active: {};
   };
 };
 
-export type PlayerQueueStateEvent =
+export type QueueStateEvent =
   | { type: "ADD_ITEMS" }
   | { type: "ALL_REPLACE_ITEMS" };
 
-export const PlayerMachine = Machine<
-  PlayerQueueContext,
-  PlayerQueueStateSchema,
-  PlayerQueueStateEvent
+export const QueueMachine = Machine<
+  QueueContext,
+  QueueStateSchema,
+  QueueStateEvent
 >({
   id: "queue",
   initial: "active",
