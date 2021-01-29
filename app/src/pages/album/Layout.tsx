@@ -9,23 +9,21 @@ import {
   IonRow,
   IonSkeletonText,
 } from "@ionic/react";
+import { useService } from "@xstate/react";
 import ImageCard from "components/cards/ImageCard";
 import { Album, Track } from "graphql/types";
 import useDetailPageSize from "hooks/layouts/useDetailPageSize";
 import { ellipsisVertical, play } from "ionicons/icons";
-import { PlayerMachine } from "machines/PlayerMachine";
+import { playerService } from "machines/PlayerMachine";
 import React from "react";
-import { interpret } from "xstate";
 
 type Props = {
   album: Album;
 };
 
-const service = interpret(PlayerMachine, { devTools: true });
-service.start();
-
 export const Layout: React.FC<Props> = ({ album }) => {
   const { contentMaxWidth, imageCardWidth } = useDetailPageSize();
+  const [, send] = useService(playerService);
 
   return (
     <IonGrid>
@@ -53,9 +51,11 @@ export const Layout: React.FC<Props> = ({ album }) => {
               key={i}
               track={track}
               onClick={() => {
-                service.send([
-                  { type: "REPLACE", tracks: album.tracks as Track[] },
-                ]);
+                send({
+                  type: "REPLACE_AND_PLAY",
+                  tracks: album.tracks as Track[],
+                  currentPlaybackNo: i,
+                });
               }}
             />
           ))}
