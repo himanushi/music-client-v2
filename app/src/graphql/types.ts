@@ -1134,6 +1134,7 @@ export type AlbumQuery = {
           | "previewUrl"
           | "popularity"
         > & {
+          readonly artworkL: Pick<Artwork, "url" | "width" | "height">;
           readonly artworkM: Pick<Artwork, "url" | "width" | "height">;
           readonly appleMusicTracks?: Maybe<
             ReadonlyArray<Pick<AppleMusicTrack, "id" | "name" | "appleMusicId">>
@@ -1493,6 +1494,27 @@ export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "popularity" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "artworkL" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "url" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "width" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "height" },
+                            },
+                          ],
+                        },
                       },
                       {
                         kind: "Field",
