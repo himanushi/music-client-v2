@@ -1,7 +1,8 @@
 import { InMemoryCache, makeVar } from "@apollo/client";
 import { Track } from "graphql/types";
 
-export const queueTracksVar = makeVar<readonly Track[]>([]);
+export const queueItemsVar = makeVar<readonly Track[]>([]);
+export const playbackNoVar = makeVar<number>(0);
 
 const offsetLimitPagination = {
   keyArgs: ["conditions"],
@@ -18,7 +19,7 @@ export const cache = new InMemoryCache({
         artists: offsetLimitPagination,
         queueItems: {
           read() {
-            return queueTracksVar();
+            return queueItemsVar();
           },
         },
       },
