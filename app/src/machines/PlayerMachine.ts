@@ -1,12 +1,31 @@
 import { inspect } from "@xstate/inspect";
 import { Track } from "graphql/types";
-import { Machine, State, assign, interpret, send } from "xstate";
+import {
+  PreviewPlayerContext,
+  PreviewPlayerMachine,
+  PreviewPlayerState,
+  PreviewPlayerStateEvent,
+} from "machines/PreviewPlayerMachine";
+import {
+  Actor,
+  Machine,
+  SpawnedActorRef,
+  State,
+  assign,
+  interpret,
+  send,
+  spawn,
+} from "xstate";
 
 export type PlayerContext = {
   currentPlaybackNo: number;
   tracks: readonly Track[];
   currentTrack?: Track;
   repeat: boolean;
+  previewPlayerRef?: SpawnedActorRef<
+    PreviewPlayerStateEvent,
+    PreviewPlayerState
+  >;
 };
 
 export type PlayerStateSchema = {
@@ -46,17 +65,29 @@ export const PlayerMachine = Machine<
   {
     id: "player",
     initial: "idle",
+
     context: {
       currentPlaybackNo: 0,
       tracks: [],
       repeat: false,
+      previewPlayerRef: undefined,
     },
+
+    // entry: ["setPlayers"],
 
     states: {
       idle: {},
       loading: {
-        entry: send("PLAY", { delay: 1000 }),
-        on: { PLAY: "playing" },
+        // entry: send("PLAY", { delay: 1000 }),
+        // on: { PLAY: "playing" },
+        invoke: {
+          id: "preview",
+          src: PreviewPlayerMachine,
+          data: {
+            track: (context: PlayerContext) => context.currentTrack,
+          },
+        },
+        entry: send("PLAY", { to: "preview" }),
       },
       playing: {
         entry: send("NEXT_PLAY", { delay: 3000 }),
@@ -113,6 +144,10 @@ export const PlayerMachine = Machine<
 
       changeCurrentTrack: assign(({ tracks, currentPlaybackNo }) => {
         return { currentTrack: tracks[currentPlaybackNo] };
+      }),
+
+      setPlayers: assign({
+        previewPlayerRef: (_) => spawn(PreviewPlayerMachine, "preview"),
       }),
 
       play: () => {
