@@ -50,13 +50,13 @@ export const Layout: React.FC<Props> = ({ album }) => {
             <TrackItem
               key={i}
               track={track}
-              onClick={() => {
+              onClick={() =>
                 send({
                   type: "REPLACE_AND_PLAY",
                   tracks: album.tracks as Track[],
                   currentPlaybackNo: i,
-                });
-              }}
+                })
+              }
             />
           ))}
         </IonList>

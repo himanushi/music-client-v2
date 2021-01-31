@@ -16,7 +16,7 @@ import {
 } from "@ionic/react";
 import ImageCard from "components/cards/ImageCard";
 import SquareImage from "components/SquareImage";
-import { close, pause, play, playForward } from "ionicons/icons";
+import { cafe, close, pause, play, playForward } from "ionicons/icons";
 import { PlayerState, PlayerStateEvent } from "machines/PlayerMachine";
 import React, { useState } from "react";
 import { PayloadSender } from "xstate";
@@ -73,6 +73,12 @@ const PlayButton: React.FC<PlayerStateProps> = ({ state, send }) => {
     button = (
       <IonButton disabled={true}>
         <IonIcon slot="icon-only" icon={play} />
+      </IonButton>
+    );
+  } else if (state.matches("loading")) {
+    button = (
+      <IonButton disabled={true}>
+        <IonIcon slot="icon-only" icon={cafe} />
       </IonButton>
     );
   } else if (state.matches("playing")) {
