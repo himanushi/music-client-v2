@@ -74,6 +74,7 @@
     "@graphql-codegen/typescript": "^1.20.0",
     "@graphql-codegen/typescript-operations": "^1.17.13",
     "@graphql-typed-document-node/core": "^3.1.0",
+    "@types/wicg-mediasession": "^1.1.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
     "import-sort-style-module": "^6.0.0",
