@@ -16,7 +16,6 @@ export type PlayerStateSchema = {
     playing: {};
     paused: {};
     stopped: {};
-    finished: {};
   };
 };
 
@@ -65,17 +64,6 @@ export const PlayerMachine = Machine<
           PAUSE: "paused",
           LOADING: "loading",
           STOP: "stopped",
-          NEXT_PLAY: [
-            {
-              target: "loading",
-              cond: "canNextPlay",
-              actions: ["nextPlaybackNo", "changeCurrentTrack"],
-            },
-            {
-              target: "stopped",
-              actions: ["nextPlaybackNo", "changeCurrentTrack"],
-            },
-          ],
         },
       },
       paused: {
@@ -84,9 +72,6 @@ export const PlayerMachine = Machine<
       stopped: {
         on: { PLAY: { target: "playing" } },
       },
-      finished: {
-        type: "final",
-      },
     },
 
     on: {
@@ -94,6 +79,18 @@ export const PlayerMachine = Machine<
         actions: ["replaceTracks", "changePlaybackNo", "changeCurrentTrack"],
         target: "loading",
       },
+
+      NEXT_PLAY: [
+        {
+          cond: "canNextPlay",
+          target: "loading",
+          actions: ["nextPlaybackNo", "changeCurrentTrack"],
+        },
+        {
+          target: "stopped",
+          actions: ["nextPlaybackNo", "changeCurrentTrack"],
+        },
+      ],
     },
   },
   {
@@ -126,12 +123,8 @@ export const PlayerMachine = Machine<
     },
 
     guards: {
-      canNextPlay: ({ tracks, currentPlaybackNo }) => {
-        if (currentPlaybackNo + 1 === tracks.length) {
-          return false;
-        }
-        return true;
-      },
+      canNextPlay: ({ tracks, currentPlaybackNo }) =>
+        currentPlaybackNo + 1 !== tracks.length,
     },
   }
 );
