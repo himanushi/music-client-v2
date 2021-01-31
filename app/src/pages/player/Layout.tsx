@@ -5,18 +5,29 @@ import {
   IonCard,
   IonContent,
   IonFooter,
+  IonGrid,
   IonIcon,
   IonItem,
   IonLabel,
   IonModal,
   IonReorder,
   IonReorderGroup,
+  IonRow,
   IonText,
   IonToolbar,
 } from "@ionic/react";
 import ImageCard from "components/cards/ImageCard";
 import SquareImage from "components/SquareImage";
-import { cafe, close, pause, play, playForward } from "ionicons/icons";
+import useDetailPageSize from "hooks/layouts/useDetailPageSize";
+import {
+  cafe,
+  close,
+  list,
+  musicalNotes,
+  pause,
+  play,
+  playForward,
+} from "ionicons/icons";
 import { PlayerState, PlayerStateEvent } from "machines/PlayerMachine";
 import React, { useState } from "react";
 import { PayloadSender } from "xstate";
@@ -30,7 +41,7 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <IonToolbar color="main">
+    <IonToolbar style={{ height: 56 }} color="main">
       <Player {...{ open, setOpen, state, send }} />
       <IonButtons slot="start">
         <IonButton
@@ -110,15 +121,26 @@ const Player: React.FC<PlayerProps> = ({
   send,
 }: PlayerProps) => {
   const onClose = () => setOpen(false);
+  const [displayNo, setDisplayNo] = useState(0);
+
+  let display = <></>;
+  if (displayNo === 0) display = <PlayerContent {...{ state, send }} />;
+  if (displayNo === 1) display = <QueueContent {...{ state, send }} />;
 
   return (
     <IonModal onDidDismiss={onClose} isOpen={open}>
-      <PlayerContent {...{ state, send }} />
+      {display}
       <IonFooter>
-        <IonToolbar color="main">
+        <IonToolbar style={{ height: 56 }} color="main">
           <IonButtons slot="start">
             <IonButton onClick={onClose}>
               <IonIcon icon={close} />
+            </IonButton>
+            <IonButton onClick={() => setDisplayNo(0)}>
+              <IonIcon icon={musicalNotes} />
+            </IonButton>
+            <IonButton onClick={() => setDisplayNo(1)}>
+              <IonIcon icon={list} />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -128,6 +150,28 @@ const Player: React.FC<PlayerProps> = ({
 };
 
 const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
+  const { imageCardWidth } = useDetailPageSize();
+  return (
+    <IonContent fullscreen scrollX={false} scrollY={false}>
+      <IonGrid>
+        <IonRow className="ion-justify-content-center ion-no-padding">
+          <ImageCard
+            name={state.context.currentTrack?.name || ""}
+            src={state.context.currentTrack?.artworkL?.url || ""}
+            width={imageCardWidth}
+          />
+        </IonRow>
+        <IonRow className="ion-justify-content-center ion-no-padding">
+          <IonButton shape="round">
+            <IonIcon icon={play} />
+          </IonButton>
+        </IonRow>
+      </IonGrid>
+    </IonContent>
+  );
+};
+
+const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
   const onIonItemReorder = (event: CustomEvent<ItemReorderEventDetail>) => {
     console.log(event.detail);
     event.detail.complete();
