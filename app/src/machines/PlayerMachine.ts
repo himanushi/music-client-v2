@@ -31,10 +31,11 @@ export type PlayerStateEvent =
   | { type: "SHUFFLE" }
   // Player
   | { type: "PLAY" }
-  | { type: "NEXT" }
+  | { type: "NEXT_PLAY" }
   | { type: "PREVIOUS" }
   | { type: "PAUSE" }
   | { type: "STOP" }
+  | { type: "LOADING" }
   | { type: "SEEK" }
   | { type: "REPEAT" };
 
@@ -51,14 +52,31 @@ export const PlayerMachine = Machine<
       tracks: [],
       repeat: false,
     },
+
     states: {
       idle: {},
       loading: {
-        entry: send("PLAY"),
+        entry: send("PLAY", { delay: 1000 }),
         on: { PLAY: "playing" },
       },
       playing: {
-        on: { PAUSE: "paused", STOP: "stopped" },
+        entry: send("NEXT_PLAY", { delay: 3000 }),
+        on: {
+          PAUSE: "paused",
+          LOADING: "loading",
+          STOP: "stopped",
+          NEXT_PLAY: [
+            {
+              target: "loading",
+              cond: "canNextPlay",
+              actions: ["nextPlaybackNo", "changeCurrentTrack"],
+            },
+            {
+              target: "stopped",
+              actions: ["nextPlaybackNo", "changeCurrentTrack"],
+            },
+          ],
+        },
       },
       paused: {
         on: { PLAY: "playing" },
@@ -70,27 +88,50 @@ export const PlayerMachine = Machine<
         type: "final",
       },
     },
+
     on: {
       REPLACE_AND_PLAY: {
-        actions: ["replaceTracks", "changePlaybackNo"],
+        actions: ["replaceTracks", "changePlaybackNo", "changeCurrentTrack"],
         target: "loading",
       },
     },
   },
   {
     actions: {
+      nextPlaybackNo: assign({
+        currentPlaybackNo: ({ tracks, currentPlaybackNo }) => {
+          if (currentPlaybackNo + 1 === tracks.length) return 0;
+          return currentPlaybackNo + 1;
+        },
+      }),
+
       replaceTracks: assign({
         tracks: (_, event) => ("tracks" in event ? event.tracks : []),
       }),
-      changePlaybackNo: assign((context, event) => {
-        if (!("currentPlaybackNo" in event)) return {};
 
-        return {
-          currentPlaybackNo: event.currentPlaybackNo,
-          currentTrack: context.tracks[event.currentPlaybackNo],
-        };
+      changePlaybackNo: assign((_, event) => {
+        if (!("currentPlaybackNo" in event)) return {};
+        return { currentPlaybackNo: event.currentPlaybackNo };
       }),
+
+      changeCurrentTrack: assign(({ tracks, currentPlaybackNo }) => {
+        return { currentTrack: tracks[currentPlaybackNo] };
+      }),
+
+      play: () => {
+        console.log("play");
+      },
+
       stop: () => console.log("stop"),
+    },
+
+    guards: {
+      canNextPlay: ({ tracks, currentPlaybackNo }) => {
+        if (currentPlaybackNo + 1 === tracks.length) {
+          return false;
+        }
+        return true;
+      },
     },
   }
 );
