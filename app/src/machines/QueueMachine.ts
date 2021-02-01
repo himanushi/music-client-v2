@@ -1,7 +1,6 @@
 import { Track } from "graphql/types";
+import { JukeboxContext } from "machines/JukeboxMachine";
 import { Machine, State, assign } from "xstate";
-
-import { PlayerContext } from "./PlayerMachine";
 
 export type QueueContext = {
   tracks: Track[];
@@ -14,7 +13,7 @@ export type QueueStateSchema = {
 };
 
 export type QueueStateEvent =
-  | { type: "GET"; playbackNo: PlayerContext["currentPlaybackNo"] }
+  | { type: "GET"; playbackNo: JukeboxContext["currentPlaybackNo"] }
   | { type: "REPLACE"; tracks: QueueContext["tracks"] };
 
 export const QueueMachine = Machine<

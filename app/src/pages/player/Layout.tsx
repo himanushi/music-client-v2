@@ -28,13 +28,13 @@ import {
   play,
   playForward,
 } from "ionicons/icons";
-import { PlayerState, PlayerStateEvent } from "machines/PlayerMachine";
+import { JukeboxEvent, JukeboxState } from "machines/JukeboxMachine";
 import React, { useState } from "react";
 import { PayloadSender } from "xstate";
 
 type PlayerStateProps = {
-  state: PlayerState;
-  send: PayloadSender<PlayerStateEvent>;
+  state: JukeboxState;
+  send: PayloadSender<JukeboxEvent>;
 };
 
 export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {

@@ -1,10 +1,10 @@
 import { inspect } from "@xstate/inspect";
 import { Track } from "graphql/types";
 import {
-  PreviewPlayerMachine,
-  PreviewPlayerState,
-  PreviewPlayerStateEvent,
-} from "machines/PreviewPlayerMachine";
+  MusicPlayerEvent,
+  MusicPlayerMachine,
+  MusicPlayerState,
+} from "machines/MusicPlayerMachine";
 import {
   Machine,
   SpawnedActorRef,
@@ -15,18 +15,15 @@ import {
   spawn,
 } from "xstate";
 
-export type PlayerContext = {
+export type JukeboxContext = {
   currentPlaybackNo: number;
   tracks: readonly Track[];
   currentTrack?: Track;
   repeat: boolean;
-  previewPlayerRef?: SpawnedActorRef<
-    PreviewPlayerStateEvent,
-    PreviewPlayerState
-  >;
+  musicPlayerRef?: SpawnedActorRef<MusicPlayerEvent, MusicPlayerState>;
 };
 
-export type PlayerStateSchema = {
+export type JukeboxSchema = {
   states: {
     idle: {};
     loading: {};
@@ -36,14 +33,14 @@ export type PlayerStateSchema = {
   };
 };
 
-export type PlayerStateEvent =
+export type JukeboxEvent =
   // Queue
   | {
       type: "REPLACE_AND_PLAY";
-      tracks: readonly Track[];
-      currentPlaybackNo: number;
+      tracks: JukeboxContext["tracks"];
+      currentPlaybackNo: JukeboxContext["currentPlaybackNo"];
     }
-  | { type: "REPLACE"; tracks: readonly Track[] }
+  | { type: "REPLACE"; tracks: JukeboxContext["tracks"] }
   | { type: "SHUFFLE" }
   // Player
   | { type: "PLAY" }
@@ -55,10 +52,10 @@ export type PlayerStateEvent =
   | { type: "SEEK" }
   | { type: "REPEAT" };
 
-export const PlayerMachine = Machine<
-  PlayerContext,
-  PlayerStateSchema,
-  PlayerStateEvent
+export const JukeboxMachine = Machine<
+  JukeboxContext,
+  JukeboxSchema,
+  JukeboxEvent
 >(
   {
     id: "player",
@@ -68,33 +65,19 @@ export const PlayerMachine = Machine<
       currentPlaybackNo: 0,
       tracks: [],
       repeat: false,
-      previewPlayerRef: undefined,
+      musicPlayerRef: undefined,
     },
 
-    entry: "setPlayers",
+    entry: "initMusicPlayer",
 
     states: {
       idle: {},
-
       loading: {
-        entry: "initPlayer",
+        entry: ["sendTrack", "play"],
       },
-
-      playing: {
-        on: {
-          PAUSE: "paused",
-          LOADING: "loading",
-          STOP: "stopped",
-        },
-      },
-
-      paused: {
-        on: { PLAY: "playing" },
-      },
-
-      stopped: {
-        on: { PLAY: { target: "playing" } },
-      },
+      playing: {},
+      paused: {},
+      stopped: {},
     },
 
     on: {
@@ -118,11 +101,8 @@ export const PlayerMachine = Machine<
   },
   {
     actions: {
-      nextPlaybackNo: assign({
-        currentPlaybackNo: ({ tracks, currentPlaybackNo }) => {
-          if (currentPlaybackNo + 1 === tracks.length) return 0;
-          return currentPlaybackNo + 1;
-        },
+      initMusicPlayer: assign({
+        musicPlayerRef: (_) => spawn(MusicPlayerMachine, "music"),
       }),
 
       replaceTracks: assign({
@@ -134,27 +114,23 @@ export const PlayerMachine = Machine<
         return { currentPlaybackNo: event.currentPlaybackNo };
       }),
 
+      nextPlaybackNo: assign({
+        currentPlaybackNo: ({ tracks, currentPlaybackNo }) => {
+          if (currentPlaybackNo + 1 === tracks.length) return 0;
+          return currentPlaybackNo + 1;
+        },
+      }),
+
       changeCurrentTrack: assign(({ tracks, currentPlaybackNo }) => {
         return { currentTrack: tracks[currentPlaybackNo] };
       }),
 
-      setPlayers: assign({
-        previewPlayerRef: (_) => {
-          console.log("setPlayers");
-          return spawn(PreviewPlayerMachine, "preview");
-        },
-      }),
-
-      initPlayer: send(
-        (context) => {
-          return { type: "INITIALIZE_PLAY", track: context.currentTrack };
-        },
-        { to: "preview" }
+      sendTrack: send(
+        ({ currentTrack }) => ({ type: "SET_TRACK", track: currentTrack }),
+        { to: "music" }
       ),
 
-      play: () => {
-        console.log("play");
-      },
+      play: send("PLAY", { to: "music" }),
 
       stop: () => console.log("stop"),
     },
@@ -166,18 +142,18 @@ export const PlayerMachine = Machine<
   }
 );
 
-export type PlayerState = State<
-  PlayerContext,
-  PlayerStateEvent,
-  PlayerStateSchema,
+export type JukeboxState = State<
+  JukeboxContext,
+  JukeboxEvent,
+  JukeboxSchema,
   {
     value: any;
-    context: PlayerContext;
+    context: JukeboxContext;
   }
 >;
 
 inspect({ iframe: false });
 
-export const playerService = interpret(PlayerMachine, {
+export const playerService = interpret(JukeboxMachine, {
   devTools: process.env.NODE_ENV === "development",
 }).start();

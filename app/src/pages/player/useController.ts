@@ -1,5 +1,5 @@
 import { useService } from "@xstate/react";
-import { playerService } from "machines/PlayerMachine";
+import { playerService } from "machines/JukeboxMachine";
 
 const useController = () => {
   const [state, send] = useService(playerService);

@@ -14,7 +14,7 @@ import ImageCard from "components/cards/ImageCard";
 import { Album, Track } from "graphql/types";
 import useDetailPageSize from "hooks/layouts/useDetailPageSize";
 import { ellipsisVertical, play } from "ionicons/icons";
-import { playerService } from "machines/PlayerMachine";
+import { playerService } from "machines/JukeboxMachine";
 import React from "react";
 
 type Props = {
