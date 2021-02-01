@@ -1,13 +1,11 @@
 import { inspect } from "@xstate/inspect";
 import { Track } from "graphql/types";
 import {
-  PreviewPlayerContext,
   PreviewPlayerMachine,
   PreviewPlayerState,
   PreviewPlayerStateEvent,
 } from "machines/PreviewPlayerMachine";
 import {
-  Actor,
   Machine,
   SpawnedActorRef,
   State,
@@ -73,33 +71,27 @@ export const PlayerMachine = Machine<
       previewPlayerRef: undefined,
     },
 
-    // entry: ["setPlayers"],
+    entry: "setPlayers",
 
     states: {
       idle: {},
+
       loading: {
-        // entry: send("PLAY", { delay: 1000 }),
-        // on: { PLAY: "playing" },
-        invoke: {
-          id: "preview",
-          src: PreviewPlayerMachine,
-          data: {
-            track: (context: PlayerContext) => context.currentTrack,
-          },
-        },
-        entry: send("PLAY", { to: "preview" }),
+        entry: "initPlayer",
       },
+
       playing: {
-        entry: send("NEXT_PLAY", { delay: 3000 }),
         on: {
           PAUSE: "paused",
           LOADING: "loading",
           STOP: "stopped",
         },
       },
+
       paused: {
         on: { PLAY: "playing" },
       },
+
       stopped: {
         on: { PLAY: { target: "playing" } },
       },
@@ -147,8 +139,18 @@ export const PlayerMachine = Machine<
       }),
 
       setPlayers: assign({
-        previewPlayerRef: (_) => spawn(PreviewPlayerMachine, "preview"),
+        previewPlayerRef: (_) => {
+          console.log("setPlayers");
+          return spawn(PreviewPlayerMachine, "preview");
+        },
       }),
+
+      initPlayer: send(
+        (context) => {
+          return { type: "INITIALIZE_PLAY", track: context.currentTrack };
+        },
+        { to: "preview" }
+      ),
 
       play: () => {
         console.log("play");

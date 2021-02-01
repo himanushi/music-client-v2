@@ -1,36 +1,56 @@
 import { Track } from "graphql/types";
-import { Machine } from "xstate";
+import { Machine, State, assign } from "xstate";
 
-type QueueContext = {
-  items: Track[];
+import { PlayerContext } from "./PlayerMachine";
+
+export type QueueContext = {
+  tracks: Track[];
 };
 
-type QueueStateSchema = {
+export type QueueStateSchema = {
   states: {
     active: {};
   };
 };
 
 export type QueueStateEvent =
-  | { type: "ADD_ITEMS" }
-  | { type: "ALL_REPLACE_ITEMS" };
+  | { type: "GET"; playbackNo: PlayerContext["currentPlaybackNo"] }
+  | { type: "REPLACE"; tracks: QueueContext["tracks"] };
 
 export const QueueMachine = Machine<
   QueueContext,
   QueueStateSchema,
   QueueStateEvent
->({
-  id: "queue",
-  initial: "active",
-  context: {
-    items: [],
-  },
-  states: {
-    active: {
-      on: {
-        ADD_ITEMS: { actions: "" },
-        ALL_REPLACE_ITEMS: { actions: "" },
-      },
+>(
+  {
+    id: "queue",
+    initial: "active",
+    context: {
+      tracks: [],
+    },
+    states: {
+      active: {},
+    },
+    on: {
+      REPLACE: ["replace"],
     },
   },
-});
+  {
+    actions: {
+      replace: assign((_, event) => {
+        if (!("tracks" in event)) return {};
+        return { tracks: event.tracks };
+      }),
+    },
+  }
+);
+
+export type QueueState = State<
+  QueueContext,
+  QueueStateEvent,
+  QueueStateSchema,
+  {
+    value: any;
+    context: QueueContext;
+  }
+>;

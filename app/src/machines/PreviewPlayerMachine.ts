@@ -1,9 +1,10 @@
 import { Track } from "graphql/types";
 import { Howl } from "howler";
 import { Machine, State, assign, send } from "xstate";
+import { log } from "xstate/lib/actions";
 
 export type PreviewPlayerContext = {
-  track: Track;
+  track?: Track;
   player?: Howl;
 };
 
@@ -13,7 +14,8 @@ export type PreviewPlayerStateSchema = {
     loading: {};
     playing: {};
     paused: {};
-    stopped: {};
+    error: {};
+    finished: {};
   };
 };
 
@@ -33,36 +35,59 @@ export const PreviewPlayerMachine = Machine<
     id: "preview",
     initial: "idle",
 
+    context: {
+      track: undefined,
+      player: undefined,
+    },
+
     states: {
       idle: {
         on: {
           PLAY: "loading",
         },
       },
+
       loading: {
-        entry: ["setPlayer", "play"],
+        entry: ["setPlayer", "l", "play", send("PLAY")],
+        on: {
+          PLAY: "playing",
+        },
       },
+
       playing: {
-        entry: send("NEXT_PLAY", { delay: 3000 }),
         on: {
           PAUSE: "paused",
           LOADING: "loading",
-          STOP: "stopped",
         },
       },
+
       paused: {
         on: { PLAY: "playing" },
       },
-      stopped: {
-        on: { PLAY: { target: "playing" } },
+
+      error: {
+        type: "final",
       },
+
+      finished: {
+        type: "final",
+      },
+    },
+    on: {
+      INITIALIZE_PLAY: { actions: ["setTrack", "l"], target: "loading" },
     },
   },
   {
     actions: {
-      play: ({ player }) => {
-        if (player) player.play();
+      play: ({ track, player }) => {
+        if (track && player) player.play();
       },
+
+      setTrack: assign({
+        track: (_, event) => ("track" in event ? event.track : undefined),
+      }),
+
+      l: log(),
 
       stop: () => console.log("stop"),
 
@@ -76,12 +101,13 @@ export const PreviewPlayerMachine = Machine<
             preload: false,
             autoplay: false,
             onplay: () => {
-              if (howl.volume() === 0) howl.fade(0, 0.5, 2000);
+              const volume = 0.01;
+              const fadeouttime = 2000;
+              if (howl.volume() === 0) howl.fade(0, volume, fadeouttime);
               // フェードアウト
               // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
-              var fadeouttime = 2000;
               setTimeout(
-                () => howl.fade(0.5, 0, fadeouttime),
+                () => howl.fade(volume, 0, fadeouttime),
                 (howl.duration() - (howl.seek() as number)) * 1000 - fadeouttime
               );
             },
