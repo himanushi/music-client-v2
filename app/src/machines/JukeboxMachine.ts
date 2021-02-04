@@ -58,7 +58,7 @@ export const JukeboxMachine = Machine<
   JukeboxEvent
 >(
   {
-    id: "player",
+    id: "jukebox",
     initial: "idle",
 
     context: {
@@ -74,6 +74,7 @@ export const JukeboxMachine = Machine<
       idle: {},
       loading: {
         entry: ["sendTrack", "play"],
+        on: { PLAY: "playing" },
       },
       playing: {},
       paused: {},
@@ -102,7 +103,7 @@ export const JukeboxMachine = Machine<
   {
     actions: {
       initMusicPlayer: assign({
-        musicPlayerRef: (_) => spawn(MusicPlayerMachine, "music"),
+        musicPlayerRef: (_) => spawn(MusicPlayerMachine, "musicPlayer"),
       }),
 
       replaceTracks: assign({
@@ -127,10 +128,10 @@ export const JukeboxMachine = Machine<
 
       sendTrack: send(
         ({ currentTrack }) => ({ type: "SET_TRACK", track: currentTrack }),
-        { to: "music" }
+        { to: "musicPlayer" }
       ),
 
-      play: send("PLAY", { to: "music" }),
+      play: send("PLAY", { to: "musicPlayer" }),
 
       stop: () => console.log("stop"),
     },

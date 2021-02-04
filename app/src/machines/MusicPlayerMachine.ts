@@ -5,7 +5,7 @@ import {
   PreviewPlayerStateEvent,
 } from "machines/PreviewPlayerMachine";
 import { Machine, SpawnedActorRef, State, assign, send, spawn } from "xstate";
-import { log } from "xstate/lib/actions";
+import { log, sendParent } from "xstate/lib/actions";
 
 export type MusicPlayerContext = {
   previewPlayerRef?: SpawnedActorRef<
@@ -52,6 +52,7 @@ export const MusicPlayerMachine = Machine<
 
       loading: {
         on: { PLAY: { actions: ["playPreview"], target: "playing" } },
+        exit: sendParent("PLAY"),
       },
 
       playing: {},
@@ -64,7 +65,7 @@ export const MusicPlayerMachine = Machine<
     },
     on: {
       SET_TRACK: {
-        actions: ["stop", "setTrackToPreview"],
+        actions: ["setTrackToPreview"],
         target: "loading",
       },
     },

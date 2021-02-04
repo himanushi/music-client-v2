@@ -131,7 +131,7 @@ const Player: React.FC<PlayerProps> = ({
     <IonModal onDidDismiss={onClose} isOpen={open}>
       {display}
       <IonFooter>
-        <IonToolbar style={{ height: 56 }} color="main">
+        <IonToolbar color="main">
           <IonButtons slot="start">
             <IonButton onClick={onClose}>
               <IonIcon icon={close} />

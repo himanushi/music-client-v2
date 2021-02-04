@@ -20,7 +20,7 @@ export type PreviewPlayerStateSchema = {
 };
 
 export type PreviewPlayerStateEvent =
-  | { type: "INITIALIZE_PLAY"; track: Track }
+  | { type: "SET_TRACK"; track: Track }
   | { type: "PLAY" }
   | { type: "PAUSE" }
   | { type: "STOP" }
@@ -48,7 +48,7 @@ export const PreviewPlayerMachine = Machine<
       },
 
       loading: {
-        entry: ["setPlayer", "l", "play", send("PLAY")],
+        entry: ["setPlayer", "play", send("PLAY")],
         on: {
           PLAY: "playing",
         },
@@ -74,7 +74,7 @@ export const PreviewPlayerMachine = Machine<
       },
     },
     on: {
-      INITIALIZE_PLAY: { actions: ["setTrack", "l"], target: "loading" },
+      SET_TRACK: { actions: ["stop", "setTrack"], target: "loading" },
     },
   },
   {
