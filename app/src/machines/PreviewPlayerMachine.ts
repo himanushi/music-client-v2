@@ -1,6 +1,6 @@
 import { Track } from "graphql/types";
 import { Howl } from "howler";
-import { Machine, State, assign, send } from "xstate";
+import { Machine, State, assign, send, sendParent } from "xstate";
 
 export type PreviewPlayerContext = {
   track?: Track;
@@ -12,18 +12,18 @@ export type PreviewPlayerStateSchema = {
     idle: {};
     loading: {};
     playing: {};
-    paused: {};
-    error: {};
     finished: {};
   };
 };
 
 export type PreviewPlayerStateEvent =
   | { type: "SET_TRACK"; track: Track }
+  | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PAUSE" }
   | { type: "STOP" }
-  | { type: "LOADING" };
+  | { type: "LOADING" }
+  | { type: "FINISHED" };
 
 export const PreviewPlayerMachine = Machine<
   PreviewPlayerContext,
@@ -40,52 +40,44 @@ export const PreviewPlayerMachine = Machine<
     },
 
     states: {
-      idle: {
-        on: {
-          PLAY: "loading",
-        },
-      },
+      idle: {},
 
       loading: {
         entry: ["stop", send("PLAY")],
         on: { PLAY: "playing" },
-        exit: ["setPlayer", "play"],
+        exit: ["setPlayer", "play", sendParent("PLAY")],
       },
 
       playing: {
+        invoke: {
+          id: "playingListener",
+          src: ({ player }: PreviewPlayerContext) => (callback) => {
+            if (player) player.on("end", () => callback("FINISHED"));
+            return () => {};
+          },
+        },
         on: {
-          PAUSE: "paused",
-          LOADING: "loading",
+          FINISHED: "finished",
         },
       },
 
-      paused: {
-        on: { PLAY: "playing" },
-      },
-
-      error: {
-        type: "final",
-      },
-
       finished: {
-        type: "final",
+        entry: [sendParent("FINISHED")],
       },
     },
     on: {
-      SET_TRACK: { actions: ["setTrack"], target: "loading" },
+      SET_TRACK: { actions: ["setTrack"] },
+      LOAD: "loading",
     },
   },
   {
     actions: {
       play: ({ track, player }) => {
-        if (track && player) console.log(player.play());
+        if (track && player) player.play();
       },
 
       stop: ({ player }) => {
-        console.log("stop");
-        if (player && player.playing()) {
-          player.stop();
-        }
+        if (player && player.playing()) player.stop();
       },
 
       setTrack: assign({
@@ -112,7 +104,6 @@ export type PreviewPlayerState = State<
 const setPlayer = (track: Track) => {
   if (!track || !track.previewUrl) return;
 
-  console.log("setHowl");
   const howl: Howl = new Howl({
     src: track.previewUrl,
     html5: true,

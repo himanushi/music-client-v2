@@ -5,7 +5,7 @@ import {
   PreviewPlayerStateEvent,
 } from "machines/PreviewPlayerMachine";
 import { Machine, SpawnedActorRef, State, assign, send, spawn } from "xstate";
-import { log, sendParent } from "xstate/lib/actions";
+import { sendParent } from "xstate/lib/actions";
 
 export type MusicPlayerContext = {
   previewPlayerRef?: SpawnedActorRef<
@@ -19,18 +19,18 @@ export type MusicPlayerSchema = {
     idle: {};
     loading: {};
     playing: {};
-    paused: {};
-    error: {};
     finished: {};
   };
 };
 
 export type MusicPlayerEvent =
   | { type: "SET_TRACK"; track: Track }
+  | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PAUSE" }
   | { type: "STOP" }
-  | { type: "LOADING" };
+  | { type: "LOADING" }
+  | { type: "FINISHED" };
 
 export const MusicPlayerMachine = Machine<
   MusicPlayerContext,
@@ -47,21 +47,26 @@ export const MusicPlayerMachine = Machine<
 
     states: {
       idle: {
-        entry: [log(), "initPlayers"],
+        entry: ["initPlayers"],
       },
 
       loading: {
-        on: { PLAY: { actions: ["playPreview"], target: "playing" } },
-        exit: sendParent("PLAY"),
+        on: {
+          LOAD: { actions: ["loadPreview"] },
+          PLAY: "playing",
+        },
       },
 
-      playing: {},
+      playing: {
+        entry: sendParent("PLAY"),
+        on: {
+          FINISHED: "finished",
+        },
+      },
 
-      paused: {},
-
-      error: {},
-
-      finished: {},
+      finished: {
+        entry: [sendParent("NEXT_PLAY")],
+      },
     },
     on: {
       SET_TRACK: {
@@ -85,9 +90,7 @@ export const MusicPlayerMachine = Machine<
         { to: "preview" }
       ),
 
-      playPreview: send("PLAY", { to: "preview" }),
-
-      stop: log(),
+      loadPreview: send("LOAD", { to: "preview" }),
     },
   }
 );

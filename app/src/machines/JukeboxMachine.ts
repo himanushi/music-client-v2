@@ -15,7 +15,6 @@ import {
   send,
   spawn,
 } from "xstate";
-import { log } from "xstate/lib/actions";
 
 export type JukeboxContext = {
   currentPlaybackNo: number;
@@ -72,10 +71,10 @@ export const JukeboxMachine = Machine<
 
     states: {
       idle: {
-        entry: ["l", "initMusicPlayer"],
+        entry: ["initMusicPlayer"],
       },
       loading: {
-        entry: ["setTrack", "play"],
+        entry: ["setTrack", "load"],
         on: { PLAY: "playing" },
       },
       playing: {},
@@ -133,11 +132,9 @@ export const JukeboxMachine = Machine<
         { to: "musicPlayer" }
       ),
 
-      play: send("PLAY", { to: "musicPlayer" }),
+      load: send("LOAD", { to: "musicPlayer" }),
 
       stop: () => console.log("stop"),
-
-      l: log(),
     },
 
     guards: {

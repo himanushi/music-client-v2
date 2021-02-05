@@ -28,28 +28,30 @@ import {
   play,
   playForward,
 } from "ionicons/icons";
-import { PlayerService } from "machines/JukeboxMachine";
+import { JukeboxEvent, JukeboxState } from "machines/JukeboxMachine";
 import React, { useState } from "react";
+import { PayloadSender } from "xstate";
 
 type PlayerStateProps = {
-  service: PlayerService;
+  state: JukeboxState;
+  send: PayloadSender<JukeboxEvent>;
 };
 
-export const PlayerFooter: React.FC<PlayerStateProps> = ({ service }) => {
+export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
   const [open, setOpen] = useState(false);
 
   return (
     <IonToolbar style={{ height: 56 }} color="main">
-      <Player {...{ open, setOpen, service }} />
+      <Player {...{ open, setOpen, state, send }} />
       <IonButtons slot="start">
         <IonButton
-          disabled={service.state.matches("idle")}
+          disabled={state.matches("idle")}
           style={{ height: 50 }}
           onClick={() => setOpen(true)}
         >
           <ImageCard
-            name={service.state.context.currentTrack?.name || ""}
-            src={service.state.context.currentTrack?.artworkL?.url || undefined}
+            name={state.context.currentTrack?.name || ""}
+            src={state.context.currentTrack?.artworkL?.url || undefined}
             width={50}
           />
         </IonButton>
@@ -63,11 +65,11 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ service }) => {
             fontSize: 13,
           }}
         >
-          {service.state.context.currentTrack?.name}
+          {state.context.currentTrack?.name}
         </p>
       </IonText>
       <IonButtons slot="end">
-        <FooterPlayButton {...{ service }} />
+        <FooterPlayButton {...{ state, send }} />
         <IonButton>
           <IonIcon slot="icon-only" icon={playForward} />
         </IonButton>
@@ -76,21 +78,21 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ service }) => {
   );
 };
 
-const FooterPlayButton: React.FC<PlayerStateProps> = ({ service }) => {
+const FooterPlayButton: React.FC<PlayerStateProps> = ({ state, send }) => {
   let button = <></>;
-  if (service.state.matches("idle")) {
+  if (state.matches("idle")) {
     button = (
       <IonButton disabled={true}>
         <IonIcon slot="icon-only" icon={play} />
       </IonButton>
     );
-  } else if (service.state.matches("loading")) {
+  } else if (state.matches("loading")) {
     button = (
       <IonButton disabled={true}>
         <IonIcon slot="icon-only" icon={cafe} />
       </IonButton>
     );
-  } else if (service.state.matches("playing")) {
+  } else if (state.matches("playing")) {
     button = (
       <IonButton disabled={false}>
         <IonIcon slot="icon-only" icon={pause} />
@@ -115,14 +117,15 @@ type PlayerProps = {
 const Player: React.FC<PlayerProps> = ({
   open,
   setOpen,
-  service,
+  state,
+  send,
 }: PlayerProps) => {
   const onClose = () => setOpen(false);
   const [displayNo, setDisplayNo] = useState(0);
 
   let display = <></>;
-  if (displayNo === 0) display = <PlayerContent {...{ service }} />;
-  if (displayNo === 1) display = <QueueContent {...{ service }} />;
+  if (displayNo === 0) display = <PlayerContent {...{ state, send }} />;
+  if (displayNo === 1) display = <QueueContent {...{ state, send }} />;
 
   return (
     <IonModal onDidDismiss={onClose} isOpen={open}>
@@ -146,7 +149,7 @@ const Player: React.FC<PlayerProps> = ({
   );
 };
 
-const PlayerContent: React.FC<PlayerStateProps> = ({ service }) => {
+const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
   const { imageCardWidth } = useDetailPageSize();
 
   return (
@@ -154,8 +157,8 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ service }) => {
       <IonGrid>
         <IonRow className="ion-justify-content-center ion-no-padding">
           <ImageCard
-            name={service.state.context.currentTrack?.name || ""}
-            src={service.state.context.currentTrack?.artworkL?.url || ""}
+            name={state.context.currentTrack?.name || ""}
+            src={state.context.currentTrack?.artworkL?.url || ""}
             width={imageCardWidth}
           />
         </IonRow>
@@ -169,7 +172,7 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ service }) => {
   );
 };
 
-const QueueContent: React.FC<PlayerStateProps> = ({ service }) => {
+const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
   const onIonItemReorder = (event: CustomEvent<ItemReorderEventDetail>) => {
     console.log(event.detail);
     event.detail.complete();
@@ -178,7 +181,7 @@ const QueueContent: React.FC<PlayerStateProps> = ({ service }) => {
   return (
     <IonContent fullscreen scrollX={false}>
       <IonReorderGroup disabled={false} onIonItemReorder={onIonItemReorder}>
-        {service.state.context.tracks.map((track, index) => {
+        {state.context.tracks.map((track, index) => {
           return (
             <IonItem key={index}>
               <IonCard
