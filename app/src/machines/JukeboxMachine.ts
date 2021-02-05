@@ -8,7 +8,6 @@ import {
 import React from "react";
 import {
   Machine,
-  PayloadSender,
   SpawnedActorRef,
   State,
   assign,
@@ -16,6 +15,7 @@ import {
   send,
   spawn,
 } from "xstate";
+import { log } from "xstate/lib/actions";
 
 export type JukeboxContext = {
   currentPlaybackNo: number;
@@ -70,12 +70,12 @@ export const JukeboxMachine = Machine<
       musicPlayerRef: undefined,
     },
 
-    entry: "initMusicPlayer",
-
     states: {
-      idle: {},
+      idle: {
+        entry: ["l", "initMusicPlayer"],
+      },
       loading: {
-        entry: ["sendTrack", "play"],
+        entry: ["setTrack", "play"],
         on: { PLAY: "playing" },
       },
       playing: {},
@@ -105,10 +105,7 @@ export const JukeboxMachine = Machine<
   {
     actions: {
       initMusicPlayer: assign({
-        musicPlayerRef: (_) => {
-          console.log("spa");
-          return spawn(MusicPlayerMachine, "musicPlayer");
-        },
+        musicPlayerRef: (_) => spawn(MusicPlayerMachine, "musicPlayer"),
       }),
 
       replaceTracks: assign({
@@ -131,7 +128,7 @@ export const JukeboxMachine = Machine<
         return { currentTrack: tracks[currentPlaybackNo] };
       }),
 
-      sendTrack: send(
+      setTrack: send(
         ({ currentTrack }) => ({ type: "SET_TRACK", track: currentTrack }),
         { to: "musicPlayer" }
       ),
@@ -139,6 +136,8 @@ export const JukeboxMachine = Machine<
       play: send("PLAY", { to: "musicPlayer" }),
 
       stop: () => console.log("stop"),
+
+      l: log(),
     },
 
     guards: {
@@ -164,9 +163,6 @@ export const playerService = interpret(JukeboxMachine, {
   devTools: process.env.NODE_ENV === "development",
 }).start();
 
-export type PlayerService = {
-  state: JukeboxState;
-  send: PayloadSender<JukeboxEvent>;
-};
+export type PlayerService = typeof playerService;
 
-export const PlayerContext = React.createContext<PlayerService | null>(null);
+export const PlayerContext = React.createContext<PlayerService>(playerService);

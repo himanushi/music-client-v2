@@ -45,10 +45,10 @@ export const MusicPlayerMachine = Machine<
       previewPlayerRef: undefined,
     },
 
-    entry: "initPlayers",
-
     states: {
-      idle: {},
+      idle: {
+        entry: [log(), "initPlayers"],
+      },
 
       loading: {
         on: { PLAY: { actions: ["playPreview"], target: "playing" } },

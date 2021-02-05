@@ -1,7 +1,6 @@
 import { Track } from "graphql/types";
 import { Howl } from "howler";
 import { Machine, State, assign, send } from "xstate";
-import { log } from "xstate/lib/actions";
 
 export type PreviewPlayerContext = {
   track?: Track;
@@ -48,10 +47,9 @@ export const PreviewPlayerMachine = Machine<
       },
 
       loading: {
-        entry: ["setPlayer", "play", send("PLAY")],
-        on: {
-          PLAY: "playing",
-        },
+        entry: ["stop", send("PLAY")],
+        on: { PLAY: "playing" },
+        exit: ["setPlayer", "play"],
       },
 
       playing: {
@@ -74,22 +72,25 @@ export const PreviewPlayerMachine = Machine<
       },
     },
     on: {
-      SET_TRACK: { actions: ["stop", "setTrack"], target: "loading" },
+      SET_TRACK: { actions: ["setTrack"], target: "loading" },
     },
   },
   {
     actions: {
       play: ({ track, player }) => {
-        if (track && player) player.play();
+        if (track && player) console.log(player.play());
+      },
+
+      stop: ({ player }) => {
+        console.log("stop");
+        if (player && player.playing()) {
+          player.stop();
+        }
       },
 
       setTrack: assign({
         track: (_, event) => ("track" in event ? event.track : undefined),
       }),
-
-      l: log(),
-
-      stop: () => console.log("stop"),
 
       setPlayer: assign({
         player: ({ track }) => (track ? setPlayer(track) : undefined),
@@ -111,6 +112,7 @@ export type PreviewPlayerState = State<
 const setPlayer = (track: Track) => {
   if (!track || !track.previewUrl) return;
 
+  console.log("setHowl");
   const howl: Howl = new Howl({
     src: track.previewUrl,
     html5: true,
