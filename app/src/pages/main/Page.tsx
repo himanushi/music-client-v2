@@ -18,6 +18,7 @@ import "theme/custom.css";
 import { ApolloProvider } from "@apollo/client";
 import { IonApp, IonLoading, createAnimation, setupConfig } from "@ionic/react";
 import client from "graphql/client";
+import { PlayerContext } from "machines/JukeboxMachine";
 import Routing from "pages/main/Routing";
 import useController from "pages/main/useController";
 import React, { memo } from "react";
@@ -38,7 +39,7 @@ export const MainPage: React.FC = () => {
 };
 
 const InitPage: React.FC = () => {
-  const { initialized } = useController();
+  const { initialized, service } = useController();
 
   if (!initialized) {
     return <MemorizedLoading initialized={initialized} />;
@@ -46,7 +47,9 @@ const InitPage: React.FC = () => {
 
   return (
     <IonApp>
-      <Routing />
+      <PlayerContext.Provider value={service}>
+        <Routing />
+      </PlayerContext.Provider>
     </IonApp>
   );
 };

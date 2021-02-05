@@ -1,9 +1,9 @@
-import { useService } from "@xstate/react";
-import { playerService } from "machines/JukeboxMachine";
+import { PlayerContext } from "machines/JukeboxMachine";
+import { useContext } from "react";
 
 const useController = () => {
-  const [state, send] = useService(playerService);
-  return { state, send };
+  const service = useContext(PlayerContext);
+  return { service };
 };
 
 export default useController;

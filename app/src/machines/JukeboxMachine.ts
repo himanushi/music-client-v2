@@ -5,8 +5,10 @@ import {
   MusicPlayerMachine,
   MusicPlayerState,
 } from "machines/MusicPlayerMachine";
+import React from "react";
 import {
   Machine,
+  PayloadSender,
   SpawnedActorRef,
   State,
   assign,
@@ -103,7 +105,10 @@ export const JukeboxMachine = Machine<
   {
     actions: {
       initMusicPlayer: assign({
-        musicPlayerRef: (_) => spawn(MusicPlayerMachine, "musicPlayer"),
+        musicPlayerRef: (_) => {
+          console.log("spa");
+          return spawn(MusicPlayerMachine, "musicPlayer");
+        },
       }),
 
       replaceTracks: assign({
@@ -158,3 +163,10 @@ inspect({ iframe: false });
 export const playerService = interpret(JukeboxMachine, {
   devTools: process.env.NODE_ENV === "development",
 }).start();
+
+export type PlayerService = {
+  state: JukeboxState;
+  send: PayloadSender<JukeboxEvent>;
+};
+
+export const PlayerContext = React.createContext<PlayerService | null>(null);

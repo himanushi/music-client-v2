@@ -92,31 +92,7 @@ export const PreviewPlayerMachine = Machine<
       stop: () => console.log("stop"),
 
       setPlayer: assign({
-        player: ({ track }) => {
-          if (!track || !track.previewUrl) return;
-
-          const howl: Howl = new Howl({
-            src: track.previewUrl,
-            html5: true,
-            preload: false,
-            autoplay: false,
-            onplay: () => {
-              const volume = 0.01;
-              const fadeouttime = 2000;
-              if (howl.volume() === 0) howl.fade(0, volume, fadeouttime);
-              // フェードアウト
-              // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
-              setTimeout(
-                () => howl.fade(volume, 0, fadeouttime),
-                (howl.duration() - (howl.seek() as number)) * 1000 - fadeouttime
-              );
-            },
-            onstop: () => howl.volume(0),
-            volume: 0,
-          });
-
-          return howl;
-        },
+        player: ({ track }) => (track ? setPlayer(track) : undefined),
       }),
     },
   }
@@ -131,3 +107,29 @@ export type PreviewPlayerState = State<
     context: PreviewPlayerContext;
   }
 >;
+
+const setPlayer = (track: Track) => {
+  if (!track || !track.previewUrl) return;
+
+  const howl: Howl = new Howl({
+    src: track.previewUrl,
+    html5: true,
+    preload: false,
+    autoplay: false,
+    onplay: () => {
+      const volume = 0.5;
+      const fadeouttime = 2000;
+      if (howl.volume() === 0) howl.fade(0, volume, fadeouttime);
+      // フェードアウト
+      // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
+      setTimeout(
+        () => howl.fade(volume, 0, fadeouttime),
+        (howl.duration() - (howl.seek() as number)) * 1000 - fadeouttime
+      );
+    },
+    onstop: () => howl.volume(0),
+    volume: 0,
+  });
+
+  return howl;
+};

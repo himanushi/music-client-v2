@@ -3,6 +3,7 @@ import useController from "pages/player/useController";
 import React from "react";
 
 export const PlayerPage: React.FC = () => {
-  const { state, send } = useController();
-  return <PlayerFooter state={state} send={send} />;
+  const { service } = useController();
+  if (!service) return <></>;
+  return <PlayerFooter service={service} />;
 };
