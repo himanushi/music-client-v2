@@ -19,6 +19,7 @@ export type MusicPlayerSchema = {
     idle: {};
     loading: {};
     playing: {};
+    paused: {};
     finished: {};
   };
 };
@@ -28,6 +29,7 @@ export type MusicPlayerEvent =
   | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PAUSE" }
+  | { type: "PAUSED" }
   | { type: "STOP" }
   | { type: "LOADING" }
   | { type: "FINISHED" };
@@ -60,8 +62,14 @@ export const MusicPlayerMachine = Machine<
       playing: {
         entry: sendParent("PLAY"),
         on: {
+          PAUSE: { actions: ["pausePreview"] },
+          PAUSED: "paused",
           FINISHED: "finished",
         },
+      },
+
+      paused: {
+        entry: [sendParent("PAUSED")],
       },
 
       finished: {
@@ -91,6 +99,8 @@ export const MusicPlayerMachine = Machine<
       ),
 
       loadPreview: send("LOAD", { to: "preview" }),
+
+      pausePreview: send("PAUSE", { to: "preview" }),
     },
   }
 );

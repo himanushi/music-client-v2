@@ -48,6 +48,7 @@ export type JukeboxEvent =
   | { type: "NEXT_PLAY" }
   | { type: "PREVIOUS" }
   | { type: "PAUSE" }
+  | { type: "PAUSED" }
   | { type: "STOP" }
   | { type: "LOADING" }
   | { type: "SEEK" }
@@ -93,12 +94,15 @@ export const JukeboxMachine = Machine<
       },
       loading: {
         entry: ["setTrack", "load"],
-        on: { PLAY: "playing" },
+        on: {
+          PLAY: "playing",
+        },
       },
       playing: {
         entry: ["setMediaMetadata"],
         on: {
-          PAUSE: "paused",
+          PAUSE: { actions: ["pause"] },
+          PAUSED: "paused",
         },
       },
       paused: {},
@@ -169,19 +173,12 @@ export const JukeboxMachine = Machine<
               ],
             });
           }
-          // navigator.mediaSession.setActionHandler("play", () =>
-          //   this.dispatch({ type: "PLAY" })
-          // );
-          // navigator.mediaSession.setActionHandler("pause", () =>
-          //   this.dispatch({ type: "PAUSE" })
-          // );
-          // navigator.mediaSession.setActionHandler("nexttrack", () =>
-          //   this.dispatch({ type: "NEXT_PLAY" })
-          // );
         }
       },
 
       load: send("LOAD", { to: "musicPlayer" }),
+
+      pause: send("PAUSE", { to: "musicPlayer" }),
 
       stop: () => console.log("stop"),
     },

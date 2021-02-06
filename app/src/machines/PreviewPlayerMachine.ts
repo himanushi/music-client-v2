@@ -12,6 +12,7 @@ export type PreviewPlayerStateSchema = {
     idle: {};
     loading: {};
     playing: {};
+    paused: {};
     finished: {};
   };
 };
@@ -21,6 +22,7 @@ export type PreviewPlayerStateEvent =
   | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PAUSE" }
+  | { type: "PAUSED" }
   | { type: "STOP" }
   | { type: "LOADING" }
   | { type: "FINISHED" };
@@ -52,13 +54,22 @@ export const PreviewPlayerMachine = Machine<
         invoke: {
           id: "playingListener",
           src: ({ player }: PreviewPlayerContext) => (callback) => {
-            if (player) player.on("end", () => callback("FINISHED"));
+            if (player) {
+              player.on("end", () => callback("FINISHED"));
+              player.on("pause", () => callback("PAUSED"));
+            }
             return () => {};
           },
         },
         on: {
+          PAUSE: { actions: ["pause"] },
+          PAUSED: "paused",
           FINISHED: "finished",
         },
+      },
+
+      paused: {
+        entry: [sendParent("PAUSED")],
       },
 
       finished: {
@@ -72,8 +83,12 @@ export const PreviewPlayerMachine = Machine<
   },
   {
     actions: {
-      play: ({ track, player }) => {
-        if (track && player) player.play();
+      play: ({ player }) => {
+        if (player) player.play();
+      },
+
+      pause: ({ player }) => {
+        if (player && player.playing()) player.pause();
       },
 
       stop: ({ player }) => {
