@@ -56,13 +56,32 @@ export const PreviewPlayerMachine = Machine<
           id: "playingListener",
           src: ({ player }: PreviewPlayerContext) => (callback) => {
             if (player) {
-              const pauseCallback = () => callback("PAUSED");
-              player.once("pause", pauseCallback);
-              const finishCallback = () => callback("FINISHED");
-              player.once("end", finishCallback);
+              player.once("pause", () => callback("PAUSED"));
+
+              player.once("end", () => callback("FINISHED"));
+
+              let timeoutID: NodeJS.Timeout;
+              player.once("play", () => {
+                const volume = 0.5;
+                const fadeouttime = 2000;
+                // フェードイン;
+                if (player.volume() === 0) {
+                  player.fade(0, volume, fadeouttime);
+                } else {
+                  player.volume(volume);
+                }
+                // フェードアウト
+                // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
+                timeoutID = setTimeout(() => {
+                  player.fade(volume, 0, fadeouttime);
+                }, (player.duration() - (player.seek() as number)) * 1000 - fadeouttime);
+              });
+
               return () => {
-                player.off("pause", pauseCallback);
-                player.off("end", finishCallback);
+                player.off("play");
+                player.off("pause");
+                player.off("end");
+                clearTimeout(timeoutID);
               };
             }
           },
@@ -76,16 +95,6 @@ export const PreviewPlayerMachine = Machine<
 
       paused: {
         entry: [sendParent("PAUSED")],
-        invoke: {
-          id: "pausedListener",
-          src: ({ player }: PreviewPlayerContext) => (callback) => {
-            if (player) {
-              const playCallback = () => callback("PLAYING");
-              player.once("play", playCallback);
-              return () => player.off("play", playCallback);
-            }
-          },
-        },
       },
 
       finished: {
@@ -93,7 +102,7 @@ export const PreviewPlayerMachine = Machine<
       },
     },
     on: {
-      PLAY: { actions: ["play"] },
+      PLAY: { actions: ["play"], target: "playing" },
 
       PLAYING: "playing",
 
@@ -145,18 +154,6 @@ const setPlayer = (track: Track) => {
     html5: true,
     preload: false,
     autoplay: false,
-    onplay: () => {
-      const volume = 0.5;
-      const fadeouttime = 2000;
-      // フェードイン
-      if (howl.volume() === 0) howl.fade(0, volume, fadeouttime);
-      // フェードアウト
-      // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
-      setTimeout(
-        () => howl.fade(volume, 0, fadeouttime),
-        (howl.duration() - (howl.seek() as number)) * 1000 - fadeouttime
-      );
-    },
     volume: 0,
   });
 
