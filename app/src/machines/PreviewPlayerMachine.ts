@@ -56,11 +56,13 @@ export const PreviewPlayerMachine = Machine<
           id: "playingListener",
           src: ({ player }: PreviewPlayerContext) => (callback) => {
             if (player) {
-              player.once("pause", () => callback("PAUSED"));
-              player.once("end", () => callback("FINISHED"));
+              const pauseCallback = () => callback("PAUSED");
+              player.once("pause", pauseCallback);
+              const finishCallback = () => callback("FINISHED");
+              player.once("end", finishCallback);
               return () => {
-                player.off("pause");
-                player.off("end");
+                player.off("pause", pauseCallback);
+                player.off("end", finishCallback);
               };
             }
           },
@@ -78,8 +80,9 @@ export const PreviewPlayerMachine = Machine<
           id: "pausedListener",
           src: ({ player }: PreviewPlayerContext) => (callback) => {
             if (player) {
-              player.once("play", () => callback("PLAYING"));
-              return () => player.off("play");
+              const playCallback = () => callback("PLAYING");
+              player.once("play", playCallback);
+              return () => player.off("play", playCallback);
             }
           },
         },
@@ -142,7 +145,19 @@ const setPlayer = (track: Track) => {
     html5: true,
     preload: false,
     autoplay: false,
-    volume: 0.5,
+    onplay: () => {
+      const volume = 0.5;
+      const fadeouttime = 2000;
+      // フェードイン
+      if (howl.volume() === 0) howl.fade(0, volume, fadeouttime);
+      // フェードアウト
+      // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
+      setTimeout(
+        () => howl.fade(volume, 0, fadeouttime),
+        (howl.duration() - (howl.seek() as number)) * 1000 - fadeouttime
+      );
+    },
+    volume: 0,
   });
 
   return howl;
