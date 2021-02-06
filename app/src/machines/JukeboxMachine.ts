@@ -46,7 +46,7 @@ export type JukeboxEvent =
   // Player
   | { type: "PLAY" }
   | { type: "NEXT_PLAY" }
-  | { type: "PREVIOUS" }
+  | { type: "PREVIOUS_PLAY" }
   | { type: "PAUSE" }
   | { type: "PAUSED" }
   | { type: "STOP" }
@@ -82,6 +82,9 @@ export const JukeboxMachine = Machine<
           );
           navigator.mediaSession.setActionHandler("nexttrack", () =>
             callback({ type: "NEXT_PLAY" })
+          );
+          navigator.mediaSession.setActionHandler("previoustrack", () =>
+            callback({ type: "PREVIOUS_PLAY" })
           );
         }
         return () => {};
@@ -126,6 +129,18 @@ export const JukeboxMachine = Machine<
           actions: ["nextPlaybackNo", "changeCurrentTrack"],
         },
       ],
+
+      PREVIOUS_PLAY: [
+        {
+          cond: "canPreviousPlay",
+          target: "loading",
+          actions: ["previousPlaybackNo", "changeCurrentTrack"],
+        },
+        {
+          target: "stopped",
+          actions: ["previousPlaybackNo", "changeCurrentTrack"],
+        },
+      ],
     },
   },
   {
@@ -147,6 +162,13 @@ export const JukeboxMachine = Machine<
         currentPlaybackNo: ({ tracks, currentPlaybackNo }) => {
           if (currentPlaybackNo + 1 === tracks.length) return 0;
           return currentPlaybackNo + 1;
+        },
+      }),
+
+      previousPlaybackNo: assign({
+        currentPlaybackNo: ({ currentPlaybackNo }) => {
+          if (currentPlaybackNo === 0) return 0;
+          return currentPlaybackNo - 1;
         },
       }),
 
@@ -186,6 +208,7 @@ export const JukeboxMachine = Machine<
     guards: {
       canNextPlay: ({ tracks, currentPlaybackNo }) =>
         currentPlaybackNo + 1 !== tracks.length,
+      canPreviousPlay: ({ currentPlaybackNo }) => currentPlaybackNo !== 0,
     },
   }
 );
