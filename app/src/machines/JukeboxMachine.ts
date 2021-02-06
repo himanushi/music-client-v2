@@ -69,6 +69,24 @@ export const JukeboxMachine = Machine<
       musicPlayerRef: undefined,
     },
 
+    invoke: {
+      id: "mediaController",
+      src: (_) => (callback) => {
+        if (navigator.mediaSession) {
+          navigator.mediaSession.setActionHandler("play", () =>
+            callback({ type: "PLAY" })
+          );
+          navigator.mediaSession.setActionHandler("pause", () =>
+            callback({ type: "PAUSE" })
+          );
+          navigator.mediaSession.setActionHandler("nexttrack", () =>
+            callback({ type: "NEXT_PLAY" })
+          );
+        }
+        return () => {};
+      },
+    },
+
     states: {
       idle: {
         entry: ["initMusicPlayer"],
@@ -77,7 +95,12 @@ export const JukeboxMachine = Machine<
         entry: ["setTrack", "load"],
         on: { PLAY: "playing" },
       },
-      playing: {},
+      playing: {
+        entry: ["setMediaMetadata"],
+        on: {
+          PAUSE: "paused",
+        },
+      },
       paused: {},
       stopped: {},
     },
@@ -131,6 +154,32 @@ export const JukeboxMachine = Machine<
         ({ currentTrack }) => ({ type: "SET_TRACK", track: currentTrack }),
         { to: "musicPlayer" }
       ),
+
+      setMediaMetadata: ({ currentTrack }) => {
+        if (navigator.mediaSession) {
+          if (currentTrack) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: currentTrack.name,
+              artwork: [
+                {
+                  src: currentTrack.artworkM.url || "",
+                  sizes: "300x300",
+                  type: "image/png",
+                },
+              ],
+            });
+          }
+          // navigator.mediaSession.setActionHandler("play", () =>
+          //   this.dispatch({ type: "PLAY" })
+          // );
+          // navigator.mediaSession.setActionHandler("pause", () =>
+          //   this.dispatch({ type: "PAUSE" })
+          // );
+          // navigator.mediaSession.setActionHandler("nexttrack", () =>
+          //   this.dispatch({ type: "NEXT_PLAY" })
+          // );
+        }
+      },
 
       load: send("LOAD", { to: "musicPlayer" }),
 
