@@ -28,10 +28,11 @@ export type MusicPlayerEvent =
   | { type: "SET_TRACK"; track: Track }
   | { type: "LOAD" }
   | { type: "PLAY" }
+  | { type: "PLAYING" }
   | { type: "PAUSE" }
   | { type: "PAUSED" }
   | { type: "STOP" }
-  | { type: "LOADING" }
+  | { type: "STOPPED" }
   | { type: "FINISHED" };
 
 export const MusicPlayerMachine = Machine<
@@ -55,12 +56,12 @@ export const MusicPlayerMachine = Machine<
       loading: {
         on: {
           LOAD: { actions: ["loadPreview"] },
-          PLAY: "playing",
+          PLAYING: "playing",
         },
       },
 
       playing: {
-        entry: sendParent("PLAY"),
+        entry: [sendParent("PLAYING")],
         on: {
           PAUSE: { actions: ["pausePreview"] },
           PAUSED: "paused",
@@ -70,6 +71,10 @@ export const MusicPlayerMachine = Machine<
 
       paused: {
         entry: [sendParent("PAUSED")],
+        on: {
+          PLAY: { actions: ["playPreview"] },
+          PLAYING: "playing",
+        },
       },
 
       finished: {
@@ -99,6 +104,8 @@ export const MusicPlayerMachine = Machine<
       ),
 
       loadPreview: send("LOAD", { to: "preview" }),
+
+      playPreview: send("PLAY", { to: "preview" }),
 
       pausePreview: send("PAUSE", { to: "preview" }),
     },

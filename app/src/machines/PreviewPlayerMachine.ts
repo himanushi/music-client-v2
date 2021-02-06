@@ -21,10 +21,11 @@ export type PreviewPlayerStateEvent =
   | { type: "SET_TRACK"; track: Track }
   | { type: "LOAD" }
   | { type: "PLAY" }
+  | { type: "PLAYING" }
   | { type: "PAUSE" }
   | { type: "PAUSED" }
   | { type: "STOP" }
-  | { type: "LOADING" }
+  | { type: "STOPPED" }
   | { type: "FINISHED" };
 
 export const PreviewPlayerMachine = Machine<
@@ -45,20 +46,23 @@ export const PreviewPlayerMachine = Machine<
       idle: {},
 
       loading: {
-        entry: ["stop", send("PLAY")],
-        on: { PLAY: "playing" },
-        exit: ["setPlayer", "play", sendParent("PLAY")],
+        entry: ["stop", send("PLAYING")],
+        exit: ["setPlayer", "play"],
       },
 
       playing: {
+        entry: [sendParent("PLAYING")],
         invoke: {
           id: "playingListener",
           src: ({ player }: PreviewPlayerContext) => (callback) => {
             if (player) {
-              player.on("end", () => callback("FINISHED"));
-              player.on("pause", () => callback("PAUSED"));
+              player.once("pause", () => callback("PAUSED"));
+              player.once("end", () => callback("FINISHED"));
+              return () => {
+                player.off("pause");
+                player.off("end");
+              };
             }
-            return () => {};
           },
         },
         on: {
@@ -70,6 +74,15 @@ export const PreviewPlayerMachine = Machine<
 
       paused: {
         entry: [sendParent("PAUSED")],
+        invoke: {
+          id: "pausedListener",
+          src: ({ player }: PreviewPlayerContext) => (callback) => {
+            if (player) {
+              player.once("play", () => callback("PLAYING"));
+              return () => player.off("play");
+            }
+          },
+        },
       },
 
       finished: {
@@ -77,8 +90,13 @@ export const PreviewPlayerMachine = Machine<
       },
     },
     on: {
+      PLAY: { actions: ["play"] },
+
+      PLAYING: "playing",
+
       SET_TRACK: { actions: ["setTrack"] },
-      LOAD: "loading",
+
+      LOAD: { target: "loading" },
     },
   },
   {
@@ -124,19 +142,7 @@ const setPlayer = (track: Track) => {
     html5: true,
     preload: false,
     autoplay: false,
-    onplay: () => {
-      const volume = 0.5;
-      const fadeouttime = 2000;
-      if (howl.volume() === 0) howl.fade(0, volume, fadeouttime);
-      // フェードアウト
-      // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
-      setTimeout(
-        () => howl.fade(volume, 0, fadeouttime),
-        (howl.duration() - (howl.seek() as number)) * 1000 - fadeouttime
-      );
-    },
-    onstop: () => howl.volume(0),
-    volume: 0,
+    volume: 0.5,
   });
 
   return howl;

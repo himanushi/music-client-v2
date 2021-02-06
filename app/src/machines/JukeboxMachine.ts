@@ -41,18 +41,16 @@ export type JukeboxEvent =
       tracks: JukeboxContext["tracks"];
       currentPlaybackNo: JukeboxContext["currentPlaybackNo"];
     }
-  | { type: "REPLACE"; tracks: JukeboxContext["tracks"] }
   | { type: "SHUFFLE" }
   // Player
   | { type: "PLAY" }
   | { type: "NEXT_PLAY" }
   | { type: "PREVIOUS_PLAY" }
+  | { type: "PLAYING" }
   | { type: "PAUSE" }
   | { type: "PAUSED" }
   | { type: "STOP" }
-  | { type: "LOADING" }
-  | { type: "SEEK" }
-  | { type: "REPEAT" };
+  | { type: "STOPPED" };
 
 export const JukeboxMachine = Machine<
   JukeboxContext,
@@ -95,12 +93,14 @@ export const JukeboxMachine = Machine<
       idle: {
         entry: ["initMusicPlayer"],
       },
+
       loading: {
         entry: ["setTrack", "load"],
         on: {
-          PLAY: "playing",
+          PLAYING: "playing",
         },
       },
+
       playing: {
         entry: ["setMediaMetadata"],
         on: {
@@ -108,7 +108,14 @@ export const JukeboxMachine = Machine<
           PAUSED: "paused",
         },
       },
-      paused: {},
+
+      paused: {
+        on: {
+          PLAY: { actions: ["play"] },
+          PLAYING: "playing",
+        },
+      },
+
       stopped: {},
     },
 
@@ -199,6 +206,8 @@ export const JukeboxMachine = Machine<
       },
 
       load: send("LOAD", { to: "musicPlayer" }),
+
+      play: send("PLAY", { to: "musicPlayer" }),
 
       pause: send("PAUSE", { to: "musicPlayer" }),
 
