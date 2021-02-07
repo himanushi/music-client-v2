@@ -58,34 +58,47 @@ export const PreviewPlayerMachine = Machine<
         entry: [sendParent("PLAYING")],
         invoke: {
           id: "playingListener",
-          src: ({ player }: PreviewPlayerContext) => (callback, r) => {
+          src: ({ player }: PreviewPlayerContext) => (callback) => {
             if (player) {
-              player.once("pause", () => callback("PAUSED"));
+              player.on("pause", () => callback("PAUSED"));
 
-              player.once("end", () => callback("FINISHED"));
+              player.on("end", () => callback("FINISHED"));
 
               let timeoutID: NodeJS.Timeout;
-              player.once("play", () => {
-                const volume = 0.5;
-                const fadeouttime = 2000;
-                // フェードイン;
+              const volume = 0.5;
+              const fadeouttime = 2000;
+
+              const fadeIn = () => {
                 if (player.volume() === 0) {
                   player.fade(0, volume, fadeouttime);
+                  console.log("in");
                 } else {
                   player.volume(volume);
                 }
-                // フェードアウト
-                // ref: https://stackoverflow.com/questions/56043259/how-to-make-a-fade-out-at-the-end-of-the-sound-in-howlerjs
+              };
+
+              const setScheduleFadeOut = () => {
                 timeoutID = setTimeout(() => {
                   player.fade(volume, 0, fadeouttime);
                 }, (player.duration() - (player.seek() as number)) * 1000 - fadeouttime);
+              };
+
+              player.on("play", () => {
+                fadeIn();
+                setScheduleFadeOut();
+              });
+
+              player.on("seek", () => {
+                clearTimeout(timeoutID);
+                setScheduleFadeOut();
               });
 
               return () => {
+                clearTimeout(timeoutID);
                 player.off("play");
                 player.off("pause");
                 player.off("end");
-                clearTimeout(timeoutID);
+                player.off("seek");
               };
             }
           },
