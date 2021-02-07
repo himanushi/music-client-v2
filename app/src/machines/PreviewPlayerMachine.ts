@@ -71,7 +71,6 @@ export const PreviewPlayerMachine = Machine<
               const fadeIn = () => {
                 if (player.volume() === 0) {
                   player.fade(0, volume, fadeouttime);
-                  console.log("in");
                 } else {
                   player.volume(volume);
                 }
