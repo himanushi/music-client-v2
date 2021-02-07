@@ -12,6 +12,9 @@ export type MusicPlayerContext = {
     PreviewPlayerStateEvent,
     PreviewPlayerState
   >;
+  track?: Track;
+  duration: number;
+  seek: number;
 };
 
 export type MusicPlayerSchema = {
@@ -26,6 +29,8 @@ export type MusicPlayerSchema = {
 
 export type MusicPlayerEvent =
   | { type: "SET_TRACK"; track: Track }
+  | { type: "SET_DURATION"; duration: number }
+  | { type: "SET_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PLAYING" }
@@ -33,7 +38,8 @@ export type MusicPlayerEvent =
   | { type: "PAUSED" }
   | { type: "STOP" }
   | { type: "STOPPED" }
-  | { type: "FINISHED" };
+  | { type: "FINISHED" }
+  | { type: "TICK" };
 
 export const MusicPlayerMachine = Machine<
   MusicPlayerContext,
@@ -45,6 +51,9 @@ export const MusicPlayerMachine = Machine<
     initial: "idle",
 
     context: {
+      track: undefined,
+      duration: 0,
+      seek: 0,
       previewPlayerRef: undefined,
     },
 
@@ -61,11 +70,21 @@ export const MusicPlayerMachine = Machine<
       },
 
       playing: {
-        entry: [sendParent("PLAYING")],
+        entry: [sendParent("PLAYING"), "setDuration"],
+        invoke: {
+          id: "seekTimer",
+          src: (_) => (callback) => {
+            const interval = setInterval(() => callback("TICK"), 1000);
+            return () => {
+              clearInterval(interval);
+            };
+          },
+        },
         on: {
           PAUSE: { actions: ["pausePreview"] },
           PAUSED: "paused",
           FINISHED: "finished",
+          TICK: { actions: ["tickPreview"] },
         },
       },
 
@@ -78,14 +97,16 @@ export const MusicPlayerMachine = Machine<
       },
 
       finished: {
-        entry: [sendParent("NEXT_PLAY")],
+        entry: ["resetSeek", sendParent("NEXT_PLAY")],
       },
     },
     on: {
       SET_TRACK: {
-        actions: ["setTrackToPreview"],
+        actions: ["setTrack", "setDuration", "setTrackToPreview"],
         target: "loading",
       },
+
+      SET_SEEK: { actions: ["setSeek"] },
     },
   },
   {
@@ -93,6 +114,27 @@ export const MusicPlayerMachine = Machine<
       initPlayers: assign({
         previewPlayerRef: (_) => spawn(PreviewPlayerMachine, "preview"),
       }),
+
+      setTrack: assign({
+        track: (_, event) => ("track" in event ? event.track : undefined),
+      }),
+
+      setDuration: assign({
+        duration: ({ track }) => {
+          if (!track) return 0;
+          if (track.durationMs > 30000) {
+            return 30000;
+          } else {
+            return track.durationMs;
+          }
+        },
+      }),
+
+      setSeek: assign({
+        seek: (_, event) => ("seek" in event ? event.seek : 0),
+      }),
+
+      resetSeek: assign({ seek: (_) => 0 }),
 
       ///////// PreviewPlayer /////////
       setTrackToPreview: send(
@@ -108,6 +150,8 @@ export const MusicPlayerMachine = Machine<
       playPreview: send("PLAY", { to: "preview" }),
 
       pausePreview: send("PAUSE", { to: "preview" }),
+
+      tickPreview: send("TICK", { to: "preview" }),
     },
   }
 );

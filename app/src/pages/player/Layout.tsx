@@ -10,12 +10,14 @@ import {
   IonItem,
   IonLabel,
   IonModal,
+  IonRange,
   IonReorder,
   IonReorderGroup,
   IonRow,
   IonText,
   IonToolbar,
 } from "@ionic/react";
+import { useActor } from "@xstate/react";
 import ImageCard from "components/cards/ImageCard";
 import SquareImage from "components/SquareImage";
 import useDetailPageSize from "hooks/layouts/useDetailPageSize";
@@ -29,8 +31,12 @@ import {
   playForward,
 } from "ionicons/icons";
 import { JukeboxEvent, JukeboxState } from "machines/JukeboxMachine";
+import {
+  MusicPlayerEvent,
+  MusicPlayerState,
+} from "machines/MusicPlayerMachine";
 import React, { useState } from "react";
-import { PayloadSender } from "xstate";
+import { PayloadSender, SpawnedActorRef } from "xstate";
 
 type PlayerStateProps = {
   state: JukeboxState;
@@ -163,12 +169,33 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
           />
         </IonRow>
         <IonRow className="ion-justify-content-center ion-no-padding">
+          <Seekbar {...{ state, send }} />
+        </IonRow>
+        <IonRow className="ion-justify-content-center ion-no-padding">
           <IonButton shape="round">
             <IonIcon icon={play} />
           </IonButton>
         </IonRow>
       </IonGrid>
     </IonContent>
+  );
+};
+
+const Seekbar: React.FC<PlayerStateProps> = ({ state, send }) => {
+  const [musicState] = useActor(
+    state.context.musicPlayerRef as SpawnedActorRef<
+      MusicPlayerEvent,
+      MusicPlayerState
+    >
+  );
+
+  return (
+    <IonRange
+      max={musicState.context.duration}
+      value={musicState.context.seek}
+      // onIonChange={(e) => console.log(e.detail.value as number)}
+      // onIonBlur={(e) => console.log(e.detail)}
+    />
   );
 };
 

@@ -5,6 +5,7 @@ import { Machine, State, assign, send, sendParent } from "xstate";
 export type PreviewPlayerContext = {
   track?: Track;
   player?: Howl;
+  seek: number;
 };
 
 export type PreviewPlayerStateSchema = {
@@ -26,7 +27,8 @@ export type PreviewPlayerStateEvent =
   | { type: "PAUSED" }
   | { type: "STOP" }
   | { type: "STOPPED" }
-  | { type: "FINISHED" };
+  | { type: "FINISHED" }
+  | { type: "TICK" };
 
 export const PreviewPlayerMachine = Machine<
   PreviewPlayerContext,
@@ -40,6 +42,7 @@ export const PreviewPlayerMachine = Machine<
     context: {
       track: undefined,
       player: undefined,
+      seek: 0,
     },
 
     states: {
@@ -54,7 +57,7 @@ export const PreviewPlayerMachine = Machine<
         entry: [sendParent("PLAYING")],
         invoke: {
           id: "playingListener",
-          src: ({ player }: PreviewPlayerContext) => (callback) => {
+          src: ({ player }: PreviewPlayerContext) => (callback, r) => {
             if (player) {
               player.once("pause", () => callback("PAUSED"));
 
@@ -109,6 +112,15 @@ export const PreviewPlayerMachine = Machine<
       SET_TRACK: { actions: ["setTrack"] },
 
       LOAD: { target: "loading" },
+
+      TICK: {
+        actions: [
+          "tick",
+          sendParent(({ seek }) => {
+            return { type: "SET_SEEK", seek };
+          }),
+        ],
+      },
     },
   },
   {
@@ -131,6 +143,16 @@ export const PreviewPlayerMachine = Machine<
 
       setPlayer: assign({
         player: ({ track }) => (track ? setPlayer(track) : undefined),
+      }),
+
+      tick: assign({
+        seek: ({ player }) => {
+          if (player) {
+            const _seek = player.seek() as number;
+            return Math.floor(_seek * 1000);
+          }
+          return 0;
+        },
       }),
     },
   }
