@@ -118,10 +118,18 @@ export const JukeboxMachine = Machine<
         },
       },
 
-      stopped: {},
+      stopped: {
+        on: {
+          PLAY_OR_PAUSE: { actions: ["play"] },
+          PLAY: { actions: ["play"] },
+          PLAYING: "playing",
+        },
+      },
     },
 
     on: {
+      STOPPED: "stopped",
+
       REPLACE_AND_PLAY: {
         actions: ["replaceTracks", "changePlaybackNo", "changeCurrentTrack"],
         target: "loading",
@@ -134,8 +142,7 @@ export const JukeboxMachine = Machine<
           actions: ["nextPlaybackNo", "changeCurrentTrack"],
         },
         {
-          target: "stopped",
-          actions: ["nextPlaybackNo", "changeCurrentTrack"],
+          actions: ["nextPlaybackNo", "changeCurrentTrack", "stop", "setTrack"],
         },
       ],
 
@@ -213,7 +220,7 @@ export const JukeboxMachine = Machine<
 
       pause: send("PAUSE", { to: "musicPlayer" }),
 
-      stop: () => console.log("stop"),
+      stop: send("STOP", { to: "musicPlayer" }),
     },
 
     guards: {

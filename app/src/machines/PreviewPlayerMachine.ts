@@ -14,6 +14,7 @@ export type PreviewPlayerStateSchema = {
     loading: {};
     playing: {};
     paused: {};
+    stopped: {};
     finished: {};
   };
 };
@@ -113,6 +114,11 @@ export const PreviewPlayerMachine = Machine<
         entry: [sendParent("PAUSED")],
       },
 
+      stopped: {
+        entry: [sendParent("STOPPED")],
+        exit: ["setPlayer"],
+      },
+
       finished: {
         entry: [sendParent("FINISHED")],
       },
@@ -121,6 +127,8 @@ export const PreviewPlayerMachine = Machine<
       PLAY: { actions: ["play"], target: "playing" },
 
       PLAYING: "playing",
+
+      STOP: { actions: ["stop"], target: "stopped" },
 
       SET_TRACK: { actions: ["setTrack"] },
 

@@ -23,6 +23,7 @@ export type MusicPlayerSchema = {
     loading: {};
     playing: {};
     paused: {};
+    stopped: {};
     finished: {};
   };
 };
@@ -65,7 +66,6 @@ export const MusicPlayerMachine = Machine<
 
       loading: {
         on: {
-          LOAD: { actions: ["loadPreview"] },
           PLAYING: "playing",
         },
       },
@@ -97,6 +97,14 @@ export const MusicPlayerMachine = Machine<
         },
       },
 
+      stopped: {
+        entry: [sendParent("STOPPED")],
+        on: {
+          PLAY: { actions: ["playPreview"] },
+          PLAYING: "playing",
+        },
+      },
+
       finished: {
         entry: ["resetSeek", sendParent("NEXT_PLAY")],
       },
@@ -104,10 +112,15 @@ export const MusicPlayerMachine = Machine<
     on: {
       SET_TRACK: {
         actions: ["setTrack", "setDuration", "setTrackToPreview"],
-        target: "loading",
       },
 
       SET_SEEK: { actions: ["setSeek"] },
+
+      STOP: { actions: ["stopPreview"] },
+
+      STOPPED: "stopped",
+
+      LOAD: { actions: ["loadPreview"], target: "loading" },
 
       CHANGE_SEEK: { actions: ["changeSeekPreview"] },
     },
@@ -153,6 +166,8 @@ export const MusicPlayerMachine = Machine<
       playPreview: send("PLAY", { to: "preview" }),
 
       pausePreview: send("PAUSE", { to: "preview" }),
+
+      stopPreview: send("STOP", { to: "preview" }),
 
       tickPreview: send("TICK", { to: "preview" }),
 
