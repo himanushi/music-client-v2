@@ -160,8 +160,12 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
           <Seekbar {...{ state, send }} />
         </IonRow>
         <IonRow className="ion-justify-content-center ion-no-padding">
-          <IonButton shape="round">
-            <IonIcon icon={play} />
+          <IonButton
+            onClick={() => send("PLAY_OR_PAUSE")}
+            disabled={playerDisable(state)}
+            shape="round"
+          >
+            <IonIcon icon={playerIcon(state)} />
           </IonButton>
         </IonRow>
       </IonGrid>
