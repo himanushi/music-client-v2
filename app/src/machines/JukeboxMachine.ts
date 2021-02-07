@@ -79,10 +79,10 @@ export const JukeboxMachine = Machine<
           navigator.mediaSession.setActionHandler("pause", () =>
             callback({ type: "PAUSE" })
           );
-          navigator.mediaSession.setActionHandler("nexttrack", () =>
+          navigator.mediaSession.setActionHandler("seekforward", () =>
             callback({ type: "NEXT_PLAY" })
           );
-          navigator.mediaSession.setActionHandler("previoustrack", () =>
+          navigator.mediaSession.setActionHandler("seekbackward", () =>
             callback({ type: "PREVIOUS_PLAY" })
           );
         }

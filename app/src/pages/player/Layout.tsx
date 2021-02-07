@@ -3,6 +3,7 @@ import {
   IonButton,
   IonButtons,
   IonCard,
+  IonCol,
   IonContent,
   IonFooter,
   IonGrid,
@@ -27,6 +28,7 @@ import {
   musicalNotes,
   pause,
   play,
+  playBack,
   playForward,
 } from "ionicons/icons";
 import { JukeboxEvent, JukeboxState } from "machines/JukeboxMachine";
@@ -160,13 +162,35 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
           <Seekbar {...{ state, send }} />
         </IonRow>
         <IonRow className="ion-justify-content-center ion-no-padding">
-          <IonButton
-            onClick={() => send("PLAY_OR_PAUSE")}
-            disabled={playerDisable(state)}
-            shape="round"
-          >
-            <IonIcon icon={playerIcon(state)} />
-          </IonButton>
+          <IonRow>
+            <IonCol>
+              <IonButton
+                onClick={() => send("PREVIOUS_PLAY")}
+                disabled={playerDisable(state)}
+                shape="round"
+              >
+                <IonIcon slot="icon-only" icon={playBack} />
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton
+                onClick={() => send("PLAY_OR_PAUSE")}
+                disabled={playerDisable(state)}
+                shape="round"
+              >
+                <IonIcon icon={playerIcon(state)} />
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton
+                onClick={() => send("NEXT_PLAY")}
+                disabled={playerDisable(state)}
+                shape="round"
+              >
+                <IonIcon slot="icon-only" icon={playForward} />
+              </IonButton>
+            </IonCol>
+          </IonRow>
         </IonRow>
       </IonGrid>
     </IonContent>
