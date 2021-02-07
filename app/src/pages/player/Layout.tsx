@@ -207,6 +207,7 @@ const Seekbar: React.FC<PlayerStateProps> = ({ state, send }) => {
 
   return (
     <IonRange
+      disabled={!["playing"].some(state.matches)}
       max={musicState.context.duration}
       value={musicState.context.seek}
       mode="md"
@@ -217,8 +218,25 @@ const Seekbar: React.FC<PlayerStateProps> = ({ state, send }) => {
           musicSend({ type: "CHANGE_SEEK", seek });
         }
       }}
-    />
+    >
+      <IonLabel slot="start">{toMMSS(musicState.context.seek)}</IonLabel>
+      <IonLabel slot="end">
+        -{toMMSS(musicState.context.duration - musicState.context.seek)}
+      </IonLabel>
+    </IonRange>
   );
+};
+
+const toMMSS = (duration: number) => {
+  const sec = Math.floor(duration / 1000);
+  const minutes = Math.floor(sec / 60);
+  const seconds = sec - minutes * 60;
+
+  const padding = (num: number) => {
+    return ("0" + num).slice(-2);
+  };
+
+  return padding(minutes) + ":" + padding(seconds);
 };
 
 const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
