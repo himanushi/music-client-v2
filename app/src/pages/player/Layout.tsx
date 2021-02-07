@@ -182,7 +182,7 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
 };
 
 const Seekbar: React.FC<PlayerStateProps> = ({ state, send }) => {
-  const [musicState] = useActor(
+  const [musicState, musicSend] = useActor(
     state.context.musicPlayerRef as SpawnedActorRef<
       MusicPlayerEvent,
       MusicPlayerState
@@ -193,8 +193,14 @@ const Seekbar: React.FC<PlayerStateProps> = ({ state, send }) => {
     <IonRange
       max={musicState.context.duration}
       value={musicState.context.seek}
-      // onIonChange={(e) => console.log(e.detail.value as number)}
-      // onIonBlur={(e) => console.log(e.detail)}
+      mode="md"
+      debounce={100}
+      onIonChange={(e) => {
+        const seek = e.detail.value as number;
+        if (musicState.context.seek !== seek) {
+          musicSend({ type: "CHANGE_SEEK", seek });
+        }
+      }}
     />
   );
 };

@@ -20,6 +20,7 @@ export type PreviewPlayerStateSchema = {
 
 export type PreviewPlayerStateEvent =
   | { type: "SET_TRACK"; track: Track }
+  | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PLAYING" }
@@ -121,6 +122,8 @@ export const PreviewPlayerMachine = Machine<
           }),
         ],
       },
+
+      CHANGE_SEEK: { actions: ["changeSeek"] },
     },
   },
   {
@@ -140,6 +143,12 @@ export const PreviewPlayerMachine = Machine<
       setTrack: assign({
         track: (_, event) => ("track" in event ? event.track : undefined),
       }),
+
+      changeSeek: ({ player }, event) => {
+        if (player && "seek" in event) {
+          player.seek(event.seek / 1000);
+        }
+      },
 
       setPlayer: assign({
         player: ({ track }) => (track ? setPlayer(track) : undefined),

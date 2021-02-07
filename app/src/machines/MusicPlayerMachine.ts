@@ -31,6 +31,7 @@ export type MusicPlayerEvent =
   | { type: "SET_TRACK"; track: Track }
   | { type: "SET_DURATION"; duration: number }
   | { type: "SET_SEEK"; seek: number }
+  | { type: "CHANGE_SEEK"; seek: number }
   | { type: "LOAD" }
   | { type: "PLAY" }
   | { type: "PLAYING" }
@@ -107,6 +108,8 @@ export const MusicPlayerMachine = Machine<
       },
 
       SET_SEEK: { actions: ["setSeek"] },
+
+      CHANGE_SEEK: { actions: ["changeSeekPreview"] },
     },
   },
   {
@@ -152,6 +155,16 @@ export const MusicPlayerMachine = Machine<
       pausePreview: send("PAUSE", { to: "preview" }),
 
       tickPreview: send("TICK", { to: "preview" }),
+
+      changeSeekPreview: send(
+        (_, event) => {
+          if ("seek" in event) {
+            return { type: "CHANGE_SEEK", seek: event.seek };
+          }
+          return { type: "" };
+        },
+        { to: "preview" }
+      ),
     },
   }
 );
