@@ -22,7 +22,6 @@ import ImageCard from "components/cards/ImageCard";
 import SquareImage from "components/SquareImage";
 import useDetailPageSize from "hooks/layouts/useDetailPageSize";
 import {
-  cafe,
   close,
   list,
   musicalNotes,
@@ -75,8 +74,16 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
         </p>
       </IonText>
       <IonButtons slot="end">
-        <FooterPlayButton {...{ state, send }} />
-        <IonButton>
+        <IonButton
+          onClick={() => send("PLAY_OR_PAUSE")}
+          disabled={playerDisable(state)}
+        >
+          <IonIcon slot="icon-only" icon={playerIcon(state)} />
+        </IonButton>
+        <IonButton
+          onClick={() => send("NEXT_PLAY")}
+          disabled={playerDisable(state)}
+        >
           <IonIcon slot="icon-only" icon={playForward} />
         </IonButton>
       </IonButtons>
@@ -84,35 +91,16 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
   );
 };
 
-const FooterPlayButton: React.FC<PlayerStateProps> = ({ state, send }) => {
-  let button = <></>;
-  if (state.matches("idle")) {
-    button = (
-      <IonButton disabled={true}>
-        <IonIcon slot="icon-only" icon={play} />
-      </IonButton>
-    );
-  } else if (state.matches("loading")) {
-    button = (
-      <IonButton disabled={true}>
-        <IonIcon slot="icon-only" icon={cafe} />
-      </IonButton>
-    );
-  } else if (state.matches("playing")) {
-    button = (
-      <IonButton disabled={false}>
-        <IonIcon slot="icon-only" icon={pause} />
-      </IonButton>
-    );
-  } else {
-    button = (
-      <IonButton disabled={false}>
-        <IonIcon slot="icon-only" icon={play} />
-      </IonButton>
-    );
-  }
+const playerDisable = (state: JukeboxState) => {
+  return ["idle", "loading"].some(state.matches);
+};
 
-  return button;
+const playerIcon = (state: JukeboxState) => {
+  if (["playing"].some(state.matches)) {
+    return pause;
+  } else {
+    return play;
+  }
 };
 
 type PlayerProps = {

@@ -44,6 +44,7 @@ export type JukeboxEvent =
   | { type: "SHUFFLE" }
   // Player
   | { type: "PLAY" }
+  | { type: "PLAY_OR_PAUSE" }
   | { type: "NEXT_PLAY" }
   | { type: "PREVIOUS_PLAY" }
   | { type: "PLAYING" }
@@ -104,6 +105,7 @@ export const JukeboxMachine = Machine<
       playing: {
         entry: ["setMediaMetadata"],
         on: {
+          PLAY_OR_PAUSE: { actions: ["pause"] },
           PAUSE: { actions: ["pause"] },
           PAUSED: "paused",
         },
@@ -111,6 +113,7 @@ export const JukeboxMachine = Machine<
 
       paused: {
         on: {
+          PLAY_OR_PAUSE: { actions: ["play"] },
           PLAY: { actions: ["play"] },
           PLAYING: "playing",
         },
