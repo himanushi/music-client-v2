@@ -30,6 +30,7 @@ import {
   play,
   playBack,
   playForward,
+  repeat,
 } from "ionicons/icons";
 import { JukeboxEvent, JukeboxState } from "machines/JukeboxMachine";
 import {
@@ -188,6 +189,19 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
                 shape="round"
               >
                 <IonIcon slot="icon-only" icon={playForward} />
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonRow>
+        <IonRow className="ion-justify-content-center ion-no-padding">
+          <IonRow>
+            <IonCol>
+              <IonButton
+                color={state.context.repeat ? "primary" : "medium"}
+                onClick={() => send("REPEAT")}
+                shape="round"
+              >
+                <IonIcon slot="icon-only" icon={repeat} />
               </IonButton>
             </IonCol>
           </IonRow>

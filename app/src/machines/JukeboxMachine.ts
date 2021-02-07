@@ -50,7 +50,8 @@ export type JukeboxEvent =
   | { type: "PAUSE" }
   | { type: "PAUSED" }
   | { type: "STOP" }
-  | { type: "STOPPED" };
+  | { type: "STOPPED" }
+  | { type: "REPEAT" };
 
 export const JukeboxMachine = Machine<
   JukeboxContext,
@@ -130,6 +131,8 @@ export const JukeboxMachine = Machine<
     on: {
       STOPPED: "stopped",
 
+      REPEAT: { actions: ["repeat"] },
+
       REPLACE_AND_PLAY: {
         actions: ["replaceTracks", "changePlaybackNo", "changeCurrentTrack"],
         target: "loading",
@@ -197,6 +200,8 @@ export const JukeboxMachine = Machine<
         { to: "musicPlayer" }
       ),
 
+      repeat: assign({ repeat: ({ repeat }) => !repeat }),
+
       setMediaMetadata: ({ currentTrack }) => {
         if (navigator.mediaSession) {
           if (currentTrack) {
@@ -224,8 +229,8 @@ export const JukeboxMachine = Machine<
     },
 
     guards: {
-      canNextPlay: ({ tracks, currentPlaybackNo }) =>
-        currentPlaybackNo + 1 !== tracks.length,
+      canNextPlay: ({ repeat, tracks, currentPlaybackNo }) =>
+        repeat || currentPlaybackNo + 1 !== tracks.length,
       canPreviousPlay: ({ currentPlaybackNo }) => currentPlaybackNo !== 0,
     },
   }
