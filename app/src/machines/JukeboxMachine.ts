@@ -1,4 +1,3 @@
-import { inspect } from "@xstate/inspect";
 import { Track } from "graphql/types";
 import {
   MusicPlayerEvent,
@@ -235,7 +234,7 @@ export type JukeboxState = State<
   }
 >;
 
-inspect({ iframe: false });
+// inspect({ iframe: false });
 
 export const playerService = interpret(JukeboxMachine, {
   devTools: process.env.NODE_ENV === "development",
