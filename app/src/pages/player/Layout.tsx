@@ -178,50 +178,57 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
 
   return (
     <IonContent fullscreen scrollX={false} scrollY={false}>
-      <IonGrid>
-        <IonRow className="ion-justify-content-center ion-no-padding">
-          <ImageCard
-            name={state.context.currentTrack?.name || ""}
-            src={state.context.currentTrack?.artworkL?.url || ""}
-            width={imageCardWidth}
-          />
-        </IonRow>
-        <IonRow className="ion-justify-content-center ion-no-padding">
-          <IonLabel>{state.context.currentTrack?.name || ""}</IonLabel>
-        </IonRow>
-        <IonRow className="ion-justify-content-center ion-no-padding">
-          <Seekbar {...{ state, send }} />
-        </IonRow>
-        <IonRow className="ion-justify-content-center ion-no-padding">
-          <IonRow>
-            <IonCol>
-              <IonButton
-                onClick={() => send("PREVIOUS_PLAY")}
-                disabled={playerDisable(state)}
-                fill="clear"
-              >
-                <IonIcon slot="icon-only" icon={playBack} />
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton
-                onClick={() => send("PLAY_OR_PAUSE")}
-                disabled={playerDisable(state)}
-                fill="clear"
-              >
-                <IonIcon slot="icon-only" icon={playerIcon(state)} />
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <IonButton
-                onClick={() => send("NEXT_PLAY")}
-                disabled={playerDisable(state)}
-                fill="clear"
-              >
-                <IonIcon slot="icon-only" icon={playForward} />
-              </IonButton>
-            </IonCol>
-          </IonRow>
+      <IonGrid style={{ height: "100%" }}>
+        <IonRow
+          style={{ height: "100%" }}
+          className="ion-justify-content-center ion-align-items-center"
+        >
+          <IonCol>
+            <IonRow className="ion-justify-content-center ion-no-padding">
+              <ImageCard
+                name={state.context.currentTrack?.name || ""}
+                src={state.context.currentTrack?.artworkL?.url || ""}
+                width={imageCardWidth}
+              />
+            </IonRow>
+            <IonRow className="ion-justify-content-center ion-no-padding">
+              <IonLabel>{state.context.currentTrack?.name || ""}</IonLabel>
+            </IonRow>
+            <IonRow className="ion-justify-content-center ion-no-padding">
+              <Seekbar {...{ state, send }} />
+            </IonRow>
+            <IonRow className="ion-justify-content-center ion-no-padding">
+              <IonRow>
+                <IonCol>
+                  <IonButton
+                    onClick={() => send("PREVIOUS_PLAY")}
+                    disabled={playerDisable(state)}
+                    fill="clear"
+                  >
+                    <IonIcon slot="icon-only" icon={playBack} />
+                  </IonButton>
+                </IonCol>
+                <IonCol>
+                  <IonButton
+                    onClick={() => send("PLAY_OR_PAUSE")}
+                    disabled={playerDisable(state)}
+                    fill="clear"
+                  >
+                    <IonIcon slot="icon-only" icon={playerIcon(state)} />
+                  </IonButton>
+                </IonCol>
+                <IonCol>
+                  <IonButton
+                    onClick={() => send("NEXT_PLAY")}
+                    disabled={playerDisable(state)}
+                    fill="clear"
+                  >
+                    <IonIcon slot="icon-only" icon={playForward} />
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonRow>
+          </IonCol>
         </IonRow>
       </IonGrid>
     </IonContent>
@@ -276,44 +283,49 @@ const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
   };
 
   return (
-    <IonContent fullscreen scrollX={false}>
-      <IonReorderGroup disabled={false} onIonItemReorder={onIonItemReorder}>
-        {state.context.tracks.map((track, index) => {
-          return (
-            <IonItem key={index}>
-              <IonButton
-                onClick={() =>
-                  send({ type: "CHANGE_PLAYBACK_NO", currentPlaybackNo: index })
-                }
-                disabled={playerDisable(state)}
-                fill="clear"
-              >
-                {state.context.currentPlaybackNo === index ? (
-                  <IonIcon
-                    slot="icon-only"
-                    color="warning"
-                    icon={musicalNotes}
+    <IonContent fullscreen scrollX={false} scrollY={false}>
+      <IonContent className="ion-no-padding">
+        <IonReorderGroup disabled={false} onIonItemReorder={onIonItemReorder}>
+          {state.context.tracks.map((track, index) => {
+            return (
+              <IonItem key={index}>
+                <IonButton
+                  onClick={() =>
+                    send({
+                      type: "CHANGE_PLAYBACK_NO",
+                      currentPlaybackNo: index,
+                    })
+                  }
+                  disabled={playerDisable(state)}
+                  fill="clear"
+                >
+                  {state.context.currentPlaybackNo === index ? (
+                    <IonIcon
+                      slot="icon-only"
+                      color="warning"
+                      icon={musicalNotes}
+                    />
+                  ) : (
+                    <IonIcon slot="icon-only" icon={play} />
+                  )}
+                </IonButton>
+                <IonCard
+                  className="ion-no-padding ion-no-margin"
+                  style={{ width: 50, height: 50, margin: "5px" }}
+                >
+                  <SquareImage
+                    width={50}
+                    name={track.name || ""}
+                    src={track.artworkL?.url || undefined}
                   />
-                ) : (
-                  <IonIcon slot="icon-only" icon={play} />
-                )}
-              </IonButton>
-              <IonCard
-                className="ion-no-padding ion-no-margin"
-                style={{ width: 50, height: 50, margin: "5px" }}
-              >
-                <SquareImage
-                  width={50}
-                  name={track.name || ""}
-                  src={track.artworkL?.url || undefined}
-                />
-              </IonCard>
-              <IonLabel>{track.name}</IonLabel>
-              <IonReorder slot="end" />
-            </IonItem>
-          );
-        })}
-      </IonReorderGroup>
+                </IonCard>
+                <IonLabel>{track.name}</IonLabel>
+                <IonReorder slot="end" />
+              </IonItem>
+            );
+          })}
+        </IonReorderGroup>
+      </IonContent>
     </IonContent>
   );
 };
