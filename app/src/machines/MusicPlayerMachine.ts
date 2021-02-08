@@ -111,7 +111,7 @@ export const MusicPlayerMachine = Machine<
     },
     on: {
       SET_TRACK: {
-        actions: ["setTrack", "setDuration", "setTrackToPreview"],
+        actions: ["resetSeek", "setTrack", "setDuration", "setTrackToPreview"],
       },
 
       SET_SEEK: { actions: ["setSeek"] },
@@ -122,7 +122,7 @@ export const MusicPlayerMachine = Machine<
 
       LOAD: { actions: ["loadPreview"], target: "loading" },
 
-      CHANGE_SEEK: { actions: ["changeSeekPreview"] },
+      CHANGE_SEEK: { actions: ["changeSeek", "changeSeekPreview"] },
     },
   },
   {
@@ -151,6 +151,10 @@ export const MusicPlayerMachine = Machine<
       }),
 
       resetSeek: assign({ seek: (_) => 0 }),
+
+      changeSeek: assign({
+        seek: (_, event) => ("seek" in event ? event.seek : 0),
+      }),
 
       ///////// PreviewPlayer /////////
       setTrackToPreview: send(

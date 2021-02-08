@@ -221,7 +221,6 @@ const Seekbar: React.FC<PlayerStateProps> = ({ state, send }) => {
 
   return (
     <IonRange
-      disabled={!["playing"].some(state.matches)}
       max={musicState.context.duration}
       value={musicState.context.seek}
       mode="md"
