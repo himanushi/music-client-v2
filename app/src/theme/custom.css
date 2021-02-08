@@ -1,13 +1,14 @@
 /* ref: https://ionicframework.com/jp/docs/theming/colors#new-color-creator */
 /* color theme ref: https://material.io/resources/color */
-:root,
-body.dark {
-  --ion-color-main: #558b2f;
-  --ion-color-main-rgb: 85, 139, 47;
+
+body.dark,
+:root {
+  --ion-color-main: #1d7874;
+  --ion-color-main-rgb: 29, 120, 116;
   --ion-color-main-contrast: #ffffff;
   --ion-color-main-contrast-rgb: 255, 255, 255;
-  --ion-color-main-shade: #4b7a29;
-  --ion-color-main-tint: #669744;
+  --ion-color-main-shade: #1a6a66;
+  --ion-color-main-tint: #348682;
 }
 
 .ion-color-main {
@@ -19,14 +20,14 @@ body.dark {
   --ion-color-tint: var(--ion-color-main-tint);
 }
 
-:root,
-body.dark {
-  --ion-color-primary: #ef5350;
-  --ion-color-primary-rgb: 239, 83, 80;
+body.dark,
+:root {
+  --ion-color-primary: #eb5e28;
+  --ion-color-primary-rgb: 235, 94, 40;
   --ion-color-primary-contrast: #000000;
   --ion-color-primary-contrast-rgb: 0, 0, 0;
-  --ion-color-primary-shade: #d24946;
-  --ion-color-primary-tint: #f16462;
+  --ion-color-primary-shade: #cf5323;
+  --ion-color-primary-tint: #ed6e3e;
 }
 
 .ion-color-primary {
