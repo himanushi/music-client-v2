@@ -282,11 +282,17 @@ const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
           return (
             <IonItem key={index}>
               <IonButton
-                onClick={() => send("PLAY_OR_PAUSE")}
+                onClick={() =>
+                  send({ type: "CHANGE_PLAYBACK_NO", currentPlaybackNo: index })
+                }
                 disabled={playerDisable(state)}
                 fill="clear"
               >
-                <IonIcon slot="icon-only" icon={playerIcon(state)} />
+                {state.context.currentPlaybackNo === index ? (
+                  <IonIcon slot="icon-only" icon={musicalNotes} />
+                ) : (
+                  <IonIcon slot="icon-only" icon={play} />
+                )}
               </IonButton>
               <IonCard
                 className="ion-no-padding ion-no-margin"

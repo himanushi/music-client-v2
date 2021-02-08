@@ -46,6 +46,7 @@ export type JukeboxEvent =
   // Player
   | { type: "PLAY" }
   | { type: "PLAY_OR_PAUSE" }
+  | { type: "CHANGE_PLAYBACK_NO"; currentPlaybackNo: number }
   | { type: "NEXT_PLAY" }
   | { type: "PREVIOUS_PLAY" }
   | { type: "PLAYING" }
@@ -140,6 +141,11 @@ export const JukeboxMachine = Machine<
 
       REPLACE_AND_PLAY: {
         actions: ["replaceTracks", "changePlaybackNo", "changeCurrentTrack"],
+        target: "loading",
+      },
+
+      CHANGE_PLAYBACK_NO: {
+        actions: ["changePlaybackNo", "changeCurrentTrack"],
         target: "loading",
       },
 
