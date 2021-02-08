@@ -289,7 +289,11 @@ const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
                 fill="clear"
               >
                 {state.context.currentPlaybackNo === index ? (
-                  <IonIcon slot="icon-only" icon={musicalNotes} />
+                  <IonIcon
+                    slot="icon-only"
+                    color="warning"
+                    icon={musicalNotes}
+                  />
                 ) : (
                   <IonIcon slot="icon-only" icon={play} />
                 )}
