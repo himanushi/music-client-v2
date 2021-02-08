@@ -116,7 +116,7 @@ export const MusicPlayerMachine = Machine<
 
       SET_SEEK: { actions: ["setSeek"] },
 
-      STOP: { actions: ["stopPreview"] },
+      STOP: { actions: ["stopPreview", "resetSeek"] },
 
       STOPPED: "stopped",
 

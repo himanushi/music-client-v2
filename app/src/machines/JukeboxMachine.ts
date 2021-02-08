@@ -156,8 +156,12 @@ export const JukeboxMachine = Machine<
           actions: ["previousPlaybackNo", "changeCurrentTrack"],
         },
         {
-          target: "stopped",
-          actions: ["previousPlaybackNo", "changeCurrentTrack"],
+          actions: [
+            "previousPlaybackNo",
+            "changeCurrentTrack",
+            "stop",
+            "setTrack",
+          ],
         },
       ],
     },
