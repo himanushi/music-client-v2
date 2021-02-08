@@ -50,11 +50,17 @@ export const Layout: React.FC<Props> = ({ album }) => {
               key={i}
               track={track}
               onClick={() =>
-                service.send({
-                  type: "REPLACE_AND_PLAY",
-                  tracks: album.tracks as Track[],
-                  currentPlaybackNo: i,
-                })
+                service.send([
+                  {
+                    type: "SET_NAME",
+                    name: album.name,
+                  },
+                  {
+                    type: "REPLACE_AND_PLAY",
+                    tracks: album.tracks as Track[],
+                    currentPlaybackNo: i,
+                  },
+                ])
               }
             />
           ))}

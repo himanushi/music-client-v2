@@ -16,6 +16,7 @@ import {
 } from "xstate";
 
 export type JukeboxContext = {
+  name: string;
   currentPlaybackNo: number;
   tracks: readonly Track[];
   currentTrack?: Track;
@@ -35,6 +36,7 @@ export type JukeboxSchema = {
 
 export type JukeboxEvent =
   // Queue
+  | { type: "SET_NAME"; name: string }
   | {
       type: "REPLACE_AND_PLAY";
       tracks: JukeboxContext["tracks"];
@@ -63,6 +65,7 @@ export const JukeboxMachine = Machine<
     initial: "idle",
 
     context: {
+      name: "",
       currentPlaybackNo: 0,
       tracks: [],
       repeat: false,
@@ -129,6 +132,8 @@ export const JukeboxMachine = Machine<
     },
 
     on: {
+      SET_NAME: { actions: ["setName"] },
+
       STOPPED: "stopped",
 
       REPEAT: { actions: ["repeat"] },
@@ -170,6 +175,10 @@ export const JukeboxMachine = Machine<
     actions: {
       initMusicPlayer: assign({
         musicPlayerRef: (_) => spawn(MusicPlayerMachine, "musicPlayer"),
+      }),
+
+      setName: assign({
+        name: (_, event) => ("name" in event ? event.name : ""),
       }),
 
       replaceTracks: assign({

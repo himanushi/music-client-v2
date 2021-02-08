@@ -7,6 +7,7 @@ import {
   IonContent,
   IonFooter,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonItem,
   IonLabel,
@@ -16,6 +17,7 @@ import {
   IonReorderGroup,
   IonRow,
   IonText,
+  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { useActor } from "@xstate/react";
@@ -126,6 +128,11 @@ const Player: React.FC<PlayerProps> = ({
 
   return (
     <IonModal onDidDismiss={onClose} isOpen={open}>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>{state.context.name}</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       {display}
       <IonFooter>
         <IonToolbar color="main">
@@ -158,6 +165,9 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
             src={state.context.currentTrack?.artworkL?.url || ""}
             width={imageCardWidth}
           />
+        </IonRow>
+        <IonRow className="ion-justify-content-center ion-no-padding">
+          <IonLabel>{state.context.currentTrack?.name || ""}</IonLabel>
         </IonRow>
         <IonRow className="ion-justify-content-center ion-no-padding">
           <Seekbar {...{ state, send }} />
