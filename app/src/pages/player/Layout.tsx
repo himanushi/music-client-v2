@@ -82,12 +82,14 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
         <IonButton
           onClick={() => send("PLAY_OR_PAUSE")}
           disabled={playerDisable(state)}
+          fill="clear"
         >
           <IonIcon slot="icon-only" icon={playerIcon(state)} />
         </IonButton>
         <IonButton
           onClick={() => send("NEXT_PLAY")}
           disabled={playerDisable(state)}
+          fill="clear"
         >
           <IonIcon slot="icon-only" icon={playForward} />
         </IonButton>
@@ -178,7 +180,7 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
               <IonButton
                 onClick={() => send("PREVIOUS_PLAY")}
                 disabled={playerDisable(state)}
-                shape="round"
+                fill="clear"
               >
                 <IonIcon slot="icon-only" icon={playBack} />
               </IonButton>
@@ -187,16 +189,16 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
               <IonButton
                 onClick={() => send("PLAY_OR_PAUSE")}
                 disabled={playerDisable(state)}
-                shape="round"
+                fill="clear"
               >
-                <IonIcon icon={playerIcon(state)} />
+                <IonIcon slot="icon-only" icon={playerIcon(state)} />
               </IonButton>
             </IonCol>
             <IonCol>
               <IonButton
                 onClick={() => send("NEXT_PLAY")}
                 disabled={playerDisable(state)}
-                shape="round"
+                fill="clear"
               >
                 <IonIcon slot="icon-only" icon={playForward} />
               </IonButton>
@@ -209,7 +211,7 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
               <IonButton
                 color={state.context.repeat ? "primary" : "medium"}
                 onClick={() => send("REPEAT")}
-                shape="round"
+                fill="clear"
               >
                 <IonIcon slot="icon-only" icon={repeat} />
               </IonButton>
@@ -274,6 +276,13 @@ const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
         {state.context.tracks.map((track, index) => {
           return (
             <IonItem key={index}>
+              <IonButton
+                onClick={() => send("PLAY_OR_PAUSE")}
+                disabled={playerDisable(state)}
+                fill="clear"
+              >
+                <IonIcon slot="icon-only" icon={playerIcon(state)} />
+              </IonButton>
               <IonCard
                 className="ion-no-padding ion-no-margin"
                 style={{ width: 50, height: 50, margin: "5px" }}

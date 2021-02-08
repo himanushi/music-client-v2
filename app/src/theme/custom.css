@@ -1,11 +1,13 @@
 /* ref: https://ionicframework.com/jp/docs/theming/colors#new-color-creator */
-:root {
-  --ion-color-main: #4ac6d2;
-  --ion-color-main-rgb: 74, 198, 210;
-  --ion-color-main-contrast: #000000;
-  --ion-color-main-contrast-rgb: 0, 0, 0;
-  --ion-color-main-shade: #41aeb9;
-  --ion-color-main-tint: #5cccd7;
+/* color theme ref: https://material.io/resources/color */
+:root,
+body.dark {
+  --ion-color-main: #558b2f;
+  --ion-color-main-rgb: 85, 139, 47;
+  --ion-color-main-contrast: #ffffff;
+  --ion-color-main-contrast-rgb: 255, 255, 255;
+  --ion-color-main-shade: #4b7a29;
+  --ion-color-main-tint: #669744;
 }
 
 .ion-color-main {
@@ -17,40 +19,23 @@
   --ion-color-tint: var(--ion-color-main-tint);
 }
 
-:root {
-  --ion-color-star: #ffd91a;
-  --ion-color-star-rgb: 255, 217, 26;
-  --ion-color-star-contrast: #000000;
-  --ion-color-star-contrast-rgb: 0, 0, 0;
-  --ion-color-star-shade: #e0bf17;
-  --ion-color-star-tint: #ffdd31;
+:root,
+body.dark {
+  --ion-color-primary: #ef5350;
+  --ion-color-primary-rgb: 239, 83, 80;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #d24946;
+  --ion-color-primary-tint: #f16462;
 }
 
-.ion-color-star {
-  --ion-color-base: var(--ion-color-star);
-  --ion-color-base-rgb: var(--ion-color-star-rgb);
-  --ion-color-contrast: var(--ion-color-star-contrast);
-  --ion-color-contrast-rgb: var(--ion-color-star-contrast-rgb);
-  --ion-color-shade: var(--ion-color-star-shade);
-  --ion-color-tint: var(--ion-color-star-tint);
-}
-
-:root {
-  --ion-color-nostar: #ffd91a40;
-  --ion-color-nostar-rgb: 255, 217, 26;
-  --ion-color-nostar-contrast: #000000;
-  --ion-color-nostar-contrast-rgb: 0, 0, 0;
-  --ion-color-nostar-shade: #e0bf1740;
-  --ion-color-nostar-tint: #ffdd3140;
-}
-
-.ion-color-nostar {
-  --ion-color-base: var(--ion-color-nostar);
-  --ion-color-base-rgb: var(--ion-color-nostar-rgb);
-  --ion-color-contrast: var(--ion-color-nostar-contrast);
-  --ion-color-contrast-rgb: var(--ion-color-nostar-contrast-rgb);
-  --ion-color-shade: var(--ion-color-nostar-shade);
-  --ion-color-tint: var(--ion-color-nostar-tint);
+.ion-color-primary {
+  --ion-color-base: var(--ion-color-primary);
+  --ion-color-base-rgb: var(--ion-color-primary-rgb);
+  --ion-color-contrast: var(--ion-color-primary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-primary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-primary-shade);
+  --ion-color-tint: var(--ion-color-primary-tint);
 }
 
 .ripple-parent {
