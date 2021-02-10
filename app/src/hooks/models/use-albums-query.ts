@@ -1,6 +1,6 @@
 import { QueryFunctionOptions } from "@apollo/client";
 import { Album, AlbumsDocument, AlbumsQueryVariables } from "graphql/types";
-import useModelsQuery from "hooks/models/useModelsQuery";
+import useModelsQuery from "hooks/models/use-models-query";
 
 export type TData = {
   albums: Album[];

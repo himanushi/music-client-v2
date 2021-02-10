@@ -6,7 +6,7 @@ import {
   IonList,
   IonPopover,
 } from "@ionic/react";
-import DarkModeSwitch from "components/DarkModeSwitch";
+import DarkModeSwitch from "components/dark-mode-switch";
 import { CurrentUser } from "graphql/types";
 import { personCircle } from "ionicons/icons";
 import React, { useState } from "react";

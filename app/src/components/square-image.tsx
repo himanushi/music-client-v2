@@ -1,5 +1,5 @@
 import { IonIcon, IonSkeletonText } from "@ionic/react";
-import Slot from "components/Slot";
+import Slot from "components/slot";
 import { image } from "ionicons/icons";
 import React from "react";
 

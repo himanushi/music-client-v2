@@ -8,9 +8,9 @@ import {
   IonList,
   IonText,
 } from "@ionic/react";
-import InputItem from "components/InputItem";
-import useInputValue from "hooks/util/useInputValue";
-import { LoginProps } from "pages/login/useController";
+import InputItem from "components/input-item";
+import useInputValue from "hooks/util/use-input-value";
+import { LoginProps } from "pages/login/use-controller";
 import React from "react";
 
 type Props = {

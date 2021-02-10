@@ -1,5 +1,5 @@
 import { IonCard, IonRippleEffect } from "@ionic/react";
-import ImageCardItem from "components/cards/ImageCardItem";
+import ImageCardItem from "components/cards/image-card-item";
 import React from "react";
 import { useHistory } from "react-router";
 

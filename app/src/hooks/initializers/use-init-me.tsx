@@ -1,4 +1,4 @@
-import useMeQuery from "hooks/models/useMeQuery";
+import useMeQuery from "hooks/models/use-me-query";
 import { useLayoutEffect, useState } from "react";
 
 const useInitMe = () => {

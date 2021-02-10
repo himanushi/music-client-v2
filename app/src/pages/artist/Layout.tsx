@@ -1,5 +1,5 @@
 import { IonGrid, IonLabel, IonRow } from "@ionic/react";
-import ImageCard from "components/cards/ImageCard";
+import ImageCard from "components/cards/image-card";
 import { Artist } from "graphql/types";
 import React from "react";
 

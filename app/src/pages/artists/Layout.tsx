@@ -1,7 +1,7 @@
-import ImageCardLink from "components/cards/ImageCardLink";
-import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
+import ImageCardLink from "components/cards/image-card-link";
+import InfiniteList, { hasNext, loadMore } from "components/infinite-list";
 import { Artist } from "graphql/types";
-import useCardImageItemSize from "hooks/layouts/useCardImageItemSize";
+import useCardImageItemSize from "hooks/layouts/use-card-image-item-size";
 import React from "react";
 
 type Props = {

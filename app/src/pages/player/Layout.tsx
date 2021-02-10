@@ -21,9 +21,9 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useActor } from "@xstate/react";
-import ImageCard from "components/cards/ImageCard";
-import SquareImage from "components/SquareImage";
-import useDetailPageSize from "hooks/layouts/useDetailPageSize";
+import ImageCard from "components/cards/image-card";
+import SquareImage from "components/square-image";
+import useDetailPageSize from "hooks/layouts/use-detail-page-size";
 import {
   close,
   list,
@@ -34,11 +34,11 @@ import {
   playForward,
   repeat,
 } from "ionicons/icons";
-import { JukeboxEvent, JukeboxState } from "machines/JukeboxMachine";
+import { JukeboxEvent, JukeboxState } from "machines/jukebox-machine";
 import {
   MusicPlayerEvent,
   MusicPlayerState,
-} from "machines/MusicPlayerMachine";
+} from "machines/music-player-machine";
 import React, { useState } from "react";
 import { PayloadSender, SpawnedActorRef } from "xstate";
 

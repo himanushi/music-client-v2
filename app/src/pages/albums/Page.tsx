@@ -1,9 +1,9 @@
 import { AlbumsQueryVariables } from "graphql/types";
-import buildParameters from "lib/buildParameters";
-import { Layout, SearchBar } from "pages/albums/Layout";
-import useController from "pages/albums/useController";
-import { Error } from "pages/DefaultPage";
-import { Layout as MainLayout } from "pages/main/Layout";
+import buildParameters from "lib/build-parameters";
+import { Layout, SearchBar } from "pages/albums/layout";
+import useController from "pages/albums/use-controller";
+import { Error } from "pages/default-page";
+import { Layout as MainLayout } from "pages/main/layout";
 import React from "react";
 import { useHistory, useLocation } from "react-router";
 

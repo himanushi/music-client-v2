@@ -9,11 +9,11 @@ import {
   IonRow,
   IonSkeletonText,
 } from "@ionic/react";
-import ImageCard from "components/cards/ImageCard";
+import ImageCard from "components/cards/image-card";
 import { Album, Track } from "graphql/types";
-import useDetailPageSize from "hooks/layouts/useDetailPageSize";
+import useDetailPageSize from "hooks/layouts/use-detail-page-size";
 import { ellipsisVertical, play } from "ionicons/icons";
-import { PlayerContext } from "machines/JukeboxMachine";
+import { PlayerContext } from "machines/jukebox-machine";
 import React, { useContext } from "react";
 
 type Props = {

@@ -1,4 +1,4 @@
-import useAlbumQuery from "hooks/models/useAlbumQuery";
+import useAlbumQuery from "hooks/models/use-album-query";
 
 type Props = {
   id: string;

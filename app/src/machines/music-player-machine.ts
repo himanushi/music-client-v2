@@ -3,7 +3,7 @@ import {
   PreviewPlayerMachine,
   PreviewPlayerState,
   PreviewPlayerStateEvent,
-} from "machines/PreviewPlayerMachine";
+} from "machines/preview-player-machine";
 import { Machine, SpawnedActorRef, State, assign, send, spawn } from "xstate";
 import { sendParent } from "xstate/lib/actions";
 

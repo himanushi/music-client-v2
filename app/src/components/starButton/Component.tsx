@@ -1,4 +1,4 @@
-import { StarFabButton } from "components/starButton/Layout";
+import { StarFabButton } from "components/starButton/layout";
 import React, { useState } from "react";
 
 const StarButton = (props: { id: string; active: boolean }) => {

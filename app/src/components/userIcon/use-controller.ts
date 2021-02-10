@@ -1,4 +1,4 @@
-import useMeQuery from "hooks/models/useMeQuery";
+import useMeQuery from "hooks/models/use-me-query";
 
 const useController = () => {
   const { data, loading, error } = useMeQuery();

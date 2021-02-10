@@ -1,9 +1,9 @@
 import { IonButton, IonIcon, IonSearchbar, IonToolbar } from "@ionic/react";
-import ImageCardLink from "components/cards/ImageCardLink";
-import InfiniteList, { hasNext, loadMore } from "components/InfiniteList";
+import ImageCardLink from "components/cards/image-card-link";
+import InfiniteList, { hasNext, loadMore } from "components/infinite-list";
 import { Album, AlbumsQueryVariables } from "graphql/types";
 import * as H from "history";
-import useCardImageItemSize from "hooks/layouts/useCardImageItemSize";
+import useCardImageItemSize from "hooks/layouts/use-card-image-item-size";
 import { ellipsisVertical } from "ionicons/icons";
 import React, { useState } from "react";
 

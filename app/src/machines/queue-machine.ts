@@ -1,5 +1,5 @@
 import { Track } from "graphql/types";
-import { JukeboxContext } from "machines/JukeboxMachine";
+import { JukeboxContext } from "machines/jukebox-machine";
 import { Machine, State, assign } from "xstate";
 
 export type QueueContext = {

@@ -1,5 +1,5 @@
 import { IonButton, IonIcon } from "@ionic/react";
-import useDarkMode from "hooks/util/useDarkMode";
+import useDarkMode from "hooks/util/use-dark-mode";
 import { moon, sunny } from "ionicons/icons";
 import React from "react";
 

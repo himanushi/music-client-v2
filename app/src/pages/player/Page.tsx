@@ -1,5 +1,5 @@
-import { PlayerFooter } from "pages/player/Layout";
-import useController from "pages/player/useController";
+import { PlayerFooter } from "pages/player/layout";
+import useController from "pages/player/use-controller";
 import React from "react";
 
 export const PlayerPage: React.FC = () => {

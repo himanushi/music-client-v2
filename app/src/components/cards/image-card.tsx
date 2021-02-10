@@ -1,5 +1,5 @@
 import { IonCard } from "@ionic/react";
-import SquareImage from "components/SquareImage";
+import SquareImage from "components/square-image";
 import React from "react";
 
 const ImageCard = ({

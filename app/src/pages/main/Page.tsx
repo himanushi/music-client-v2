@@ -18,9 +18,9 @@ import "theme/custom.css";
 import { ApolloProvider } from "@apollo/client";
 import { IonApp, IonLoading, createAnimation, setupConfig } from "@ionic/react";
 import client from "graphql/client";
-import { PlayerContext, playerService } from "machines/JukeboxMachine";
-import Routing from "pages/main/Routing";
-import useController from "pages/main/useController";
+import { PlayerContext, playerService } from "machines/jukebox-machine";
+import Routing from "pages/main/routing";
+import useController from "pages/main/use-controller";
 import React, { memo } from "react";
 
 setupConfig({

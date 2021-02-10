@@ -1,4 +1,4 @@
-import useArtistQuery from "hooks/models/useArtistQuery";
+import useArtistQuery from "hooks/models/use-artist-query";
 
 type Props = {
   id: string;

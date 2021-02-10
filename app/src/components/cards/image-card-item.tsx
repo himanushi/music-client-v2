@@ -1,5 +1,5 @@
-import CardTitle from "components/cards/CardTitle";
-import SquareImage from "components/SquareImage";
+import CardTitle from "components/cards/card-title";
+import SquareImage from "components/square-image";
 import React from "react";
 
 const ImageCardItem = ({

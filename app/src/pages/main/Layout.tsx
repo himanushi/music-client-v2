@@ -14,8 +14,8 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { home } from "ionicons/icons";
-import { Header } from "pages/header/Page";
-import { PlayerPage } from "pages/player/Page";
+import { Header } from "pages/header/page";
+import { PlayerPage } from "pages/player/page";
 import React, { memo } from "react";
 
 type Props = {

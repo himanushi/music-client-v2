@@ -1,8 +1,8 @@
 import { IonContent } from "@ionic/react";
-import { Layout } from "pages/artist/Layout";
-import useController from "pages/artist/useController";
-import { Error } from "pages/DefaultPage";
-import { Layout as MainLayout } from "pages/main/Layout";
+import { Layout } from "pages/artist/layout";
+import useController from "pages/artist/use-controller";
+import { Error } from "pages/default-page";
+import { Layout as MainLayout } from "pages/main/layout";
 import React from "react";
 import { RouteComponentProps } from "react-router";
 

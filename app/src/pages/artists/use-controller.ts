@@ -1,4 +1,4 @@
-import useArtistsQuery from "hooks/models/useArtistsQuery";
+import useArtistsQuery from "hooks/models/use-artists-query";
 
 const limit = 50;
 

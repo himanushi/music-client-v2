@@ -1,6 +1,6 @@
 import { QueryFunctionOptions } from "@apollo/client";
 import { AlbumsCountDocument, AlbumsCountQueryVariables } from "graphql/types";
-import useModelsQuery from "hooks/models/useModelsQuery";
+import useModelsQuery from "hooks/models/use-models-query";
 
 export type TData = {
   albumsCount: number;

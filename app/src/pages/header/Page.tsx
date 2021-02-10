@@ -1,4 +1,4 @@
-import { MemoizedHeader, MenuBar } from "pages/header/Layout";
+import { MemoizedHeader, MenuBar } from "pages/header/layout";
 import React from "react";
 
 type Props = {

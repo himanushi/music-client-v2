@@ -1,4 +1,4 @@
-import useInitializer from "hooks/initializers/useInitializer";
+import useInitializer from "hooks/initializers/use-initializer";
 
 const useController = () => {
   const initialized = useInitializer();

@@ -1,8 +1,8 @@
-import useController from "pages/login/useController";
-import { Layout as Main } from "pages/main/Layout";
+import useController from "pages/login/use-controller";
+import { Layout as Main } from "pages/main/layout";
 import React from "react";
 
-import { Layout } from "./Layout";
+import { Layout } from "./layout";
 
 export const LoginPage: React.FC = React.memo(() => {
   const { login, error } = useController();

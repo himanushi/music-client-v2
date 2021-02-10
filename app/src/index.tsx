@@ -1,4 +1,4 @@
-import { MainPage } from "pages/main/Page";
+import { MainPage } from "pages/main/page";
 import React from "react";
 import ReactDOM from "react-dom";
 

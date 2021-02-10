@@ -1,6 +1,6 @@
 import { QueryFunctionOptions } from "@apollo/client";
 import { Artist, ArtistsDocument, ArtistsQueryVariables } from "graphql/types";
-import useModelsQuery from "hooks/models/useModelsQuery";
+import useModelsQuery from "hooks/models/use-models-query";
 
 export type TData = {
   artists: Artist[];

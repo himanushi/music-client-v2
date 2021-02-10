@@ -1,7 +1,7 @@
-import { Layout } from "pages/artists/Layout";
-import useController from "pages/artists/useController";
-import { Error } from "pages/DefaultPage";
-import { Layout as MainLayout } from "pages/main/Layout";
+import { Layout } from "pages/artists/layout";
+import useController from "pages/artists/use-controller";
+import { Error } from "pages/default-page";
+import { Layout as MainLayout } from "pages/main/layout";
 import React from "react";
 
 export const ArtistsPage: React.FC = () => {

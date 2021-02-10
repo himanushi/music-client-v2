@@ -1,11 +1,11 @@
 import { IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { AlbumPage } from "pages/album/Page";
-import { MemorizedAlbumsPage } from "pages/albums/Page";
-import { ArtistPage } from "pages/artist/Page";
-import { ArtistsPage } from "pages/artists/Page";
-import { LoginPage } from "pages/login/Page";
-import { MenuList } from "pages/main/Layout";
+import { AlbumPage } from "pages/album/page";
+import { MemorizedAlbumsPage } from "pages/albums/page";
+import { ArtistPage } from "pages/artist/page";
+import { ArtistsPage } from "pages/artists/page";
+import { LoginPage } from "pages/login/page";
+import { MenuList } from "pages/main/layout";
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 

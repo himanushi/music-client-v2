@@ -3,7 +3,7 @@ import {
   MusicPlayerEvent,
   MusicPlayerMachine,
   MusicPlayerState,
-} from "machines/MusicPlayerMachine";
+} from "machines/music-player-machine";
 import React from "react";
 import {
   Machine,

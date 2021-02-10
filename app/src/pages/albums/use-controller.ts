@@ -1,6 +1,6 @@
 import { Album, AlbumsQueryVariables } from "graphql/types";
-import useAlbumsCountQuery from "hooks/models/useAlbumsCountQuery";
-import useAlbumsQuery from "hooks/models/useAlbumsQuery";
+import useAlbumsCountQuery from "hooks/models/use-albums-count-query";
+import useAlbumsQuery from "hooks/models/use-albums-query";
 import { useState } from "react";
 
 const limit = 50;

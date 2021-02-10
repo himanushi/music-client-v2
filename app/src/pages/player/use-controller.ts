@@ -1,5 +1,5 @@
 import { useService } from "@xstate/react";
-import { PlayerContext } from "machines/JukeboxMachine";
+import { PlayerContext } from "machines/jukebox-machine";
 import { useContext } from "react";
 
 const useController = () => {

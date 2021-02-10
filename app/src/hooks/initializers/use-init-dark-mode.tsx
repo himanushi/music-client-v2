@@ -1,4 +1,4 @@
-import useDarkMode from "hooks/util/useDarkMode";
+import useDarkMode from "hooks/util/use-dark-mode";
 import { cookie } from "lib/cookie";
 import { useLayoutEffect, useState } from "react";
 
