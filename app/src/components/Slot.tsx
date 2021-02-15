@@ -9,7 +9,7 @@ const Slot = ({
 }: {
   item: React.ReactNode;
   layout: React.ReactNode;
-  center: boolean;
+  center?: boolean;
   itemWidth?: number;
   itemHeight?: number;
 }) => {
