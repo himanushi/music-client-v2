@@ -9,9 +9,10 @@ import {
   IonSearchbar,
   IonToolbar,
 } from "@ionic/react";
-import ImageCardItem from "components/cards/image-card-item";
+import CardTitle from "components/cards/card-title";
 import InfiniteList, { hasNext, loadMore } from "components/infinite-list";
 import Slot from "components/slot";
+import SquareImage from "components/square-image";
 import { Album, AlbumsQueryVariables } from "graphql/types";
 import * as H from "history";
 import useCardImageItemSize from "hooks/layouts/use-card-image-item-size";
@@ -99,15 +100,18 @@ const Item = React.memo((props: ItemProps) => {
       style={{ width: props.width, cursor: "pointer" }}
     >
       <Slot
+        bottom={5}
+        left={3}
         layout={
-          <ImageCardItem
+          <SquareImage
             name={props.album.name}
-            src={props.album.artworkM.url ?? ""}
+            src={props.album.artworkM.url}
             width={props.width}
           />
         }
         item={item}
       />
+      <CardTitle title={props.album.name} />
       <IonRippleEffect></IonRippleEffect>
     </IonCard>
   );

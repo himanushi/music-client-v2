@@ -9,7 +9,7 @@ const SquareImage = ({
   width,
 }: {
   name: string;
-  src?: string;
+  src?: string | null;
   width: number;
 }) => {
   if (src) {

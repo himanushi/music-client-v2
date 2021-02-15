@@ -6,12 +6,20 @@ const Slot = ({
   center = false,
   itemWidth,
   itemHeight,
+  top,
+  bottom,
+  left,
+  right,
 }: {
   item: React.ReactNode;
   layout: React.ReactNode;
   center?: boolean;
   itemWidth?: number;
   itemHeight?: number;
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
 }) => {
   let style: CSSProperties = { position: "absolute" };
 
@@ -24,6 +32,11 @@ const Slot = ({
       height: itemHeight,
     };
   }
+
+  if (top !== undefined) style = { ...style, top };
+  if (bottom !== undefined) style = { ...style, bottom };
+  if (left !== undefined) style = { ...style, left };
+  if (right !== undefined) style = { ...style, right };
 
   return (
     <div style={{ position: "relative" }}>
