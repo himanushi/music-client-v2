@@ -13,10 +13,13 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { home } from "ionicons/icons";
+import { useService } from "@xstate/react";
+import { home, musicalNotes } from "ionicons/icons";
+import { PlayerContext } from "machines/jukebox-machine";
 import { Header } from "pages/header/page";
+import { Player } from "pages/player/layout";
 import { PlayerPage } from "pages/player/page";
-import React, { memo } from "react";
+import React, { memo, useContext, useState } from "react";
 
 type Props = {
   header?: JSX.Element;
@@ -44,14 +47,14 @@ export const MenuList = () => (
   <IonMenu content-id="main-content">
     <IonHeader>
       <IonToolbar color="main">
-        <IonTitle>Menu</IonTitle>
+        <IonTitle>メニュー</IonTitle>
       </IonToolbar>
     </IonHeader>
 
     <IonContent scrollX={false} scrollY={false}>
       <IonList>
         <IonListHeader>検索</IonListHeader>
-        <IonMenuToggle auto-hide="false">
+        <IonMenuToggle>
           <IonItem button routerLink="/artists">
             <IonIcon slot="start" icon={home}></IonIcon>
             <IonLabel>アーティスト</IonLabel>
@@ -64,7 +67,8 @@ export const MenuList = () => (
       </IonList>
       <IonList>
         <IonListHeader>ユーザー</IonListHeader>
-        <IonMenuToggle auto-hide="false">
+        <PlayerMenu />
+        <IonMenuToggle>
           <IonItem button routerLink="/login">
             <IonIcon slot="start" icon={home}></IonIcon>
             <IonLabel>ログイン</IonLabel>
@@ -74,4 +78,23 @@ export const MenuList = () => (
     </IonContent>
   </IonMenu>
 );
+
 export const MemorizedMenuList = memo(MenuList);
+
+const PlayerMenu = () => {
+  const service = useContext(PlayerContext);
+  const [state, send] = useService(service);
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <IonMenuToggle>
+        <IonItem button onClick={() => setOpen(true)}>
+          <IonIcon slot="start" icon={musicalNotes}></IonIcon>
+          <IonLabel>プレイヤー</IonLabel>
+        </IonItem>
+      </IonMenuToggle>
+      <Player {...{ open, setOpen, state, send }} />
+    </>
+  );
+};

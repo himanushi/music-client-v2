@@ -53,19 +53,21 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
   return (
     <IonToolbar style={{ height: 56 }} color="main">
       <Player {...{ open, setOpen, state, send }} />
-      <IonButtons slot="start">
-        <IonButton
-          disabled={state.matches("idle")}
-          style={{ height: 50 }}
-          onClick={() => setOpen(true)}
-        >
-          <ImageCard
-            name={state.context.currentTrack?.name || ""}
-            src={state.context.currentTrack?.artworkL?.url || undefined}
-            width={50}
-          />
-        </IonButton>
-      </IonButtons>
+      {!state.matches("idle") && (
+        <IonButtons slot="start">
+          <IonButton
+            disabled={state.matches("idle")}
+            style={{ height: 50 }}
+            onClick={() => setOpen(true)}
+          >
+            <ImageCard
+              name={state.context.currentTrack?.name || ""}
+              src={state.context.currentTrack?.artworkL?.url || undefined}
+              width={50}
+            />
+          </IonButton>
+        </IonButtons>
+      )}
       <IonText>
         <p
           style={{
@@ -115,7 +117,7 @@ type PlayerProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 } & PlayerStateProps;
 
-const Player: React.FC<PlayerProps> = ({
+export const Player: React.FC<PlayerProps> = ({
   open,
   setOpen,
   state,
