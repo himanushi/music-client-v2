@@ -40,8 +40,8 @@ const Slot = ({
 
   return (
     <div style={{ position: "relative" }}>
-      <div style={style}>{item}</div>
       <div>{layout}</div>
+      <div style={style}>{item}</div>
     </div>
   );
 };

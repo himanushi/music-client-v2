@@ -10,6 +10,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import CardTitle from "components/cards/card-title";
+import FavoriteComponent from "components/favorite-icon/component";
 import InfiniteList, { hasNext, loadMore } from "components/infinite-list";
 import Slot from "components/slot";
 import SquareImage from "components/square-image";
@@ -83,7 +84,7 @@ type ItemProps = {
 const Item = React.memo((props: ItemProps) => {
   const history = useHistory();
 
-  const item = (
+  const services = (
     <IonGrid className="ion-no-padding">
       <IonRow>
         {props.album.appleMusicAlbum && <AppleMusic />}
@@ -100,16 +101,23 @@ const Item = React.memo((props: ItemProps) => {
       style={{ width: props.width, cursor: "pointer" }}
     >
       <Slot
-        bottom={5}
-        left={3}
+        item={<FavoriteComponent />}
+        top={5}
+        right={5}
         layout={
-          <SquareImage
-            name={props.album.name}
-            src={props.album.artworkM.url}
-            width={props.width}
+          <Slot
+            item={services}
+            bottom={5}
+            left={3}
+            layout={
+              <SquareImage
+                name={props.album.name}
+                src={props.album.artworkM.url}
+                width={props.width}
+              />
+            }
           />
         }
-        item={item}
       />
       <CardTitle title={props.album.name} />
       <IonRippleEffect></IonRippleEffect>
