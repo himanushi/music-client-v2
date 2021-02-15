@@ -23,9 +23,11 @@ const SquareImage = ({
   } else {
     return (
       <Slot
-        put={<IonIcon size="large" icon={image} />}
+        item={<IonIcon size="large" icon={image} />}
         layout={<IonSkeletonText style={{ width, height: width }} />}
         center={true}
+        itemWidth={32}
+        itemHeight={32}
       />
     );
   }

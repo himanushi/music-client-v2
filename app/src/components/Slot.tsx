@@ -1,42 +1,33 @@
-import React, { CSSProperties, useCallback, useRef, useState } from "react";
+import React, { CSSProperties } from "react";
 
-// Shadow CSS により div が強制的に block 要素になるため仕方なくサイズを指定する
 const Slot = ({
-  put,
+  item,
   layout,
-  center,
+  center = false,
+  itemWidth,
+  itemHeight,
 }: {
-  put: React.ReactNode;
+  item: React.ReactNode;
   layout: React.ReactNode;
   center: boolean;
+  itemWidth?: number;
+  itemHeight?: number;
 }) => {
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
+  let style: CSSProperties = { position: "absolute" };
 
-  const div = useCallback((node) => {
-    if (node !== null && node.children[0]) {
-      setHeight(node.children[0].clientHeight);
-      setWidth(node.children[0].clientWidth);
-    }
-  }, []);
-
-  let defaultStyle: CSSProperties = {
-    position: "absolute",
-    height,
-    width,
-    display: "inline",
-  };
-
-  if (center) {
-    defaultStyle["margin"] = "auto";
-    defaultStyle["inset"] = 0;
+  if (center && itemWidth && itemHeight) {
+    style = {
+      ...style,
+      margin: "auto",
+      inset: 0,
+      width: itemWidth,
+      height: itemHeight,
+    };
   }
 
   return (
     <div style={{ position: "relative" }}>
-      <div style={defaultStyle} ref={div}>
-        {put}
-      </div>
+      <div style={style}>{item}</div>
       <div>{layout}</div>
     </div>
   );
