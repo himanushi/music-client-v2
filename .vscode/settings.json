@@ -1,25 +1,26 @@
 {
+  // eslint 設定
   "eslint.alwaysShowStatus": true,
   "eslint.nodePath": "app/node_modules",
   "eslint.workingDirectories": ["./app"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
 
-  "[javascript]": {
-    "editor.formatOnSave": false
-  },
+  // prettier 有効
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // eslint 有効
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
 
-  "files.autoSave": "onFocusChange",
-
-  "cSpell.words": [
-    "browserslist",
-    "cond",
-    "ionicons",
-    "xstate"
-  ],
+  // スペルミスチェック
+  "cSpell.words": ["browserslist", "cond", "ionicons", "xstate"],
   "cSpell.allowCompoundWords": true,
   "cSpell.ignoreRegExpList": ["[０-９Ａ-Ｚａ-ｚぁ-んァ-ヶ亜-熙纊-黑]+"]
 }

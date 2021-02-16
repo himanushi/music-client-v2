@@ -1,3 +1,14 @@
 {
-  "extends" : ["react-app", "eslint:all"]
+  "extends": [
+    "eslint:all",
+    "react-app",
+    "prettier",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "plugins": ["import"],
+  "rules": {
+    "sort-imports": 0,
+    "import/order": [2, { "alphabetize": { "order": "asc" } }]
+  }
 }
