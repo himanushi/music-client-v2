@@ -8,6 +8,7 @@
   ],
   "plugins": ["import"],
   "rules": {
+    "one-var": "off",
     "sort-imports": 0,
     "import/order": [2, { "alphabetize": { "order": "asc" } }]
   }
