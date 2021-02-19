@@ -7,7 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import UserIcon from "components/userIcon/component";
+import UserIcon from "components/user-icon/component";
 import { menu } from "ionicons/icons";
 import React, { memo } from "react";
 

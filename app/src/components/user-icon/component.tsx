@@ -1,5 +1,5 @@
-import { Layout } from "components/userIcon/layout";
-import useController from "components/userIcon/use-controller";
+import { Layout } from "components/user-icon/layout";
+import useController from "components/user-icon/use-controller";
 import React from "react";
 
 const Component: React.FC = () => {
