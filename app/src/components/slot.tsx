@@ -21,18 +21,18 @@ const Slot = ({
   left?: number;
   right?: number;
 }) => {
-  let style: CSSProperties = { position: "absolute" };
+  let style: CSSProperties = { lineHeight: "0px", position: "absolute" };
 
-  if (center && itemWidth && itemHeight) {
+  if (center) {
     style = {
       ...style,
-      height: itemHeight,
       inset: 0,
       margin: "auto",
-      width: itemWidth,
     };
   }
 
+  if (itemHeight !== undefined) style = { ...style, height: itemHeight };
+  if (itemWidth !== undefined) style = { ...style, width: itemWidth };
   if (top !== undefined) style = { ...style, top };
   if (bottom !== undefined) style = { ...style, bottom };
   if (left !== undefined) style = { ...style, left };
@@ -40,7 +40,7 @@ const Slot = ({
 
   return (
     <div style={{ position: "relative" }}>
-      <div>{layout}</div>
+      <div style={{ lineHeight: "0px" }}>{layout}</div>
       <div style={style}>{item}</div>
     </div>
   );
