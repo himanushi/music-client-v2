@@ -1,9 +1,13 @@
-import { IonIcon } from "@ionic/react";
-import { heart } from "ionicons/icons";
 import React from "react";
+import { Favorite, FavoriteOutline } from "./layout";
+import useController from "./use-controller";
 
-const FavoriteComponent = React.memo(() => (
-  <IonIcon style={{ fontSize: 25 }} color="favorite" icon={heart} />
-));
+const FavoriteComponent = ({ id }: { id: string }) => {
+  const { ids } = useController();
+  if (ids.length === 0 || !ids.includes(id)) {
+    return <FavoriteOutline />;
+  }
+  return <Favorite id={id} />;
+};
 
 export default FavoriteComponent;

@@ -103,14 +103,14 @@ const Item = React.memo((props: ItemProps) => {
       style={{ cursor: "pointer", width: props.width }}
     >
       <Slot
-        item={<FavoriteComponent />}
+        item={<FavoriteComponent id={props.album.id} />}
         top={5}
         right={5}
         layout={
           <Slot
             item={services}
             bottom={5}
-            left={3}
+            left={5}
             layout={
               <SquareImage
                 name={props.album.name}
@@ -127,20 +127,25 @@ const Item = React.memo((props: ItemProps) => {
   );
 });
 
-const AppleMusic = () => (
-  <IonCol>
-    <MusicService alphabet="A" color="#ff2f56" />
-  </IonCol>
+const MusicServiceCol = ({ children }: { children: JSX.Element }) => (
+  <IonCol style={{ padding: "1px" }}>{children}</IonCol>
 );
+
+const AppleMusic = () => (
+  <MusicServiceCol>
+    <MusicService alphabet="A" color="#ff2f56" />
+  </MusicServiceCol>
+);
+
 const ItunesMusic = () => (
-  <IonCol>
+  <MusicServiceCol>
     <MusicService alphabet="iT" color="#0070c9" />
-  </IonCol>
+  </MusicServiceCol>
 );
 const Spotify = () => (
-  <IonCol>
+  <MusicServiceCol>
     <MusicService alphabet="S" color="#1DB954" />
-  </IonCol>
+  </MusicServiceCol>
 );
 
 const musicServiceIconStyle = {
