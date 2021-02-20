@@ -4,36 +4,40 @@ const limit = 50;
 
 const useController = () => {
   const { data, loading, error, fetchMore } = useArtistsQuery({
-    variables: { cursor: { limit } },
     fetchPolicy: "cache-and-network",
+    variables: { cursor: { limit } },
   });
 
   const hasNext = () => true;
 
   return {
     artists: data?.artists,
-    loading,
     error,
-    loadMore: buildLoadMore(fetchMore),
     hasNext,
+    loadMore: buildLoadMore(fetchMore),
+    loading,
   };
 };
 
 export default useController;
 
-const buildLoadMore = (fetchMore: any) => {
-  return (rowIndex: number, rowCount: number, itemCount: number) => {
-    if (rowIndex === rowCount) {
-      return fetchMore({
-        variables: {
-          cursor: {
-            offset: itemCount,
-            limit,
-          },
+const buildLoadMore = (fetchMore: any) => (
+  rowIndex: number,
+  rowCount: number,
+  itemCount: number
+) => {
+  if (rowIndex === rowCount) {
+    return fetchMore({
+      variables: {
+        cursor: {
+          limit,
+          offset: itemCount,
         },
-      });
-    }
+      },
+    });
+  }
 
-    return new Promise(() => {});
-  };
+  return new Promise(() => {
+    // 何もしない
+  });
 };

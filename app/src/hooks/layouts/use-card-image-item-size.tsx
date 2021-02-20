@@ -6,7 +6,7 @@ const useCardImageItemSize = () => {
   const parentWidth = cardWidth + 23;
   const cardHeight = 200;
 
-  return { cardWidth, parentWidth, cardHeight };
+  return { cardHeight, cardWidth, parentWidth };
 };
 
 export default useCardImageItemSize;

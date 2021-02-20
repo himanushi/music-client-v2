@@ -26,12 +26,12 @@ export const Layout: React.FC<Props> = ({ album }) => {
 
   return (
     <IonGrid>
-      {/* album image */}
+      {/* Album image */}
       <IonRow className="ion-justify-content-center ion-no-padding">
         <Image album={album} width={imageCardWidth} />
       </IonRow>
 
-      {/* album info */}
+      {/* Album info */}
       <IonRow className="ion-align-items-end ion-justify-content-center">
         <IonLabel>{album.name}</IonLabel>
       </IonRow>
@@ -42,23 +42,23 @@ export const Layout: React.FC<Props> = ({ album }) => {
         </IonLabel>
       </IonRow>
 
-      {/* tracks */}
+      {/* Tracks */}
       <IonRow className="ion-justify-content-center ion-no-padding">
         <IonList style={{ width: contentMaxWidth }}>
-          {album.tracks.map((track, i) => (
+          {album.tracks.map((track, index) => (
             <TrackItem
-              key={i}
+              key={index}
               track={track}
               onClick={() =>
                 service.send([
                   {
-                    type: "SET_NAME",
                     name: album.name,
+                    type: "SET_NAME",
                   },
                   {
-                    type: "REPLACE_AND_PLAY",
+                    currentPlaybackNo: index,
                     tracks: album.tracks as Track[],
-                    currentPlaybackNo: i,
+                    type: "REPLACE_AND_PLAY",
                   },
                 ])
               }
@@ -76,17 +76,17 @@ export const Loading: React.FC = () => {
 
   return (
     <IonGrid>
-      {/* album image */}
+      {/* Album image */}
       <IonRow className="ion-justify-content-center ion-no-padding">
         <IonCard>
           <IonSkeletonText
             animated={animated}
-            style={{ width: imageCardWidth, height: imageCardWidth }}
+            style={{ height: imageCardWidth, width: imageCardWidth }}
           />
         </IonCard>
       </IonRow>
 
-      {/* album info */}
+      {/* Album info */}
       <IonRow className="ion-align-items-end ion-justify-content-center">
         <IonSkeletonText
           animated={animated}
@@ -101,11 +101,11 @@ export const Loading: React.FC = () => {
         />
       </IonRow>
 
-      {/* tracks */}
+      {/* Tracks */}
       <IonRow className="ion-justify-content-center ion-no-padding">
         <IonList style={{ width: contentMaxWidth }}>
-          {[...Array(10)].map((_, i) => (
-            <IonItem key={i}>
+          {[...Array(10)].map((_, index) => (
+            <IonItem key={index}>
               <IonSkeletonText animated={animated} />
             </IonItem>
           ))}
@@ -115,28 +115,24 @@ export const Loading: React.FC = () => {
   );
 };
 
-const Image = (props: { album: Album; width: number }) => {
-  return (
-    <ImageCard
-      name={props.album.name}
-      src={props.album.artworkL.url as string | undefined}
-      width={props.width}
-    />
-  );
-};
+const Image = (props: { album: Album; width: number }) => (
+  <ImageCard
+    name={props.album.name}
+    src={props.album.artworkL.url as string | undefined}
+    width={props.width}
+  />
+);
 
-const TrackItem = (props: { track: Track; onClick: any }) => {
-  return (
-    <IonItem>
-      <IonButton fill="clear" onClick={props.onClick}>
-        <IonIcon slot="icon-only" size="small" icon={play} />
-      </IonButton>
+const TrackItem = (props: { track: Track; onClick: any }) => (
+  <IonItem>
+    <IonButton fill="clear" onClick={props.onClick}>
+      <IonIcon slot="icon-only" size="small" icon={play} />
+    </IonButton>
 
-      <IonLabel>{props.track.name}</IonLabel>
+    <IonLabel>{props.track.name}</IonLabel>
 
-      <IonButton slot="end" fill="clear">
-        <IonIcon slot="icon-only" size="small" icon={ellipsisVertical} />
-      </IonButton>
-    </IonItem>
-  );
-};
+    <IonButton slot="end" fill="clear">
+      <IonIcon slot="icon-only" size="small" icon={ellipsisVertical} />
+    </IonButton>
+  </IonItem>
+);

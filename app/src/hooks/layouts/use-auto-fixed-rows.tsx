@@ -12,9 +12,13 @@ const useAutoFixedRows = ({
   const windowWidth = useWindowWidth();
   const columnsLength = Math.floor(windowWidth / itemWidth);
 
-  let rows: JSX.Element[] = [];
-  for (var i = 0, l = items.length; i < l; i += columnsLength) {
-    const columnItems = items.slice(i, i + columnsLength);
+  const rows: JSX.Element[] = [];
+  for (
+    let index = 0, { length } = items;
+    index < length;
+    index += columnsLength
+  ) {
+    const columnItems = items.slice(index, index + columnsLength);
     rows.push(<Row columnItems={columnItems} />);
   }
 
@@ -23,20 +27,14 @@ const useAutoFixedRows = ({
 
 export default useAutoFixedRows;
 
-const Row: React.FC<{ columnItems: JSX.Element[] }> = ({ columnItems }) => {
-  return (
-    <IonRow className="ion-justify-content-center ion-no-padding">
-      {columnItems.map((item, index) => (
-        <InnerRow key={index} item={item} />
-      ))}
-    </IonRow>
-  );
-};
+const Row: React.FC<{ columnItems: JSX.Element[] }> = ({ columnItems }) => (
+  <IonRow className="ion-justify-content-center ion-no-padding">
+    {columnItems.map((item, index) => (
+      <InnerRow key={index} item={item} />
+    ))}
+  </IonRow>
+);
 
-const InnerRow: React.FC<{ item: JSX.Element }> = ({ item }) => {
-  return (
-    <IonRow className="ion-justify-content-center ion-no-padding">
-      {item}
-    </IonRow>
-  );
-};
+const InnerRow: React.FC<{ item: JSX.Element }> = ({ item }) => (
+  <IonRow className="ion-justify-content-center ion-no-padding">{item}</IonRow>
+);

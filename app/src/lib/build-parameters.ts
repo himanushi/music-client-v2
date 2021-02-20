@@ -1,20 +1,23 @@
+/* eslint-disable max-statements */
+/* eslint-disable max-lines-per-function */
+
 import * as H from "history";
 import { isArray, merge, mergeWith } from "lodash";
 
 export const ParameterPrefixKeys = {
-  artist: "a",
   album: "b",
-  track: "t",
+  artist: "a",
   playlist: "p",
+  track: "t",
 };
 
 export const ParameterKeys = {
-  keyword: "q",
+  favorite: "f",
   ids: "i",
-  status: "s",
+  keyword: "q",
   order: "o",
   sortType: "r",
-  favorite: "f",
+  status: "s",
   username: "u",
 };
 
@@ -38,8 +41,8 @@ export default function buildParameters<T>(
     const values = value.split("-");
     const uniqueValues = new Set<string>();
 
-    values.forEach((value) => {
-      uniqueValues.add(value);
+    values.forEach((_value) => {
+      uniqueValues.add(_value);
     });
 
     return Array.from(uniqueValues);
@@ -49,6 +52,7 @@ export default function buildParameters<T>(
     if (isArray(objValue)) {
       return objValue.concat(srcValue);
     }
+    return undefined;
   };
 
   let parameters = initialState;
@@ -58,22 +62,22 @@ export default function buildParameters<T>(
   getUniqueValues(prefixKey + ParameterKeys.keyword).forEach((value) => {
     conditions = merge(conditions, { name: value });
   });
-  parameters = { ...parameters, conditions: conditions };
+  parameters = { ...parameters, conditions };
 
   // ID
   getUniqueValues(prefixKey + ParameterKeys.ids).forEach((value) => {
     switch (true) {
-      case /^art/.test(value):
+      case /^art/u.test(value):
         parameters = merge(parameters, {
           conditions: { artists: { id: [value] } },
         });
         break;
-      case /^abm/.test(value):
+      case /^abm/u.test(value):
         parameters = merge(parameters, {
           conditions: { albums: { id: [value] } },
         });
         break;
-      case /^trk/.test(value):
+      case /^trk/u.test(value):
         parameters = merge(parameters, {
           conditions: { tracks: { id: [value] } },
         });

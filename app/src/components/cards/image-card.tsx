@@ -10,12 +10,10 @@ const ImageCard = ({
   name: string;
   src?: string;
   width: number;
-}) => {
-  return (
-    <IonCard style={{ width, height: width }}>
-      <SquareImage name={name} src={src} width={width} />
-    </IonCard>
-  );
-};
+}) => (
+  <IonCard style={{ height: width, width }}>
+    <SquareImage name={name} src={src} width={width} />
+  </IonCard>
+);
 
 export default ImageCard;

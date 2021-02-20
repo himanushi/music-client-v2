@@ -5,11 +5,9 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export const Header: React.FC<Props> = (props) => {
-  return (
-    <MemoizedHeader>
-      <MenuBar />
-      {props.children}
-    </MemoizedHeader>
-  );
-};
+export const Header: React.FC<Props> = (props) => (
+  <MemoizedHeader>
+    <MenuBar />
+    {props.children}
+  </MemoizedHeader>
+);

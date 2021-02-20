@@ -55,7 +55,7 @@ export type Album = {
   readonly createdAt: Scalars["ISO8601DateTime"];
   /** ID */
   readonly id: Scalars["TTID"];
-  /** iTunes アルバム */
+  /** ITunes アルバム */
   readonly itunesAlbum?: Maybe<AppleMusicAlbum>;
   /** タイトル */
   readonly name: Scalars["String"];
@@ -222,7 +222,7 @@ export type ChangeFavoritesInput = {
   readonly albumIds?: Maybe<ReadonlyArray<Scalars["TTID"]>>;
   /** お気に入り変更したいトラックID */
   readonly trackIds?: Maybe<ReadonlyArray<Scalars["TTID"]>>;
-  /** true の場合は一括でお気に入り登録をする。false 場合は一括で解除する。 */
+  /** True の場合は一括でお気に入り登録をする。false 場合は一括で解除する。 */
   readonly favorite: Scalars["Boolean"];
   /** A unique identifier for the client performing the mutation. */
   readonly clientMutationId?: Maybe<Scalars["String"]>;
@@ -247,9 +247,9 @@ export type ChangeStatusInput = {
   readonly trackId?: Maybe<Scalars["TTID"]>;
   /** 変更したいステータス */
   readonly status: StatusEnum;
-  /** true の場合は関連のステータスは変更しない。デフォルトは false。アーティスト限定 */
+  /** True の場合は関連のステータスは変更しない。デフォルトは false。アーティスト限定 */
   readonly only?: Maybe<Scalars["Boolean"]>;
-  /** true の場合は Twitter に投稿する。デフォルトは true */
+  /** True の場合は Twitter に投稿する。デフォルトは true */
   readonly tweet?: Maybe<Scalars["Boolean"]>;
   /** A unique identifier for the client performing the mutation. */
   readonly clientMutationId?: Maybe<Scalars["String"]>;
@@ -866,7 +866,7 @@ export type Track = {
   readonly id: Scalars["TTID"];
   /** 国際標準レコーディングコード */
   readonly isrc: Scalars["String"];
-  /** iTunes トラック */
+  /** ITunes トラック */
   readonly itunesTracks?: Maybe<ReadonlyArray<AppleMusicTrack>>;
   /** タイトル */
   readonly name: Scalars["String"];
@@ -1243,34 +1243,15 @@ export const ChangeFavoritesDocument: DocumentNode<
   ChangeFavoritesMutation,
   ChangeFavoritesMutationVariables
 > = {
-  kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
-      operation: "mutation",
       name: { kind: "Name", value: "ChangeFavorites" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "input" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "ChangeFavoritesInput" },
-            },
-          },
-        },
-      ],
+      operation: "mutation",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
-            kind: "Field",
-            name: { kind: "Name", value: "changeFavorites" },
             arguments: [
               {
                 kind: "Argument",
@@ -1281,6 +1262,8 @@ export const ChangeFavoritesDocument: DocumentNode<
                 },
               },
             ],
+            kind: "Field",
+            name: { kind: "Name", value: "changeFavorites" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -1375,41 +1358,39 @@ export const ChangeFavoritesDocument: DocumentNode<
           },
         ],
       },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "ChangeFavoritesInput" },
+            },
+          },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+        },
+      ],
     },
   ],
+  kind: "Document",
 };
 export const LoginDocument: DocumentNode<
   LoginMutation,
   LoginMutationVariables
 > = {
-  kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
-      operation: "mutation",
       name: { kind: "Name", value: "Login" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "input" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "LoginInput" },
-            },
-          },
-        },
-      ],
+      operation: "mutation",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
-            kind: "Field",
-            name: { kind: "Name", value: "login" },
             arguments: [
               {
                 kind: "Argument",
@@ -1420,6 +1401,8 @@ export const LoginDocument: DocumentNode<
                 },
               },
             ],
+            kind: "Field",
+            name: { kind: "Name", value: "login" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -1515,32 +1498,36 @@ export const LoginDocument: DocumentNode<
           },
         ],
       },
-    },
-  ],
-};
-export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "Album" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
           type: {
             kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "TTID" } },
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "LoginInput" },
+            },
+          },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
           },
         },
       ],
+    },
+  ],
+  kind: "Document",
+};
+export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      name: { kind: "Name", value: "Album" },
+      operation: "query",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
-            kind: "Field",
-            name: { kind: "Name", value: "album" },
             arguments: [
               {
                 kind: "Argument",
@@ -1551,6 +1538,8 @@ export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
                 },
               },
             ],
+            kind: "Field",
+            name: { kind: "Name", value: "album" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -1753,38 +1742,33 @@ export const AlbumDocument: DocumentNode<AlbumQuery, AlbumQueryVariables> = {
           },
         ],
       },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "TTID" } },
+          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+        },
+      ],
     },
   ],
+  kind: "Document",
 };
 export const AlbumsCountDocument: DocumentNode<
   AlbumsCountQuery,
   AlbumsCountQueryVariables
 > = {
-  kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
-      operation: "query",
       name: { kind: "Name", value: "AlbumsCount" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "conditions" },
-          },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "AlbumsCountConditionsInputObject" },
-          },
-        },
-      ],
+      operation: "query",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
-            kind: "Field",
-            name: { kind: "Name", value: "albumsCount" },
             arguments: [
               {
                 kind: "Argument",
@@ -1795,57 +1779,38 @@ export const AlbumsCountDocument: DocumentNode<
                 },
               },
             ],
+            kind: "Field",
+            name: { kind: "Name", value: "albumsCount" },
           },
         ],
       },
-    },
-  ],
-};
-export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "Albums" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "cursor" },
-          },
           type: {
             kind: "NamedType",
-            name: { kind: "Name", value: "CursorInputObject" },
+            name: { kind: "Name", value: "AlbumsCountConditionsInputObject" },
           },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "AlbumsSortInputObject" },
-          },
-        },
-        {
-          kind: "VariableDefinition",
           variable: {
             kind: "Variable",
             name: { kind: "Name", value: "conditions" },
           },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "AlbumsConditionsInputObject" },
-          },
         },
       ],
+    },
+  ],
+  kind: "Document",
+};
+export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      name: { kind: "Name", value: "Albums" },
+      operation: "query",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
-            kind: "Field",
-            name: { kind: "Name", value: "albums" },
             arguments: [
               {
                 kind: "Argument",
@@ -1872,6 +1837,8 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
                 },
               },
             ],
+            kind: "Field",
+            name: { kind: "Name", value: "albums" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -1928,32 +1895,52 @@ export const AlbumsDocument: DocumentNode<AlbumsQuery, AlbumsQueryVariables> = {
           },
         ],
       },
-    },
-  ],
-};
-export const ArtistDocument: DocumentNode<ArtistQuery, ArtistQueryVariables> = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "Artist" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
           type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "TTID" } },
+            kind: "NamedType",
+            name: { kind: "Name", value: "CursorInputObject" },
+          },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cursor" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "AlbumsSortInputObject" },
+          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+        },
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "AlbumsConditionsInputObject" },
+          },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "conditions" },
           },
         },
       ],
+    },
+  ],
+  kind: "Document",
+};
+export const ArtistDocument: DocumentNode<ArtistQuery, ArtistQueryVariables> = {
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      name: { kind: "Name", value: "Artist" },
+      operation: "query",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
-            kind: "Field",
-            name: { kind: "Name", value: "artist" },
             arguments: [
               {
                 kind: "Argument",
@@ -1964,6 +1951,8 @@ export const ArtistDocument: DocumentNode<ArtistQuery, ArtistQueryVariables> = {
                 },
               },
             ],
+            kind: "Field",
+            name: { kind: "Name", value: "artist" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -1989,57 +1978,33 @@ export const ArtistDocument: DocumentNode<ArtistQuery, ArtistQueryVariables> = {
           },
         ],
       },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "TTID" } },
+          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+        },
+      ],
     },
   ],
+  kind: "Document",
 };
 export const ArtistsDocument: DocumentNode<
   ArtistsQuery,
   ArtistsQueryVariables
 > = {
-  kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
-      operation: "query",
       name: { kind: "Name", value: "Artists" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "cursor" },
-          },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "CursorInputObject" },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "ArtistsSortInputObject" },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "conditions" },
-          },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "ArtistsConditionsInputObject" },
-          },
-        },
-      ],
+      operation: "query",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
-            kind: "Field",
-            name: { kind: "Name", value: "artists" },
             arguments: [
               {
                 kind: "Argument",
@@ -2066,6 +2031,8 @@ export const ArtistsDocument: DocumentNode<
                 },
               },
             ],
+            kind: "Field",
+            name: { kind: "Name", value: "artists" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -2092,16 +2059,48 @@ export const ArtistsDocument: DocumentNode<
           },
         ],
       },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "CursorInputObject" },
+          },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cursor" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "ArtistsSortInputObject" },
+          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+        },
+        {
+          kind: "VariableDefinition",
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "ArtistsConditionsInputObject" },
+          },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "conditions" },
+          },
+        },
+      ],
     },
   ],
+  kind: "Document",
 };
 export const MeDocument: DocumentNode<MeQuery, MeQueryVariables> = {
-  kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
-      operation: "query",
       name: { kind: "Name", value: "Me" },
+      operation: "query",
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -2177,4 +2176,5 @@ export const MeDocument: DocumentNode<MeQuery, MeQueryVariables> = {
       },
     },
   ],
+  kind: "Document",
 };

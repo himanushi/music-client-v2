@@ -16,21 +16,20 @@ const SquareImage = ({
     return (
       <img
         alt={name}
-        style={{ width, height: width, objectFit: "cover" }}
+        style={{ height: width, objectFit: "cover", width }}
         src={src}
       />
     );
-  } else {
-    return (
-      <Slot
-        item={<IonIcon size="large" icon={image} />}
-        layout={<IonSkeletonText style={{ width, height: width }} />}
-        center={true}
-        itemWidth={32}
-        itemHeight={32}
-      />
-    );
   }
+  return (
+    <Slot
+      item={<IonIcon size="large" icon={image} />}
+      layout={<IonSkeletonText style={{ height: width, width }} />}
+      center={true}
+      itemWidth={32}
+      itemHeight={32}
+    />
+  );
 };
 
 export default SquareImage;

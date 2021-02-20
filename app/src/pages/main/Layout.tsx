@@ -94,7 +94,7 @@ const PlayerMenu = () => {
           <IonLabel>プレイヤー</IonLabel>
         </IonItem>
       </IonMenuToggle>
-      <Player {...{ open, setOpen, state, send }} />
+      <Player {...{ open, send, setOpen, state }} />
     </>
   );
 };

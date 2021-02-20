@@ -6,7 +6,7 @@ import {
 } from "machines/music-player-machine";
 import React from "react";
 import {
-  Machine,
+  Machine as machine,
   SpawnedActorRef,
   State,
   assign,
@@ -56,22 +56,23 @@ export type JukeboxEvent =
   | { type: "STOPPED" }
   | { type: "REPEAT" };
 
-export const JukeboxMachine = Machine<
+export const JukeboxMachine = machine<
   JukeboxContext,
   JukeboxSchema,
   JukeboxEvent
 >(
   {
-    id: "jukebox",
-    initial: "idle",
-
     context: {
-      name: "",
       currentPlaybackNo: 0,
-      tracks: [],
-      repeat: false,
       musicPlayerRef: undefined,
+      name: "",
+      repeat: false,
+      tracks: [],
     },
+
+    id: "jukebox",
+
+    initial: "idle",
 
     invoke: {
       id: "mediaController",
@@ -90,8 +91,52 @@ export const JukeboxMachine = Machine<
             callback({ type: "PREVIOUS_PLAY" })
           );
         }
-        return () => {};
       },
+    },
+
+    on: {
+      CHANGE_PLAYBACK_NO: {
+        actions: ["changePlaybackNo", "changeCurrentTrack"],
+        target: "loading",
+      },
+
+      NEXT_PLAY: [
+        {
+          actions: ["nextPlaybackNo", "changeCurrentTrack"],
+          cond: "canNextPlay",
+          target: "loading",
+        },
+        {
+          actions: ["nextPlaybackNo", "changeCurrentTrack", "stop", "setTrack"],
+        },
+      ],
+
+      PREVIOUS_PLAY: [
+        {
+          actions: ["previousPlaybackNo", "changeCurrentTrack"],
+          cond: "canPreviousPlay",
+          target: "loading",
+        },
+        {
+          actions: [
+            "previousPlaybackNo",
+            "changeCurrentTrack",
+            "stop",
+            "setTrack",
+          ],
+        },
+      ],
+
+      REPEAT: { actions: ["repeat"] },
+
+      REPLACE_AND_PLAY: {
+        actions: ["replaceTracks", "changePlaybackNo", "changeCurrentTrack"],
+        target: "loading",
+      },
+
+      SET_NAME: { actions: ["setName"] },
+
+      STOPPED: "stopped",
     },
 
     states: {
@@ -106,95 +151,48 @@ export const JukeboxMachine = Machine<
         },
       },
 
-      playing: {
-        entry: ["setMediaMetadata"],
+      paused: {
         on: {
-          PLAY_OR_PAUSE: { actions: ["pause"] },
-          PAUSE: { actions: ["pause"] },
-          PAUSED: "paused",
+          PLAY: { actions: ["play"] },
+          PLAYING: "playing",
+          PLAY_OR_PAUSE: { actions: ["play"] },
         },
       },
 
-      paused: {
+      playing: {
+        entry: ["setMediaMetadata"],
         on: {
-          PLAY_OR_PAUSE: { actions: ["play"] },
-          PLAY: { actions: ["play"] },
-          PLAYING: "playing",
+          PAUSE: { actions: ["pause"] },
+          PAUSED: "paused",
+          PLAY_OR_PAUSE: { actions: ["pause"] },
         },
       },
 
       stopped: {
         on: {
-          PLAY_OR_PAUSE: { actions: ["play"] },
           PLAY: { actions: ["play"] },
           PLAYING: "playing",
+          PLAY_OR_PAUSE: { actions: ["play"] },
         },
       },
-    },
-
-    on: {
-      SET_NAME: { actions: ["setName"] },
-
-      STOPPED: "stopped",
-
-      REPEAT: { actions: ["repeat"] },
-
-      REPLACE_AND_PLAY: {
-        actions: ["replaceTracks", "changePlaybackNo", "changeCurrentTrack"],
-        target: "loading",
-      },
-
-      CHANGE_PLAYBACK_NO: {
-        actions: ["changePlaybackNo", "changeCurrentTrack"],
-        target: "loading",
-      },
-
-      NEXT_PLAY: [
-        {
-          cond: "canNextPlay",
-          target: "loading",
-          actions: ["nextPlaybackNo", "changeCurrentTrack"],
-        },
-        {
-          actions: ["nextPlaybackNo", "changeCurrentTrack", "stop", "setTrack"],
-        },
-      ],
-
-      PREVIOUS_PLAY: [
-        {
-          cond: "canPreviousPlay",
-          target: "loading",
-          actions: ["previousPlaybackNo", "changeCurrentTrack"],
-        },
-        {
-          actions: [
-            "previousPlaybackNo",
-            "changeCurrentTrack",
-            "stop",
-            "setTrack",
-          ],
-        },
-      ],
     },
   },
   {
     actions: {
-      initMusicPlayer: assign({
-        musicPlayerRef: (_) => spawn(MusicPlayerMachine, "musicPlayer"),
-      }),
-
-      setName: assign({
-        name: (_, event) => ("name" in event ? event.name : ""),
-      }),
-
-      replaceTracks: assign({
-        tracks: (_, event) => ("tracks" in event ? event.tracks : []),
-      }),
+      changeCurrentTrack: assign(({ tracks, currentPlaybackNo }) => ({
+        currentTrack: tracks[currentPlaybackNo],
+      })),
 
       changePlaybackNo: assign((_, event) => {
         if (!("currentPlaybackNo" in event)) return {};
         return { currentPlaybackNo: event.currentPlaybackNo };
       }),
+
+      initMusicPlayer: assign({
+        musicPlayerRef: (_) => spawn(MusicPlayerMachine, "musicPlayer"),
+      }),
+
+      load: send("LOAD", { to: "musicPlayer" }),
 
       nextPlaybackNo: assign({
         currentPlaybackNo: ({ tracks, currentPlaybackNo }) => {
@@ -203,6 +201,10 @@ export const JukeboxMachine = Machine<
         },
       }),
 
+      pause: send("PAUSE", { to: "musicPlayer" }),
+
+      play: send("PLAY", { to: "musicPlayer" }),
+
       previousPlaybackNo: assign({
         currentPlaybackNo: ({ currentPlaybackNo }) => {
           if (currentPlaybackNo === 0) return 0;
@@ -210,39 +212,37 @@ export const JukeboxMachine = Machine<
         },
       }),
 
-      changeCurrentTrack: assign(({ tracks, currentPlaybackNo }) => {
-        return { currentTrack: tracks[currentPlaybackNo] };
-      }),
-
-      setTrack: send(
-        ({ currentTrack }) => ({ type: "SET_TRACK", track: currentTrack }),
-        { to: "musicPlayer" }
-      ),
-
       repeat: assign({ repeat: ({ repeat }) => !repeat }),
+
+      replaceTracks: assign({
+        tracks: (_, event) => ("tracks" in event ? event.tracks : []),
+      }),
 
       setMediaMetadata: ({ currentTrack }) => {
         if (navigator.mediaSession) {
           if (currentTrack) {
             navigator.mediaSession.metadata = new MediaMetadata({
-              title: currentTrack.name,
               artwork: [
                 {
-                  src: currentTrack.artworkM.url || "",
                   sizes: "300x300",
+                  src: currentTrack.artworkM.url || "",
                   type: "image/png",
                 },
               ],
+              title: currentTrack.name,
             });
           }
         }
       },
 
-      load: send("LOAD", { to: "musicPlayer" }),
+      setName: assign({
+        name: (_, event) => ("name" in event ? event.name : ""),
+      }),
 
-      play: send("PLAY", { to: "musicPlayer" }),
-
-      pause: send("PAUSE", { to: "musicPlayer" }),
+      setTrack: send(
+        ({ currentTrack }) => ({ track: currentTrack, type: "SET_TRACK" }),
+        { to: "musicPlayer" }
+      ),
 
       stop: send("STOP", { to: "musicPlayer" }),
     },
@@ -265,7 +265,7 @@ export type JukeboxState = State<
   }
 >;
 
-// inspect({ iframe: false });
+// Inspect({ iframe: false });
 
 export const playerService = interpret(JukeboxMachine, {
   devTools: process.env.NODE_ENV === "development",

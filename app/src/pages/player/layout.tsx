@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import { ItemReorderEventDetail } from "@ionic/core";
 import {
   IonButton,
@@ -52,7 +53,7 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
 
   return (
     <IonToolbar style={{ height: 56 }} color="main">
-      <Player {...{ open, setOpen, state, send }} />
+      <Player {...{ open, send, setOpen, state }} />
       {!state.matches("idle") && (
         <IonButtons slot="start">
           <IonButton
@@ -71,10 +72,10 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
       <IonText>
         <p
           style={{
+            fontSize: 13,
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            fontSize: 13,
           }}
         >
           {state.context.currentTrack?.name}
@@ -100,16 +101,14 @@ export const PlayerFooter: React.FC<PlayerStateProps> = ({ state, send }) => {
   );
 };
 
-const playerDisable = (state: JukeboxState) => {
-  return ["idle", "loading"].some(state.matches);
-};
+const playerDisable = (state: JukeboxState) =>
+  ["idle", "loading"].some(state.matches);
 
 const playerIcon = (state: JukeboxState) => {
   if (["playing"].some(state.matches)) {
     return pause;
-  } else {
-    return play;
   }
+  return play;
 };
 
 type PlayerProps = {
@@ -127,8 +126,8 @@ export const Player: React.FC<PlayerProps> = ({
   const [displayNo, setDisplayNo] = useState(0);
 
   let display = <></>;
-  if (displayNo === 0) display = <PlayerContent {...{ state, send }} />;
-  if (displayNo === 1) display = <QueueContent {...{ state, send }} />;
+  if (displayNo === 0) display = <PlayerContent {...{ send, state }} />;
+  if (displayNo === 1) display = <QueueContent {...{ send, state }} />;
 
   return (
     <IonModal onDidDismiss={onClose} isOpen={open}>
@@ -189,7 +188,7 @@ const PlayerContent: React.FC<PlayerStateProps> = ({ state, send }) => {
               <IonLabel>{state.context.currentTrack?.name || ""}</IonLabel>
             </IonRow>
             <IonRow className="ion-justify-content-center ion-no-padding">
-              <Seekbar {...{ state, send }} />
+              <Seekbar {...{ send, state }} />
             </IonRow>
             <IonRow className="ion-justify-content-center ion-no-padding">
               <IonRow>
@@ -243,10 +242,10 @@ const Seekbar: React.FC<PlayerStateProps> = ({ state, send }) => {
       value={musicState.context.seek}
       mode="md"
       debounce={100}
-      onIonChange={(e) => {
-        const seek = e.detail.value as number;
+      onIonChange={(event) => {
+        const seek = event.detail.value as number;
         if (musicState.context.seek !== seek) {
-          musicSend({ type: "CHANGE_SEEK", seek });
+          musicSend({ seek, type: "CHANGE_SEEK" });
         }
       }}
     >
@@ -263,16 +262,13 @@ const toMMSS = (duration: number) => {
   const minutes = Math.floor(sec / 60);
   const seconds = sec - minutes * 60;
 
-  const padding = (num: number) => {
-    return ("0" + num).slice(-2);
-  };
+  const padding = (num: number) => `0${num}`.slice(-2);
 
-  return padding(minutes) + ":" + padding(seconds);
+  return `${padding(minutes)}:${padding(seconds)}`;
 };
 
 const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
   const onIonItemReorder = (event: CustomEvent<ItemReorderEventDetail>) => {
-    console.log(event.detail);
     event.detail.complete();
   };
 
@@ -280,44 +276,42 @@ const QueueContent: React.FC<PlayerStateProps> = ({ state, send }) => {
     <IonContent fullscreen scrollX={false} scrollY={false}>
       <IonContent className="ion-no-padding">
         <IonReorderGroup disabled={false} onIonItemReorder={onIonItemReorder}>
-          {state.context.tracks.map((track, index) => {
-            return (
-              <IonItem key={index}>
-                <IonButton
-                  onClick={() =>
-                    send({
-                      type: "CHANGE_PLAYBACK_NO",
-                      currentPlaybackNo: index,
-                    })
-                  }
-                  disabled={playerDisable(state)}
-                  fill="clear"
-                >
-                  {state.context.currentPlaybackNo === index ? (
-                    <IonIcon
-                      slot="icon-only"
-                      color="warning"
-                      icon={musicalNotes}
-                    />
-                  ) : (
-                    <IonIcon slot="icon-only" icon={play} />
-                  )}
-                </IonButton>
-                <IonCard
-                  className="ion-no-padding ion-no-margin"
-                  style={{ width: 50, height: 50, margin: "5px" }}
-                >
-                  <SquareImage
-                    width={50}
-                    name={track.name || ""}
-                    src={track.artworkL?.url || undefined}
+          {state.context.tracks.map((track, index) => (
+            <IonItem key={index}>
+              <IonButton
+                onClick={() =>
+                  send({
+                    currentPlaybackNo: index,
+                    type: "CHANGE_PLAYBACK_NO",
+                  })
+                }
+                disabled={playerDisable(state)}
+                fill="clear"
+              >
+                {state.context.currentPlaybackNo === index ? (
+                  <IonIcon
+                    slot="icon-only"
+                    color="warning"
+                    icon={musicalNotes}
                   />
-                </IonCard>
-                <IonLabel>{track.name}</IonLabel>
-                <IonReorder slot="end" />
-              </IonItem>
-            );
-          })}
+                ) : (
+                  <IonIcon slot="icon-only" icon={play} />
+                )}
+              </IonButton>
+              <IonCard
+                className="ion-no-padding ion-no-margin"
+                style={{ height: 50, margin: "5px", width: 50 }}
+              >
+                <SquareImage
+                  width={50}
+                  name={track.name || ""}
+                  src={track.artworkL?.url || undefined}
+                />
+              </IonCard>
+              <IonLabel>{track.name}</IonLabel>
+              <IonReorder slot="end" />
+            </IonItem>
+          ))}
         </IonReorderGroup>
       </IonContent>
     </IonContent>

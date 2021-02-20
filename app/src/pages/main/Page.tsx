@@ -25,18 +25,14 @@ import React, { memo } from "react";
 
 setupConfig({
   // ページ遷移時にヘッダーフッターもアニメーションが実行されるため無効にする
-  navAnimation: (_baseEl: any) => {
-    return createAnimation();
-  },
+  navAnimation: (_baseEl: any) => createAnimation(),
 });
 
-export const MainPage: React.FC = () => {
-  return (
-    <ApolloProvider client={client}>
-      <InitPage />
-    </ApolloProvider>
-  );
-};
+export const MainPage: React.FC = () => (
+  <ApolloProvider client={client}>
+    <InitPage />
+  </ApolloProvider>
+);
 
 const InitPage: React.FC = () => {
   const { initialized } = useController();

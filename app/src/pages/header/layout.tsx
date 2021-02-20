@@ -20,22 +20,20 @@ const Header: React.FC<Props> = ({ children }) => (
 );
 export const MemoizedHeader = memo(Header);
 
-export const MenuBar: React.FC<Props> = (props) => {
-  return (
-    <IonToolbar id="main-content">
-      <IonButtons slot="start">
-        <IonMenuToggle>
-          <IonButton>
-            <IonIcon slot="icon-only" icon={menu}></IonIcon>
-          </IonButton>
-        </IonMenuToggle>
-      </IonButtons>
-      <Title />
-      <IonButtons slot="end">
-        <UserIcon />
-      </IonButtons>
-    </IonToolbar>
-  );
-};
+export const MenuBar: React.FC<Props> = (props) => (
+  <IonToolbar id="main-content">
+    <IonButtons slot="start">
+      <IonMenuToggle>
+        <IonButton>
+          <IonIcon slot="icon-only" icon={menu}></IonIcon>
+        </IonButton>
+      </IonMenuToggle>
+    </IonButtons>
+    <Title />
+    <IonButtons slot="end">
+      <UserIcon />
+    </IonButtons>
+  </IonToolbar>
+);
 
 export const Title: React.FC = () => <IonTitle>ゲーム音楽</IonTitle>;

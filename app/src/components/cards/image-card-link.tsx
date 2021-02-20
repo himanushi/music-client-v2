@@ -20,7 +20,7 @@ const ImageCardLink = ({
     <IonCard
       className="ion-activatable ripple-parent"
       onClick={() => history.push(link)}
-      style={{ width, cursor: "pointer" }}
+      style={{ cursor: "pointer", width }}
     >
       <ImageCardItem name={name} src={src} width={width} />
       <IonRippleEffect></IonRippleEffect>

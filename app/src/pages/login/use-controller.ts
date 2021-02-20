@@ -18,14 +18,16 @@ type MutationData = {
 
 const useController = () => {
   const [login, { data }] = useMutation<MutationData>(LoginDocument, {
-    // update: (cache, results) => {
-    //   if (results.data?.login?.currentUser) {
-    //     cache.writeQuery<TData, TVariables>({
-    //       query: MeDocument,
-    //       data: { me: results.data.login.currentUser },
-    //     });
-    //   }
-    // },
+    /*
+     * Update: (cache, results) => {
+     *   if (results.data?.login?.currentUser) {
+     *     cache.writeQuery<TData, TVariables>({
+     *       query: MeDocument,
+     *       data: { me: results.data.login.currentUser },
+     *     });
+     *   }
+     * },
+     */
   });
 
   const submitLogin = (props: LoginProps) => {
@@ -40,9 +42,9 @@ const useController = () => {
   };
 
   return {
+    error: data?.login?.error,
     login: submitLogin,
     me: data?.login?.currentUser,
-    error: data?.login?.error,
   };
 };
 

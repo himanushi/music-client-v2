@@ -10,13 +10,11 @@ const ImageCardItem = ({
   name: string;
   src?: string;
   width: number;
-}) => {
-  return (
-    <>
-      <SquareImage name={name} src={src} width={width} />
-      <CardTitle title={name} />
-    </>
-  );
-};
+}) => (
+  <>
+    <SquareImage name={name} src={src} width={width} />
+    <CardTitle title={name} />
+  </>
+);
 
 export default ImageCardItem;

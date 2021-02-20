@@ -1,9 +1,7 @@
 import Cookie, { CookieAttributes } from "js-cookie";
 
 export const cookie = {
-  get: (name: string) => {
-    return Cookie.get(name);
-  },
+  get: (name: string) => Cookie.get(name),
   set: (name: string, value: string, options?: CookieAttributes) => {
     const opts: CookieAttributes = options ?? {};
 

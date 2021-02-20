@@ -26,10 +26,10 @@ const Slot = ({
   if (center && itemWidth && itemHeight) {
     style = {
       ...style,
-      margin: "auto",
-      inset: 0,
-      width: itemWidth,
       height: itemHeight,
+      inset: 0,
+      margin: "auto",
+      width: itemWidth,
     };
   }
 

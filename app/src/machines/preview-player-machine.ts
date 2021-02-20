@@ -1,6 +1,6 @@
 import { Track } from "graphql/types";
 import { Howl } from "howler";
-import { Machine, State, assign, send, sendParent } from "xstate";
+import { Machine as machine, State, assign, send, sendParent } from "xstate";
 
 export type PreviewPlayerContext = {
   track?: Track;
@@ -32,22 +32,46 @@ export type PreviewPlayerStateEvent =
   | { type: "FINISHED" }
   | { type: "TICK" };
 
-export const PreviewPlayerMachine = Machine<
+export const PreviewPlayerMachine = machine<
   PreviewPlayerContext,
   PreviewPlayerStateSchema,
   PreviewPlayerStateEvent
 >(
   {
-    id: "preview",
-    initial: "idle",
-
     context: {
-      track: undefined,
       player: undefined,
       seek: 0,
+      track: undefined,
     },
+    id: "preview",
 
+    initial: "idle",
+
+    on: {
+      CHANGE_SEEK: { actions: ["changeSeek"] },
+
+      LOAD: { target: "loading" },
+
+      PLAY: { actions: ["play"], target: "playing" },
+
+      PLAYING: "playing",
+
+      SET_TRACK: { actions: ["setTrack"] },
+
+      STOP: { actions: ["stop"], target: "stopped" },
+
+      TICK: {
+        actions: [
+          "tick",
+          sendParent(({ seek }) => ({ seek, type: "SET_SEEK" })),
+        ],
+      },
+    },
     states: {
+      finished: {
+        entry: [sendParent("FINISHED")],
+      },
+
       idle: {},
 
       loading: {
@@ -55,10 +79,16 @@ export const PreviewPlayerMachine = Machine<
         exit: ["setPlayer", "play"],
       },
 
+      paused: {
+        entry: [sendParent("PAUSED")],
+      },
+
       playing: {
         entry: [sendParent("PLAYING")],
         invoke: {
           id: "playingListener",
+
+          // eslint-disable-next-line max-statements
           src: ({ player }: PreviewPlayerContext) => (callback) => {
             if (player) {
               player.on("pause", () => callback("PAUSED"));
@@ -101,84 +131,58 @@ export const PreviewPlayerMachine = Machine<
                 player.off("seek");
               };
             }
+
+            return () => {
+              // 何もしない
+            };
           },
         },
         on: {
+          FINISHED: "finished",
           PAUSE: { actions: ["pause"] },
           PAUSED: "paused",
-          FINISHED: "finished",
         },
-      },
-
-      paused: {
-        entry: [sendParent("PAUSED")],
       },
 
       stopped: {
         entry: [sendParent("STOPPED")],
         exit: ["setPlayer"],
       },
-
-      finished: {
-        entry: [sendParent("FINISHED")],
-      },
-    },
-    on: {
-      PLAY: { actions: ["play"], target: "playing" },
-
-      PLAYING: "playing",
-
-      STOP: { actions: ["stop"], target: "stopped" },
-
-      SET_TRACK: { actions: ["setTrack"] },
-
-      LOAD: { target: "loading" },
-
-      TICK: {
-        actions: [
-          "tick",
-          sendParent(({ seek }) => {
-            return { type: "SET_SEEK", seek };
-          }),
-        ],
-      },
-
-      CHANGE_SEEK: { actions: ["changeSeek"] },
     },
   },
   {
     actions: {
-      play: ({ player }) => {
-        if (player) player.play();
-      },
-
-      pause: ({ player }) => {
-        if (player && player.playing()) player.pause();
-      },
-
-      stop: ({ player }) => {
-        if (player && player.playing()) player.stop();
-      },
-
-      setTrack: assign({
-        track: (_, event) => ("track" in event ? event.track : undefined),
-      }),
-
       changeSeek: ({ player }, event) => {
         if (player && "seek" in event) {
           player.seek(event.seek / 1000);
         }
       },
 
+      pause: ({ player }) => {
+        if (player && player.playing()) player.pause();
+      },
+
+      play: ({ player }) => {
+        if (player) player.play();
+      },
+
       setPlayer: assign({
         player: ({ track }) => (track ? setPlayer(track) : undefined),
       }),
 
+      setTrack: assign({
+        track: (_, event) => ("track" in event ? event.track : undefined),
+      }),
+
+      stop: ({ player }) => {
+        if (player && player.playing()) player.stop();
+      },
+
       tick: assign({
         seek: ({ player }) => {
           if (player) {
-            const _seek = player.seek() as number;
-            return Math.floor(_seek * 1000);
+            const seek = player.seek() as number;
+            return Math.floor(seek * 1000);
           }
           return 0;
         },
@@ -198,13 +202,13 @@ export type PreviewPlayerState = State<
 >;
 
 const setPlayer = (track: Track) => {
-  if (!track || !track.previewUrl) return;
+  if (!track || !track.previewUrl) return undefined;
 
   const howl: Howl = new Howl({
-    src: track.previewUrl,
+    autoplay: false,
     html5: true,
     preload: false,
-    autoplay: false,
+    src: track.previewUrl,
     volume: 0,
   });
 

@@ -9,24 +9,23 @@ const useController = (params: AlbumsQueryVariables, skip: boolean) => {
   const [memoResult, setMemoResult] = useState<Album[]>([]);
 
   const albumQuery = useAlbumsQuery({
-    variables: params,
     fetchPolicy: "cache-first",
     skip,
+    variables: params,
   });
 
   const albumCountQuery = useAlbumsCountQuery({
-    variables: { conditions: params.conditions },
     fetchPolicy: "cache-first",
     skip,
+    variables: { conditions: params.conditions },
   });
 
-  let _hasNext = true;
+  let next = true;
   if (albumQuery.data?.albums && albumCountQuery.data?.albumsCount) {
-    _hasNext =
-      albumQuery.data?.albums.length < albumCountQuery.data.albumsCount;
+    next = albumQuery.data?.albums.length < albumCountQuery.data.albumsCount;
   }
 
-  const hasNext = () => _hasNext;
+  const hasNext = () => next;
 
   if (
     !skip &&
@@ -38,29 +37,32 @@ const useController = (params: AlbumsQueryVariables, skip: boolean) => {
 
   return {
     albums: memoResult,
-    loading: albumQuery.loading || albumCountQuery.loading,
     error: albumQuery.error,
-    loadMore: buildLoadMore(albumQuery.fetchMore),
     hasNext,
+    loadMore: buildLoadMore(albumQuery.fetchMore),
+    loading: albumQuery.loading || albumCountQuery.loading,
   };
 };
 
 export default useController;
 
-const buildLoadMore = (fetchMore: any) => {
-  return (rowIndex: number, rowCount: number, itemCount: number) => {
-    if (rowIndex === rowCount) {
-      console.log("fetchMore");
-      return fetchMore({
-        variables: {
-          cursor: {
-            offset: itemCount,
-            limit,
-          },
+const buildLoadMore = (fetchMore: any) => (
+  rowIndex: number,
+  rowCount: number,
+  itemCount: number
+) => {
+  if (rowIndex === rowCount) {
+    return fetchMore({
+      variables: {
+        cursor: {
+          limit,
+          offset: itemCount,
         },
-      });
-    }
+      },
+    });
+  }
 
-    return new Promise(() => {});
-  };
+  return new Promise(() => {
+    // 何もしない
+  });
 };

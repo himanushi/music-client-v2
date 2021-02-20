@@ -3,10 +3,10 @@ import { useState } from "react";
 const useInputValue = (label: string, type: TextFieldTypes = "text") => {
   const [value, setValue] = useState("");
   return {
-    label: label,
-    value,
     dispatch: setValue,
+    label,
     type,
+    value,
   };
 };
 

@@ -2,12 +2,12 @@ import { cookie } from "lib/cookie";
 import { useCallback, useEffect, useState } from "react";
 
 const useDarkMode = () => {
-  const [darkMode, setDarkMode] = useState(() => {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  const [darkMode, setDarkMode] = useState(
+    () => window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 
   useEffect(() => {
-    // cookie を優先する
+    // Cookie を優先する
     if (cookie.get("DarkMode") !== undefined) {
       setDarkMode(cookie.get("DarkMode") === "true");
     }

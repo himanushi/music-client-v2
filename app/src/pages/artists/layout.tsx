@@ -10,10 +10,10 @@ type Props = {
   hasNext: hasNext;
 };
 
-export const Layout: React.FC<Props> = ({ artists, loadMore, hasNext }) => {
+export const Layout: React.FC<Props> = (props) => {
   const { cardWidth, cardHeight, parentWidth } = useCardImageItemSize();
 
-  const items = artists.map((artist) => (
+  const items = props.artists.map((artist) => (
     <Item artist={artist} width={cardWidth} />
   ));
 
@@ -22,8 +22,8 @@ export const Layout: React.FC<Props> = ({ artists, loadMore, hasNext }) => {
       items={items}
       itemWidth={parentWidth}
       itemHeight={cardHeight}
-      loadMore={loadMore}
-      hasNext={hasNext}
+      loadMore={props.loadMore}
+      hasNext={props.hasNext}
     />
   );
 };
@@ -33,13 +33,11 @@ type ItemProps = {
   width: number;
 };
 
-const Item = React.memo((props: ItemProps) => {
-  return (
-    <ImageCardLink
-      name={props.artist.name}
-      src={props.artist.artworkM.url as string | undefined}
-      width={props.width}
-      link={`/artists/${props.artist.id}`}
-    />
-  );
-});
+const Item = React.memo((props: ItemProps) => (
+  <ImageCardLink
+    name={props.artist.name}
+    src={props.artist.artworkM.url as string | undefined}
+    width={props.width}
+    link={`/artists/${props.artist.id}`}
+  />
+));

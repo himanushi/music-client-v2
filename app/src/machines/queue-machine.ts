@@ -1,6 +1,6 @@
 import { Track } from "graphql/types";
 import { JukeboxContext } from "machines/jukebox-machine";
-import { Machine, State, assign } from "xstate";
+import { Machine as machine, State, assign } from "xstate";
 
 export type QueueContext = {
   tracks: Track[];
@@ -16,22 +16,26 @@ export type QueueStateEvent =
   | { type: "GET"; playbackNo: JukeboxContext["currentPlaybackNo"] }
   | { type: "REPLACE"; tracks: QueueContext["tracks"] };
 
-export const QueueMachine = Machine<
+export const QueueMachine = machine<
   QueueContext,
   QueueStateSchema,
   QueueStateEvent
 >(
   {
-    id: "queue",
-    initial: "active",
     context: {
       tracks: [],
     },
-    states: {
-      active: {},
-    },
+
+    id: "queue",
+
+    initial: "active",
+
     on: {
       REPLACE: ["replace"],
+    },
+
+    states: {
+      active: {},
     },
   },
   {

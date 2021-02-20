@@ -13,19 +13,17 @@ const InputItem = React.memo(
     value: string;
     dispatch: React.Dispatch<React.SetStateAction<string>>;
     type: TextFieldTypes;
-  }) => {
-    return (
-      <IonItem>
-        <IonLabel position="floating">{label}</IonLabel>
-        <IonInput
-          value={value}
-          onIonChange={(e) => dispatch(e.detail.value!)}
-          placeholder={`${label}を入力`}
-          type={type}
-        ></IonInput>
-      </IonItem>
-    );
-  }
+  }) => (
+    <IonItem>
+      <IonLabel position="floating">{label}</IonLabel>
+      <IonInput
+        value={value}
+        onIonChange={(event) => dispatch(event.detail.value!)}
+        placeholder={`${label}を入力`}
+        type={type}
+      ></IonInput>
+    </IonItem>
+  )
 );
 
 export default InputItem;

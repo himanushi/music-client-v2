@@ -16,9 +16,11 @@ type Props = {
 };
 
 export const Layout: React.FC<Props> = ({ me }) => {
-  const [popoverState, setShowPopover] = useState({
+  const [popoverState, setShowPopover] = useState<{
+    showPopover: boolean;
+    event?: any;
+  }>({
     showPopover: false,
-    event: undefined,
   });
 
   return (
@@ -26,16 +28,14 @@ export const Layout: React.FC<Props> = ({ me }) => {
       <IonPopover
         event={popoverState.event}
         isOpen={popoverState.showPopover}
-        onDidDismiss={() =>
-          setShowPopover({ showPopover: false, event: undefined })
-        }
+        onDidDismiss={() => setShowPopover({ showPopover: false })}
       >
         <IonList>
           <IonItem
             button
             routerLink="/login"
             onClick={() => {
-              setShowPopover({ showPopover: false, event: undefined });
+              setShowPopover({ showPopover: false });
             }}
           >
             <IonLabel>ログイン</IonLabel>
@@ -46,9 +46,9 @@ export const Layout: React.FC<Props> = ({ me }) => {
         </IonList>
       </IonPopover>
       <IonButton
-        onClick={(e: any) => {
-          e.persist();
-          setShowPopover({ showPopover: true, event: e });
+        onClick={(event) => {
+          event.persist();
+          setShowPopover({ event, showPopover: true });
         }}
       >
         <IonIcon size="large" slot="icon-only" icon={personCircle}></IonIcon>

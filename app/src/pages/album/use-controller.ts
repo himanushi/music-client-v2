@@ -6,14 +6,14 @@ type Props = {
 
 const useController = ({ id }: Props) => {
   const { data, loading, error } = useAlbumQuery({
-    variables: { id },
     fetchPolicy: "cache-first",
+    variables: { id },
   });
 
   return {
     album: data?.album,
-    loading,
     error,
+    loading,
   };
 };
 

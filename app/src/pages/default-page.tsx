@@ -1,9 +1,7 @@
 import { IonToast } from "@ionic/react";
 import React, { useMemo, useState } from "react";
 
-export const Loading = () => {
-  return <>loading...</>;
-};
+export const Loading = () => <>loading...</>;
 
 export const Error = ({ message }: { message: string }) => {
   const [open, setOpen] = useState(true);

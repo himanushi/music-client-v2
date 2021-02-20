@@ -4,7 +4,14 @@ import {
   PreviewPlayerState,
   PreviewPlayerStateEvent,
 } from "machines/preview-player-machine";
-import { Machine, SpawnedActorRef, State, assign, send, spawn } from "xstate";
+import {
+  Machine as machine,
+  SpawnedActorRef,
+  State,
+  assign,
+  send,
+  spawn,
+} from "xstate";
 import { sendParent } from "xstate/lib/actions";
 
 export type MusicPlayerContext = {
@@ -43,29 +50,57 @@ export type MusicPlayerEvent =
   | { type: "FINISHED" }
   | { type: "TICK" };
 
-export const MusicPlayerMachine = Machine<
+export const MusicPlayerMachine = machine<
   MusicPlayerContext,
   MusicPlayerSchema,
   MusicPlayerEvent
 >(
   {
-    id: "musicPlayer",
-    initial: "idle",
-
     context: {
-      track: undefined,
       duration: 0,
-      seek: 0,
       previewPlayerRef: undefined,
+      seek: 0,
+      track: undefined,
     },
 
+    id: "musicPlayer",
+
+    initial: "idle",
+
+    on: {
+      CHANGE_SEEK: { actions: ["changeSeek", "changeSeekPreview"] },
+
+      LOAD: { actions: ["loadPreview"], target: "loading" },
+
+      SET_SEEK: { actions: ["setSeek"] },
+
+      SET_TRACK: {
+        actions: ["resetSeek", "setTrack", "setDuration", "setTrackToPreview"],
+      },
+
+      STOP: { actions: ["stopPreview", "resetSeek"] },
+
+      STOPPED: "stopped",
+    },
     states: {
+      finished: {
+        entry: ["resetSeek", sendParent("NEXT_PLAY")],
+      },
+
       idle: {
         entry: ["initPlayers"],
       },
 
       loading: {
         on: {
+          PLAYING: "playing",
+        },
+      },
+
+      paused: {
+        entry: [sendParent("PAUSED")],
+        on: {
+          PLAY: { actions: ["playPreview"] },
           PLAYING: "playing",
         },
       },
@@ -82,18 +117,10 @@ export const MusicPlayerMachine = Machine<
           },
         },
         on: {
+          FINISHED: "finished",
           PAUSE: { actions: ["pausePreview"] },
           PAUSED: "paused",
-          FINISHED: "finished",
           TICK: { actions: ["tickPreview"] },
-        },
-      },
-
-      paused: {
-        entry: [sendParent("PAUSED")],
-        on: {
-          PLAY: { actions: ["playPreview"] },
-          PLAYING: "playing",
         },
       },
 
@@ -104,45 +131,43 @@ export const MusicPlayerMachine = Machine<
           PLAYING: "playing",
         },
       },
-
-      finished: {
-        entry: ["resetSeek", sendParent("NEXT_PLAY")],
-      },
-    },
-    on: {
-      SET_TRACK: {
-        actions: ["resetSeek", "setTrack", "setDuration", "setTrackToPreview"],
-      },
-
-      SET_SEEK: { actions: ["setSeek"] },
-
-      STOP: { actions: ["stopPreview", "resetSeek"] },
-
-      STOPPED: "stopped",
-
-      LOAD: { actions: ["loadPreview"], target: "loading" },
-
-      CHANGE_SEEK: { actions: ["changeSeek", "changeSeekPreview"] },
     },
   },
   {
     actions: {
+      changeSeek: assign({
+        seek: (_, event) => ("seek" in event ? event.seek : 0),
+      }),
+
+      changeSeekPreview: send(
+        (_, event) => {
+          if ("seek" in event) {
+            return { seek: event.seek, type: "CHANGE_SEEK" };
+          }
+          return { type: "" };
+        },
+        { to: "preview" }
+      ),
+
       initPlayers: assign({
         previewPlayerRef: (_) => spawn(PreviewPlayerMachine, "preview"),
       }),
 
-      setTrack: assign({
-        track: (_, event) => ("track" in event ? event.track : undefined),
-      }),
+      loadPreview: send("LOAD", { to: "preview" }),
+
+      pausePreview: send("PAUSE", { to: "preview" }),
+
+      playPreview: send("PLAY", { to: "preview" }),
+
+      resetSeek: assign({ seek: (_) => 0 }),
 
       setDuration: assign({
         duration: ({ track }) => {
           if (!track) return 0;
           if (track.durationMs > 30000) {
             return 30000;
-          } else {
-            return track.durationMs;
           }
+          return track.durationMs;
         },
       }),
 
@@ -150,40 +175,22 @@ export const MusicPlayerMachine = Machine<
         seek: (_, event) => ("seek" in event ? event.seek : 0),
       }),
 
-      resetSeek: assign({ seek: (_) => 0 }),
-
-      changeSeek: assign({
-        seek: (_, event) => ("seek" in event ? event.seek : 0),
+      setTrack: assign({
+        track: (_, event) => ("track" in event ? event.track : undefined),
       }),
 
-      ///////// PreviewPlayer /////////
+      // /////// PreviewPlayer /////////
       setTrackToPreview: send(
         (_, event) =>
           "track" in event
-            ? { type: "SET_TRACK", track: event.track }
+            ? { track: event.track, type: "SET_TRACK" }
             : { type: "" },
         { to: "preview" }
       ),
 
-      loadPreview: send("LOAD", { to: "preview" }),
-
-      playPreview: send("PLAY", { to: "preview" }),
-
-      pausePreview: send("PAUSE", { to: "preview" }),
-
       stopPreview: send("STOP", { to: "preview" }),
 
       tickPreview: send("TICK", { to: "preview" }),
-
-      changeSeekPreview: send(
-        (_, event) => {
-          if ("seek" in event) {
-            return { type: "CHANGE_SEEK", seek: event.seek };
-          }
-          return { type: "" };
-        },
-        { to: "preview" }
-      ),
     },
   }
 );

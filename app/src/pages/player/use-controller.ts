@@ -5,7 +5,7 @@ import { useContext } from "react";
 const useController = () => {
   const service = useContext(PlayerContext);
   const [state, send] = useService(service);
-  return { state, send };
+  return { send, state };
 };
 
 export default useController;

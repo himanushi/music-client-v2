@@ -6,14 +6,14 @@ type Props = {
 
 const useController = ({ id }: Props) => {
   const { data, loading, error } = useArtistQuery({
-    variables: { id },
     fetchPolicy: "cache-and-network",
+    variables: { id },
   });
 
   return {
     artist: data?.artist,
-    loading,
     error,
+    loading,
   };
 };
 

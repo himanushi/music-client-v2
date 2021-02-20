@@ -27,18 +27,20 @@ type Props = {
   hasNext: hasNext;
 };
 
-export const Layout: React.FC<Props> = ({ albums, loadMore, hasNext }) => {
+export const Layout: React.FC<Props> = (props) => {
   const { cardWidth, cardHeight, parentWidth } = useCardImageItemSize();
 
-  const items = albums.map((album) => <Item album={album} width={cardWidth} />);
+  const items = props.albums.map((album) => (
+    <Item album={album} width={cardWidth} />
+  ));
 
   return (
     <InfiniteList
       items={items}
       itemWidth={parentWidth}
       itemHeight={cardHeight}
-      loadMore={loadMore}
-      hasNext={hasNext}
+      loadMore={props.loadMore}
+      hasNext={props.hasNext}
     />
   );
 };
@@ -63,7 +65,7 @@ export const SearchBar = ({
     <IonToolbar>
       <IonSearchbar
         value={searchText}
-        onIonChange={(e) => setSearchText(e.detail.value!)}
+        onIonChange={(event) => setSearchText(event.detail.value!)}
         onKeyUp={onKeyUp}
         placeholder="アルバム検索"
         enterkeyhint="enter"
@@ -98,7 +100,7 @@ const Item = React.memo((props: ItemProps) => {
     <IonCard
       className="ion-activatable ripple-parent"
       onClick={() => history.push(`/albums/${props.album.id}`)}
-      style={{ width: props.width, cursor: "pointer" }}
+      style={{ cursor: "pointer", width: props.width }}
     >
       <Slot
         item={<FavoriteComponent />}
@@ -142,20 +144,18 @@ const Spotify = () => (
 );
 
 const musicServiceIconStyle = {
-  width: "15px",
-  height: "15px",
+  background: "#000",
   borderRadius: "50%",
-  fontSize: "10px",
   color: "#fff",
+  fontSize: "10px",
+  height: "15px",
   lineHeight: "15px",
   textAlign: "center" as "center",
-  background: "#000",
+  width: "15px",
 };
 
-const MusicService = (props: { alphabet: string; color: string }) => {
-  return (
-    <div style={{ ...musicServiceIconStyle, backgroundColor: props.color }}>
-      {props.alphabet}
-    </div>
-  );
-};
+const MusicService = (props: { alphabet: string; color: string }) => (
+  <div style={{ ...musicServiceIconStyle, backgroundColor: props.color }}>
+    {props.alphabet}
+  </div>
+);

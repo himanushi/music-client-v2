@@ -22,8 +22,8 @@ export const Layout: React.FC<Props> = ({ login, error }) => {
   const username = useInputValue("ユーザーID");
   const password = useInputValue("パスワード", "password");
   const input = {
-    username: username.value,
     password: password.value,
+    username: username.value,
   };
 
   return (

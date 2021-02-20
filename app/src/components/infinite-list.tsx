@@ -25,7 +25,7 @@ const InfiniteList = ({
   loadMore: loadMore;
   hasNext: hasNext;
 }) => {
-  const rows = useAutoFixedRows({ items, itemWidth });
+  const rows = useAutoFixedRows({ itemWidth, items });
 
   return (
     <AutoSizer>
@@ -39,27 +39,23 @@ const InfiniteList = ({
           threshold={1}
           minimumBatchSize={10}
         >
-          {({ ref, onItemsRendered }) => {
-            return (
-              <List
-                ref={ref}
-                onItemsRendered={onItemsRendered}
-                height={height}
-                width={width}
-                itemCount={rows.length}
-                itemSize={itemHeight}
-                itemData={rows}
-              >
-                {({ data, index, style }) => {
-                  return (
-                    <div key={index} style={style}>
-                      {data[index]}
-                    </div>
-                  );
-                }}
-              </List>
-            );
-          }}
+          {({ ref, onItemsRendered }) => (
+            <List
+              ref={ref}
+              onItemsRendered={onItemsRendered}
+              height={height}
+              width={width}
+              itemCount={rows.length}
+              itemSize={itemHeight}
+              itemData={rows}
+            >
+              {({ data, index, style }) => (
+                <div key={index} style={style}>
+                  {data[index]}
+                </div>
+              )}
+            </List>
+          )}
         </InfiniteLoader>
       )}
     </AutoSizer>
