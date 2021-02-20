@@ -6,10 +6,30 @@
     "plugin:import/warnings",
     "plugin:import/typescript"
   ],
-  "plugins": ["import"],
+  "plugins": ["import", "sort-keys-fix"],
   "rules": {
+    // 初期化するときに初期値がなくても良い
+    "init-declarations": "off",
+    // 1文字の変数を許可しない
+    "id-length": ["error", { "exceptions": ["_"] }],
+    // ファイルの最大行数を制限しない
+    "max-lines": "off",
+    // キャメルケースを強要しない
+    "camelcase": "off",
+    // process.env 使用許可
+    "no-process-env": "off",
+    // 三項演算子有効
+    "no-ternary": "off",
+    // undefined 使える
+    "no-undefined": "off",
+    // const 宣言をまとめない
     "one-var": "off",
+    // マジックナンバーを許可する
+    "no-magic-numbers": "off",
+    // デフォルト値がある引数は最後にしなくても良い
+    "default-param-last": "off",
     "sort-imports": 0,
-    "import/order": [2, { "alphabetize": { "order": "asc" } }]
+    "import/order": [2, { "alphabetize": { "order": "asc" } }],
+    "sort-keys-fix/sort-keys-fix": "error"
   }
 }

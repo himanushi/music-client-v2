@@ -76,6 +76,7 @@
     "@types/wicg-mediasession": "^1.1.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-sort-keys-fix": "^1.1.1",
     "prettier": "^2.2.1"
   },
   "description": "An Ionic project"
