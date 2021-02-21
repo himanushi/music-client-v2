@@ -1,17 +1,19 @@
+import useFavoriteMutation from "hooks/models/use-favorite-mutation";
 import useMeQuery from "hooks/models/use-me-query";
+import { getFavoriteIds, isFavorite } from "lib/favorite";
+import { useState } from "react";
 
-const useController = () => {
-  const { data } = useMeQuery();
+const useController = (id: string) => {
+  const meQuery = useMeQuery();
 
-  let ids: string[] = [];
+  let favoriteIds: string[] = [];
+  if (meQuery.data?.me) favoriteIds = getFavoriteIds(meQuery.data.me);
 
-  if (data?.me) {
-    ids = ids.concat(data.me.favorite.albumIds);
-    ids = ids.concat(data.me.favorite.artistIds);
-    ids = ids.concat(data.me.favorite.trackIds);
-  }
+  const [favorite] = useState(isFavorite(id, favoriteIds));
 
-  return { ids };
+  const [changeFavorite] = useFavoriteMutation();
+
+  return { changeFavorite, favorite };
 };
 
 export default useController;
