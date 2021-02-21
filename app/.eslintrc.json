@@ -14,6 +14,7 @@
     "id-length": ["error", { "exceptions": ["_"] }],
     // ファイルの最大行数を制限しない
     "max-lines": "off",
+    "max-statements": "off",
     // キャメルケースを強要しない
     "camelcase": "off",
     // process.env 使用許可
