@@ -2,11 +2,16 @@ import React from "react";
 import { Favorite, FavoriteOutline } from "./layout";
 import useController from "./use-controller";
 
-const FavoriteComponent = ({ id }: { id: string }) => {
-  const { changeFavorite, favorite } = useController(id);
+type Props = {
+  id: string;
+  model: "album" | "artist";
+};
 
-  if (favorite) return <Favorite id={id} changeFavorite={changeFavorite} />;
-  return <FavoriteOutline id={id} changeFavorite={changeFavorite} />;
+const FavoriteComponent = ({ id, model }: Props) => {
+  const { toggleFavorite, favorite } = useController(id, model);
+
+  if (favorite) return <Favorite toggleFavorite={toggleFavorite} />;
+  return <FavoriteOutline toggleFavorite={toggleFavorite} />;
 };
 
 export default FavoriteComponent;

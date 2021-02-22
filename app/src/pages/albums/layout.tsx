@@ -99,11 +99,10 @@ const Item = React.memo((props: ItemProps) => {
   return (
     <IonCard
       className="ion-activatable ripple-parent"
-      onClick={() => history.push(`/albums/${props.album.id}`)}
       style={{ cursor: "pointer", width: props.width }}
     >
       <Slot
-        item={<FavoriteComponent id={props.album.id} />}
+        item={<FavoriteComponent id={props.album.id} model={"album"} />}
         top={5}
         right={5}
         layout={
@@ -113,6 +112,7 @@ const Item = React.memo((props: ItemProps) => {
             left={5}
             layout={
               <SquareImage
+                onClick={() => history.push(`/albums/${props.album.id}`)}
                 name={props.album.name}
                 src={props.album.artworkM.url}
                 width={props.width}

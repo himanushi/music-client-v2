@@ -8,6 +8,7 @@ export type TData = {
 
 export type TVariables = QueryFunctionOptions<MeQueryVariables>;
 
-const useMeQuery = () => useModelsQuery<TData, TVariables>(MeDocument);
+const useMeQuery = (options?: TVariables) =>
+  useModelsQuery<TData, TVariables>(MeDocument, options);
 
 export default useMeQuery;

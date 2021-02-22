@@ -1,37 +1,26 @@
-import { FetchResult, MutationFunctionOptions } from "@apollo/client";
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { IonIcon } from "@ionic/react";
 import Slot from "components/slot";
-import { TData, TVariables } from "hooks/models/use-favorite-mutation";
-import { star, starOutline } from "ionicons/icons";
+import { heart, heartOutline } from "ionicons/icons";
 import React from "react";
 
 type Props = {
-  id: string;
-  changeFavorite: (
-    options?: MutationFunctionOptions<TData, TVariables> | undefined
-  ) => Promise<FetchResult<TData, Record<string, any>, Record<string, any>>>;
+  toggleFavorite: () => void;
 };
 
-export const Favorite = ({ id, changeFavorite }: Props) => {
-  const fontSize = 26;
+export const Favorite = ({ toggleFavorite }: Props) => {
+  const fontSize = 30;
   const itemFontSize = fontSize + 2;
 
   return (
-    <div
-      onClick={(event) => {
-        changeFavorite({
-          variables: { input: { albumIds: [id], favorite: false } },
-        });
-        // Event.preventDefault();
-      }}
-    >
+    <div onClick={() => toggleFavorite()}>
       <Slot
-        layout={<IonIcon style={{ fontSize }} color="warning" icon={star} />}
+        layout={<IonIcon style={{ fontSize }} color="danger" icon={heart} />}
         item={
           <IonIcon
-            style={{ "--ionicon-stroke-width": "20px", fontSize: itemFontSize }}
-            color="black"
-            icon={starOutline}
+            style={{ "--ionicon-stroke-width": "30px", fontSize: itemFontSize }}
+            color="white"
+            icon={heartOutline}
           />
         }
         center={true}
@@ -43,31 +32,24 @@ export const Favorite = ({ id, changeFavorite }: Props) => {
   );
 };
 
-export const FavoriteOutline = ({ id, changeFavorite }: Props) => {
-  const fontSize = 26;
+export const FavoriteOutline = ({ toggleFavorite }: Props) => {
+  const fontSize = 30;
 
   return (
-    <div
-      onClick={(event) => {
-        changeFavorite({
-          variables: { input: { albumIds: [id], favorite: true } },
-        });
-        // Event.preventDefault();
-      }}
-    >
+    <div onClick={() => toggleFavorite()}>
       <Slot
         layout={
           <IonIcon
             style={{ "--ionicon-stroke-width": "60px", fontSize }}
             color="medium"
-            icon={starOutline}
+            icon={heartOutline}
           />
         }
         item={
           <IonIcon
             style={{ "--ionicon-stroke-width": "20px", fontSize }}
             color="white"
-            icon={starOutline}
+            icon={heartOutline}
           />
         }
         top={0}

@@ -7,10 +7,12 @@ const SquareImage = ({
   name,
   src,
   width,
+  onClick = () => undefined,
 }: {
   name: string;
   src?: string | null;
   width: number;
+  onClick?: any;
 }) => {
   if (src) {
     return (
@@ -18,13 +20,16 @@ const SquareImage = ({
         alt={name}
         style={{ height: width, objectFit: "cover", width }}
         src={src}
+        onClick={onClick}
       />
     );
   }
   return (
     <Slot
       item={<IonIcon size="large" icon={image} />}
-      layout={<IonSkeletonText style={{ height: width, width }} />}
+      layout={
+        <IonSkeletonText onClick={onClick} style={{ height: width, width }} />
+      }
       center={true}
       itemWidth={32}
       itemHeight={32}
