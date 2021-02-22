@@ -8,6 +8,8 @@
   ],
   "plugins": ["import", "sort-keys-fix"],
   "rules": {
+    // コメントアウトの文章の初めを大文字にしない
+    "capitalized-comments": "off",
     // 初期化するときに初期値がなくても良い
     "init-declarations": "off",
     // 1文字の変数を許可しない
