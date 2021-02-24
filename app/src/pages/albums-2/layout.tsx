@@ -2,6 +2,7 @@ import {
   IonButton,
   IonCard,
   IonCol,
+  IonContent,
   IonGrid,
   IonIcon,
   IonRippleEffect,
@@ -16,6 +17,7 @@ import Slot from "components/slot";
 import SquareImage from "components/square-image";
 import { Album, AlbumsQueryVariables } from "graphql/types";
 import * as H from "history";
+import useAutoFixedRows from "hooks/layouts/use-auto-fixed-rows";
 import useCardImageItemSize from "hooks/layouts/use-card-image-item-size";
 import { ellipsisVertical } from "ionicons/icons";
 import React, { useState } from "react";
@@ -24,24 +26,21 @@ import { useHistory } from "react-router";
 type Props = {
   albums: Album[];
   loadMore: loadMore;
-  hasNext: hasNext;
 };
 
 export const Layout: React.FC<Props> = (props) => {
-  const { cardWidth, cardHeight, parentWidth } = useCardImageItemSize();
+  const { cardWidth, parentWidth } = useCardImageItemSize();
 
   const items = props.albums.map((album) => (
     <Item album={album} width={cardWidth} />
   ));
 
+  const rows = useAutoFixedRows({ itemWidth: parentWidth, items });
+
   return (
-    <InfiniteList
-      items={items}
-      itemWidth={parentWidth}
-      itemHeight={cardHeight}
-      loadMore={props.loadMore}
-      hasNext={props.hasNext}
-    />
+    <IonContent scrollX={false}>
+      <IonGrid>{rows}</IonGrid>
+    </IonContent>
   );
 };
 

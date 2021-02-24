@@ -1,7 +1,7 @@
 import { IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { AlbumPage } from "pages/album/page";
-import { MemorizedAlbumsPage } from "pages/albums/page";
+import { MemorizedAlbumsPage } from "pages/albums-2/page";
 import { ArtistPage } from "pages/artist/page";
 import { ArtistsPage } from "pages/artists/page";
 import { LoginPage } from "pages/login/page";

@@ -83,7 +83,7 @@ type ItemProps = {
   width: number;
 };
 
-const Item = React.memo((props: ItemProps) => {
+const Item = (props: ItemProps) => {
   const history = useHistory();
 
   const services = (
@@ -125,7 +125,7 @@ const Item = React.memo((props: ItemProps) => {
       <IonRippleEffect></IonRippleEffect>
     </IonCard>
   );
-});
+};
 
 const MusicServiceCol = ({ children }: { children: JSX.Element }) => (
   <IonCol style={{ padding: "1px" }}>{children}</IonCol>
