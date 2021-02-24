@@ -19,7 +19,7 @@ const useAutoFixedRows = ({
     index += columnsLength
   ) {
     const columnItems = items.slice(index, index + columnsLength);
-    rows.push(<Row columnItems={columnItems} />);
+    rows.push(<Row key={index} columnItems={columnItems} />);
   }
 
   return rows;
